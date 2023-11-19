@@ -1,0 +1,141 @@
+header {
+    background-color: #f8f9fa;
+}
+
+.header-content {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px 10px 20px;
+    margin-bottom: 20px;
+    max-width: 1440px;
+}
+
+.logo-name-links,
+.logo-name-links > a {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+}
+
+.logo-header {
+    width: 36pt;
+    height: 36pt;
+}
+
+.header-navlinks {
+    margin-right: 20px;
+}
+
+@media screen and (max-width: 470px) {
+    .header-navlinks {
+        display: none !important;
+    }
+}
+
+.header-navlink {
+    margin-left: 10px;
+    color: black;
+}
+
+.header-icon {
+    width: 20pt;
+    height: 20pt;
+}
+
+.title-header {
+    font-size: xx-large;
+    font-weight: 900;
+    color: #92afd7;
+    margin-right: 10px;
+}
+
+button.shadow-box {
+    padding-bottom: 0;
+}
+
+.search-bar, .secondary-search-bar {
+    display: flex;
+    align-items: center;
+    width: 30vw;
+    height: 20pt;
+    right: 50%;
+    max-width: 700px;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    background: white;
+}
+
+.search-bar {
+    transform: translateX(50%);
+    position: absolute;
+}
+
+.search-container .search-bar {
+    width: 80vw !important;
+}
+
+@media screen and (max-width: 950px) {
+    .header-content .search-bar {
+        display: none !important;
+    }
+}
+
+@media screen and (min-width: 951px) {
+    .mobile-search {
+        display: none !important;
+    }
+}
+
+.search-icon {
+    width: 15pt;
+    height: 15pt;
+}
+
+.search-input,
+.search-input:focus {
+    margin-right: 10px;
+    width: 30vw;
+    border: none;
+    outline: none;
+}
+
+.search-container .search-input {
+    width: 80vw;
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.header-buttons button {
+    margin-right: 10px;
+}
+
+.search-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #ffffffe0;
+    z-index: 9999;
+}
+
+.search-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.search-close {
+    border-radius: 100px;
+    border: #707070 solid;
+}

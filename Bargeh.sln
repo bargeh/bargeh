@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{4DC3DA0E-92C1-42BF-A09E-86C4CE3A36A1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{907B30E9-3449-48C7-8F37-B05602407109}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Main.Wapp", "Source\Web\Bargeh.Main.Wapp\Bargeh.Main.Wapp\Bargeh.Main.Wapp.csproj", "{69567B56-6A51-4A79-B3CC-C59878B8234A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Main.Wapp.Client", "Source\Web\Bargeh.Main.Wapp\Bargeh.Main.Wapp.Client\Bargeh.Main.Wapp.Client.csproj", "{7B8F9634-6EB5-4324-AC16-58A7ADB986EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{69567B56-6A51-4A79-B3CC-C59878B8234A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69567B56-6A51-4A79-B3CC-C59878B8234A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69567B56-6A51-4A79-B3CC-C59878B8234A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69567B56-6A51-4A79-B3CC-C59878B8234A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B8F9634-6EB5-4324-AC16-58A7ADB986EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B8F9634-6EB5-4324-AC16-58A7ADB986EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B8F9634-6EB5-4324-AC16-58A7ADB986EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B8F9634-6EB5-4324-AC16-58A7ADB986EF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{907B30E9-3449-48C7-8F37-B05602407109} = {4DC3DA0E-92C1-42BF-A09E-86C4CE3A36A1}
+		{69567B56-6A51-4A79-B3CC-C59878B8234A} = {907B30E9-3449-48C7-8F37-B05602407109}
+		{7B8F9634-6EB5-4324-AC16-58A7ADB986EF} = {907B30E9-3449-48C7-8F37-B05602407109}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {111713D6-2B48-486B-8146-1C0C44639E16}
+	EndGlobalSection
+EndGlobal
