@@ -2,6 +2,8 @@ using Bargeh.Main.Wapp.Components;
 
 var builder = WebApplication.CreateBuilder (args);
 
+builder.AddServiceDefaults ();
+
 builder.Services.AddRazorComponents ()
     .AddInteractiveServerComponents ()
     .AddInteractiveWebAssemblyComponents ();

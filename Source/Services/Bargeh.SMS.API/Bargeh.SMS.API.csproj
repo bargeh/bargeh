@@ -21,5 +21,9 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Bargeh.Aspire\Bargeh.Aspire.ServiceDefaults\Bargeh.Aspire.ServiceDefaults.csproj" />
+    </ItemGroup>
+
 
 </Project>

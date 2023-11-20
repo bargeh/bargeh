@@ -4,6 +4,8 @@ using Users.API.Services;
 
 var builder = WebApplication.CreateBuilder (args);
 
+builder.AddServiceDefaults ();
+
 //builder.Services.AddDbContext<UsersContext> (options =>
 //	options.UseMySQL (Environment.GetEnvironmentVariable ("FORUM_CONNECTION_STRING")));
 
