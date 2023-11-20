@@ -17,23 +17,23 @@ public class UsersDbInitializer
 
 		//await context.Database.MigrateAsync ();
 
-		//if (!context.Users.Any ())
-		//{
+		if (!context.Users.Any ())
+		{
 			User user = new ()
 			{
 				Username = "test",
 				DisplayName = "test display name",
 				Email = "test@gmail.bargeh",
 				VerificationCode = "0",
-				Password = "qwerty".Hash (HashType.SHA256),
-				PhoneNumber = "09124611234"
+				Password = "".Hash (HashType.SHA256),
+				PhoneNumber = "09123456789"
 			};
 
-		context.Add (user);
+			context.Add (user);
 
 			await context.SaveChangesAsync ();
 
 			logger.LogDebug ("Users database initialization completed successfully");
-		//}
+		}
 	}
 }

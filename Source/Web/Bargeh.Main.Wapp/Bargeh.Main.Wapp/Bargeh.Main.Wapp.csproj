@@ -14,10 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\..\..\Services\SMS.API\Protos\sms.proto" GrpcServices="Client">
+    <Protobuf Include="..\..\..\Services\Bargeh.SMS.API\Protos\sms.proto" GrpcServices="Client">
       <Link>Protos\sms.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\..\..\Services\Users.API\Protos\user.proto" GrpcServices="Client">
+    <Protobuf Include="..\..\..\Services\Bargeh.Users.API\Protos\user.proto" GrpcServices="Client">
       <Link>Protos\user.proto</Link>
     </Protobuf>
   </ItemGroup>

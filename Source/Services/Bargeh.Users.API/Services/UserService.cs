@@ -108,7 +108,7 @@ public class UserService : UsersProto.UsersProtoBase
 		Metadata metadata = new ();
 
 		var user = await _context.Users.FirstOrDefaultAsync (u =>
-			u.PhoneNumber == request.Phone && u.Password == request.Password);
+			u.PhoneNumber == request.Phone && u.Password == request.Password.Hash (HashType.SHA256));
 
 		// TODO: Verify captcha
 
