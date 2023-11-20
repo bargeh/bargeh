@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "SMS.API";
+
+package sms;
+
+service SMSProto {
+  rpc SendVerification (SendVerificationRequest) returns (SendVerificationReply);
+}
+
+message SendVerificationRequest {
+  string phone = 2;
+}
+
+message SendVerificationReply {
+  string code = 1;
+}
