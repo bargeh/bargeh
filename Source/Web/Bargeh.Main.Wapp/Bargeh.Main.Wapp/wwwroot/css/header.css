@@ -53,6 +53,7 @@ header {
     margin-right: 10px;
 }
 
+button.shadow-box-nohover,
 button.shadow-box {
     padding-bottom: 0;
 }

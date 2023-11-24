@@ -13,7 +13,8 @@ public class UserController : Controller
     [HttpPost]
     [Route ("/Api/Login")]
     // [ValidateAntiForgeryToken]
-    public async Task<ActionResult> Login ([FromHeader] string phone, [FromHeader] string password,
+    public async Task<ActionResult> Login ([FromHeader] string phone,
+                                           [FromHeader] string password,
                                            [FromHeader] string captcha)
     {
         // const string verifyUrl = "https://www.google.com/recaptcha/api/siteverify";
@@ -28,7 +29,7 @@ public class UserController : Controller
 
         // var response = await httpClient.PostAsync (verifyUrl, content);
 
-        var client = new UsersProto.UsersProtoClient (GrpcChannel.ForAddress ("http://users.api.bargeh"));
+        var client = new UsersProto.UsersProtoClient (GrpcChannel.ForAddress ("http://usersapi"));
 
         try
         {

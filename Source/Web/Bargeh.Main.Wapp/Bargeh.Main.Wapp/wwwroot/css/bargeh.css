@@ -28,9 +28,9 @@ p {
     transition: all 200ms ease;
 }
 
-.shadow-box:focus-within {
-    box-shadow: 0px 4pt 0px #002642;
-}
+    .shadow-box:focus-within {
+        box-shadow: 0px 4pt 0px #002642;
+    }
 
 .popup {
     margin: 0 auto;
@@ -85,23 +85,23 @@ p {
     margin: 25pt auto;
 }
 
-.button-primary p,
-.button-filled p,
-.button-gold p {
-    font-size: 13pt;
-}
+    .button-primary p,
+    .button-filled p,
+    .button-gold p {
+        font-size: 13pt;
+    }
 
 .button-filled {
     background: #002642;
 }
 
-.button-filled:active,
-.button-primary:active,
-.button-primary-inline:active,
-.button-gold:active {
-    box-shadow: 0px 0pt 0px #b4b4b5;
-    transform: translateY(5pt);
-}
+    .button-filled:active,
+    .button-primary:active,
+    .button-primary-inline:active,
+    .button-gold:active {
+        box-shadow: 0px 0pt 0px #b4b4b5;
+        transform: translateY(5pt);
+    }
 
 .button-gold:active {
     border: #facc6b 1.5pt solid;
@@ -148,10 +148,10 @@ button {
     background: white;
 }
 
-.button-primary:active,
-.button-primary-inline:active {
-    border: #bb1136 1.5pt solid;
-}
+    .button-primary:active,
+    .button-primary-inline:active {
+        border: #bb1136 1.5pt solid;
+    }
 
 h2.center {
     margin: 50pt auto 20pt auto;
@@ -170,19 +170,19 @@ h2.center {
     width: fit-content;
 }
 
-.forum:active {
-    box-shadow: 0px 0pt 0px #b4b4b5;
-    border: #bb1136 solid 2.5pt;
-    transform: translateY(8pt);
-}
+    .forum:active {
+        box-shadow: 0px 0pt 0px #b4b4b5;
+        border: #bb1136 solid 2.5pt;
+        transform: translateY(8pt);
+    }
 
-.forum * {
-    display: flex;
-    flex-direction: column;
-    margin: 5px;
-    margin-block-start: 0;
-    margin-block-end: 0;
-}
+    .forum * {
+        display: flex;
+        flex-direction: column;
+        margin: 5px;
+        margin-block-start: 0;
+        margin-block-end: 0;
+    }
 
 .forum-description {
     display: -webkit-box;
@@ -245,28 +245,28 @@ img.topic-chat {
     padding: 5pt 20pt 5pt 20pt;
 }
 
-.topic::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    transform: scaleY(1.1);
-    border-top: #002642 solid 2pt;
-    border-bottom: #002642 solid 2pt;
-    transform-origin: center top;
-    z-index: -1;
-    transition: all 200ms;
-    transform-origin: center center;
-}
+    .topic::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transform: scaleY(1.1);
+        border-top: #002642 solid 2pt;
+        border-bottom: #002642 solid 2pt;
+        transform-origin: center top;
+        z-index: -1;
+        transition: all 200ms;
+        transform-origin: center center;
+    }
 
-.topic:active::before {
-    transform: scaleY(0.95);
-    transform-origin: center center;
-    border-top: #bb1136 solid 2pt;
-    border-bottom: #bb1136 solid 2pt;
-}
+    .topic:active::before {
+        transform: scaleY(0.95);
+        transform-origin: center center;
+        border-top: #bb1136 solid 2pt;
+        border-bottom: #bb1136 solid 2pt;
+    }
 
 .button-primary img,
 .button-filled img {
@@ -285,10 +285,10 @@ a {
     color: #5c92dd;
 }
 
-a:active {
-    color: #bb1136;
-    text-decoration: underline;
-}
+    a:active {
+        color: #bb1136;
+        text-decoration: underline;
+    }
 
 .title {
     margin-block-start: 5pt;
@@ -300,24 +300,90 @@ a:active {
     }
 }
 
+/* AI Generated*/
 .button-bubble,
 .button-bubble-static,
 .button-bubble-static-inline {
-    transition: all 200ms ease;
     padding: 5pt 7pt;
     align-items: center;
     cursor: pointer;
-    border: solid 1pt #ffffff00;
+    border: var(--bwidth) solid transparent;
+    border-radius: 1000pt;
+    --bwidth: 1.25pt;
+    outline: 0px solid transparent;
+    outline-offset: calc(-1 * var(--bwidth));
+}
+
+    .button-bubble.bubble-hovered:not(:hover),
+    .button-bubble-static.bubble-hovered:not(:hover),
+    .button-bubble-static-inline.bubble-hovered:not(:hover) {
+        animation: border-fade-out 300ms forwards;
+    }
+
+
+    .button-bubble.bubble-hovered:hover,
+    .button-bubble-static.bubble-hovered:hover,
+    .button-bubble-static-inline.bubble-hovered:hover {
+        animation: border-fade-in 300ms forwards;
+    }
+
+.button-bubble-static {
+    background: #f8f7f7;
+}
+
+@keyframes border-fade-out {
+    0% {
+        border-color: #dcdcdc;
+    }
+
+    100% {
+        /*grow the outline width to cover the border*/
+        outline-width: var(--bwidth);
+        /*Change the border color as well makes the transition looks smoother*/
+        outline-color: white;
+        border-color: transparent;
+    }
+}
+
+@keyframes border-fade-in {
+    0% {
+        outline-color: white;
+        border-color: transparent;
+    }
+
+    100% {
+        outline-color: transparent;
+        border-color: #dcdcdc;
+    }
+}
+
+
+
+/*.button-bubble-static {
+    background: #f8f7f7;
+}*/
+/* AI Generated End*/
+
+
+/*.button-bubble,
+.button-bubble-static,
+.button-bubble-static-inline {
+    transition: all 2000ms ease;
+    padding: 5pt 7pt;
+    align-items: center;
+    cursor: pointer;
+    border: solid 1pt white;
     border-radius: 1000pt;
 }
 
 .button-bubble {
     display: flex;
-    background: #ffffff00;
+    background: white;
 }
 
 .button-bubble-static {
     background: #f8f7f7;
+    background: white;
 }
 
 input.button-bubble-static:focus {
@@ -328,16 +394,42 @@ input.button-bubble-static:focus {
 .button-bubble-static:hover,
 .button-bubble-static-inline:hover,
 input.button-bubble-static:focus {
-    background: #f8f7f7;
-    border: solid 1pt #c8ccd5;
-    border-radius: 1000pt;
+    background: #f8f7f7;*/
+/*border: solid 1pt #c8ccd5;*/
+/*border-radius: 1000pt;
+    animation: bubble-border-hover 250ms ease forwards;
+    animation-delay: 50ms;
 }
 
-.button-bubble.active {
+.button-bubble-static:not(:hover) {
+    animation: bubble-border-unhover 250ms ease forwards;
+}
+
+@keyframes bubble-border-hover {
+    0% {
+        border-color: white;
+    }
+
+    100% {
+        border-color: #c8ccd5ff;
+    }
+}
+
+@keyframes bubble-border-unhover {
+    0% {
+        border-color: #c8ccd5ff;
+    }
+
+    100% {
+        border-color: white;
+    }
+}*/
+
+/*.button-bubble.active {
     background: #f8f7f7;
     border: solid 1pt #c8ccd5;
     border-radius: 1000pt;
-}
+}*/
 
 .button-bubble * {
     margin-block-start: 0;
@@ -372,10 +464,10 @@ input.button-bubble-static:focus {
     margin: 10pt auto;
 }
 
-.tip img {
-    height: 20pt;
-    margin-left: 8pt;
-}
+    .tip img {
+        height: 20pt;
+        margin-left: 8pt;
+    }
 
 
 .red {
@@ -409,9 +501,9 @@ input.button-bubble-static:focus {
     align-items: center;
 }
 
-.form-input > * {
-    margin: 5pt;
-}
+    .form-input > * {
+        margin: 5pt;
+    }
 
 .hidden {
     display: none !important;

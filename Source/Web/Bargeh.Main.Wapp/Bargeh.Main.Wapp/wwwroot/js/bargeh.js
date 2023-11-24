@@ -1,6 +1,9 @@
-$(document).ready(() => {
-    formatMentions()
-})
+function onAfterRender() {
+    formatMentions();
+    $(".button-bubble, .button-bubble-static, .button-bubble-static-inline").hover(function () {
+        $(this).addClass("bubble-hovered");
+    });
+}
 
 function formatMentions() {
     const MENTIONS = $('a').filter(function () {

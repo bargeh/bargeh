@@ -8,6 +8,7 @@
 @inject IAntiforgery Antiforgery
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JsRuntime
+@inject IHttpContextAccessor _httpContextAccessor
 @rendermode InteractiveServer
 
 <PageTitle>ورود و ثبت نام - برگه</PageTitle>
@@ -18,6 +19,8 @@
 	<script src="/js/recaptcha.js" defer></script>
 	<script src="/js/login.js" defer></script>
 </HeadContent>
+
+<button class="button-bubble">Hey!</button>
 
 <div class="popup">
 	<span class="no-block-margin padding-buttom horizontal-align center-flex"><img src="/img/User.svg" class="tiny-icon" alt="کاربر"/>ورود / ثبت نام</span>
@@ -111,36 +114,29 @@
 	}
 </div>
 
-<input type="hidden" name="__RequestVerificationToken" value="@_antiforgery"/>
-
 @code {
 	// TODO: Fix two errors if verification cods is null
-	// Resharper disable all
 	private LoginPhoneModel _loginPhoneModel = new ();
 	private LoginPasswordModel _loginPasswordModel = new ();
 	private LoginRegisterModel _loginRegisterModel = new ();
 	private LoginVerificationModel _loginVerificationModel = new ();
-	// Resharper restore all
 	private LoginState _loginState = LoginState.Phone;
 	private string? _errorMessage;
 	private string _captcha = string.Empty;
-	private string _antiforgery = string.Empty;
 	private string? _verificationCode;
 	private string _verificationCodeNotMatchError = string.Empty;
-	readonly UsersProto.UsersProtoClient _userClient = new (GrpcChannel.ForAddress ("http://users.api.bargeh"));
-	readonly SMSProto.SMSProtoClient _smsClient = new (GrpcChannel.ForAddress ("http://sms.api.bargeh"));
-
-	[CascadingParameter]
-	public HttpContext HttpContext { get; set; } = null!;
+	private HttpContext _httpContext = default!;
+	readonly UsersProto.UsersProtoClient _userClient = new (GrpcChannel.ForAddress ("http://usersapi"));
+	readonly SMSProto.SMSProtoClient _smsClient = new (GrpcChannel.ForAddress ("http://smsapi"));
 
 	protected override void OnInitialized ()
 	{
-		_antiforgery = Antiforgery.GetAndStoreTokens (HttpContext).RequestToken;
+		_httpContext = _httpContextAccessor.HttpContext!;
 	}
 
 	protected override async Task OnAfterRenderAsync (bool firstRender)
 	{
-		if (HttpContext.User.Identity.IsAuthenticated)
+		if (_httpContext.User.Identity.IsAuthenticated)
 		{
 			NavigationManager.NavigateTo ("/", true, true);
 			return;
@@ -148,6 +144,7 @@
 
 		var dotNetReference = DotNetObjectReference.Create (this);
 		await JsRuntime.InvokeVoidAsync ("setDotNetReference", dotNetReference);
+		await JsRuntime.InvokeVoidAsync("onAfterRender");
 	}
 
 	[JSInvokable]
@@ -160,6 +157,7 @@
 
 	private void OnPhoneSubmit ()
 	{
+		// TODO: Fix URL not found
 		try
 		{
 			_userClient.GetUserByPhone (new GetUserByPhoneRequest
