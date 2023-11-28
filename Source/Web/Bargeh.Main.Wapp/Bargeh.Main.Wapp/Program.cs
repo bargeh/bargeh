@@ -1,4 +1,4 @@
-using Bargeh.Main.Wapp.Components;
+﻿using Bargeh.Main.Wapp.Components;
 
 var builder = WebApplication.CreateBuilder (args);
 

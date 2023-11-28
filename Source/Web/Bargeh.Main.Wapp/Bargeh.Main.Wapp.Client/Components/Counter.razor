@@ -1,15 +1,23 @@
-﻿@page "/Counter"
-@rendermode InteractiveWebAssembly
+﻿@page "/http"
+@inject HttpClient Http
 
-<h3>Counter: @count</h3>
+<h3>Google Response</h3>
 
-<button @onclick="GoUp">Go up!</button>
+<p>@_response</p>
 
 @code {
-    private int count;
+    private string _response;
 
-    private void GoUp ()
+    protected override async Task OnInitializedAsync ()
     {
-        count++;
+        try
+        {
+            var response = await Http.GetAsync ("http://www.google.com");
+            _response = await response.Content.ReadAsStringAsync ();
+        }
+        catch (Exception ex)
+        {
+            _response = ex.Message;
+        }
     }
 }
