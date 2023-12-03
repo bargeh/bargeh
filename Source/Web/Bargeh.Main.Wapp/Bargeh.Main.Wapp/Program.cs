@@ -1,4 +1,7 @@
-﻿using Bargeh.Main.Wapp.Components;
+﻿using System.Diagnostics.CodeAnalysis;
+using Bargeh.Main.Wapp;
+using Bargeh.Main.Wapp.Components;
+using Grpc.Net.Client;
 
 var builder = WebApplication.CreateBuilder (args);
 
@@ -10,7 +13,9 @@ builder.Services.AddRazorComponents ()
 
 builder.Services.AddControllers ();
 
-builder.Services.AddHttpContextAccessor ();
+builder.Services.AddHttpContextAccessor();
+
+//builder.Services.AddHttpClient<UsersApiClient> ("http://apphost");
 
 var app = builder.Build ();
 

@@ -9,6 +9,7 @@ var smsApi = builder.AddProject<Projects.Bargeh_SMS_API> ("smsapi");
 builder.AddProject<Projects.Bargeh_Main_Wapp> ("bargehmainwapp")
 	//.WithReference (sqlServer)
 	.WithReference (usersApi)
-	.WithReference (smsApi);
+	.WithReference (smsApi)
+    .WithLaunchProfile ("https");
 
 builder.Build().Run();

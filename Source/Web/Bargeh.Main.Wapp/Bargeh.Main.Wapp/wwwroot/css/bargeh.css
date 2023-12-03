@@ -309,8 +309,8 @@ a {
     cursor: pointer;
     border: var(--bwidth) solid transparent;
     border-radius: 1000pt;
-    --bwidth: 1.25pt;
-    outline: 0px solid transparent;
+    --bwidth: 1.3pt;
+    outline: 0 solid transparent;
     outline-offset: calc(-1 * var(--bwidth));
 }
 
@@ -497,14 +497,40 @@ input.button-bubble-static:focus {
     margin: 10px;
 }
 
-.form-input {
+/*.form-inputs > * {
+    margin: 0 5pt 10pt 5pt;
+
+    width: 100%;
+}
+*/
+/*.form-input {
     align-items: center;
 }
 
     .form-input > * {
+        width: 100%;
         margin: 5pt;
+    }*/
+
+.input-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+    .input-group label {
+        margin-left: 20px; /* Adjust this value to increase or decrease the space between the label and the input */
     }
+
 
 .hidden {
     display: none !important;
+}
+
+.form-errors {
+    list-style-type: none;
+    text-align: center;
+    padding-inline-start: 0;
 }

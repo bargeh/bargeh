@@ -1,23 +1,63 @@
 ﻿@page "/http"
-@inject HttpClient Http
+@rendermode InteractiveServer
+@implements IDisposable
 
-<h3>Google Response</h3>
+<h2>Holodeck Configuration</h2>
 
-<p>@_response</p>
+<EditForm EditContext="editContext" OnValidSubmit="@Submit" FormName="Starship8">
+    <div>
+        <label>
+            <InputCheckbox @bind-Value="Model!.Subsystem1" /> Safety Subsystem
+        </label>
+    </div>
+    <div>
+        <label>
+            <InputCheckbox @bind-Value="Model!.Subsystem2" /> Emergency Shutdown Subsystem
+        </label>
+    </div>
+    <div>
+        <ValidationMessage For=" () => Model!.Options" />
+    </div>
+    <div>
+        <button type="submit">Update</button>
+    </div>
+</EditForm>
 
 @code {
-    private string _response;
+    // TODO: Learn from here
+    private EditContext? editContext;
+    [SupplyParameterFromForm]
+    public Holodeck? Model { get; set; }
+    private ValidationMessageStore? messageStore;
 
-    protected override async Task OnInitializedAsync ()
-    {
-        try
-        {
-            var response = await Http.GetAsync ("http://www.google.com");
-            _response = await response.Content.ReadAsStringAsync ();
+    protected override void OnInitialized() {
+        Model ??= new ();
+        editContext = new (Model);
+        editContext.OnValidationRequested += HandleValidationRequested;
+        messageStore = new (editContext);
+    }
+
+    private void HandleValidationRequested(object? sender, ValidationRequestedEventArgs args) {
+        messageStore?.Clear ();
+        // Custom validation logic
+        if (!Model!.Options) {
+            messageStore?.Add ( () => Model.Options, "Select at least one.");
         }
-        catch (Exception ex)
-        {
-            _response = ex.Message;
+    }
+
+    private void Submit() {
+        
+    }
+
+    public class Holodeck {
+        public bool Subsystem1 { get; set; }
+        public bool Subsystem2 { get; set; }
+        public bool Options => Subsystem1 || Subsystem2;
+    }
+
+    public void Dispose() {
+        if (editContext is not null) {
+            editContext.OnValidationRequested -= HandleValidationRequested;
         }
     }
 }
