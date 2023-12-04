@@ -1,7 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Bargeh.Main.Wapp;
+﻿using Bargeh.Main.Wapp.Client.Infrastructure;
 using Bargeh.Main.Wapp.Components;
-using Grpc.Net.Client;
 
 var builder = WebApplication.CreateBuilder (args);
 
@@ -13,9 +11,13 @@ builder.Services.AddRazorComponents ()
 
 builder.Services.AddControllers ();
 
-builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpContextAccessor ();
 
-//builder.Services.AddHttpClient<UsersApiClient> ("http://apphost");
+builder.Services.AddSingleton<UsersApiGrpcClientProvider> (
+    _ => new ("http://usersapi"));
+
+
+//builder.Services.AddHttpClient<UsersApiChannelProvider> (client => client.BaseAddress = new ("http://usersapi"));
 
 var app = builder.Build ();
 

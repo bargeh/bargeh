@@ -1,0 +1,88 @@
+﻿@page "/Login"
+@rendermode InteractiveServer
+
+@using System.ComponentModel.DataAnnotations
+@using Bargeh.Main.Wapp.Client.Infrastructure
+@using Bargeh.Main.Wapp.Infrastructure.Dtos
+@using MatinDevs.PersianPhoneNumbers
+
+@inject IJSRuntime JsRuntime
+@* @inject UsersApiGrpcClientProvider UsersApi *@
+
+<PageTitle>ورود و عضویت - برگه</PageTitle>
+
+<HeadContent>
+    <script src="/js/login.js"></script>
+</HeadContent>
+
+<div class="popup">
+    <span class="no-block-margin padding-buttom horizontal-align center-flex"><img src="/img/User.svg" class="tiny-icon" alt="کاربر"/>ورود / ثبت نام</span>
+
+    <EditForm EditContext="_loginEditContext" FormName="login" OnValidSubmit="OnLoginSubmit">
+        <DataAnnotationsValidator/>
+
+        <div class="input-group">
+            <label>شماره‌ی همراه</label>
+            <InputText autocomplete="username" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_loginModel.Phone"/>
+        </div>
+
+        <div class="input-group">
+            <label>رمز عبور</label>
+            <InputText type="password" autocomplete="current-password" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="_loginModel.Password"/>
+        </div>
+
+        <button class="button-bubble-static-inline" type="submit">بعدی</button>
+
+        <a class="center" >حساب کاربری نداری؟</a>
+        <a class="center">رمزت رو فراموش کردی؟</a>
+
+        <ValidationSummary class="red form-errors"/>
+    </EditForm>
+</div>
+
+@code {
+    protected override void OnInitialized ()
+    {
+        _loginEditContext = new (_loginModel);
+        _loginMessageStore = new (_loginEditContext);
+
+        // var channel = UsersApi.GetUsersApiClient();
+
+        // channel.GetUserById(new()
+        // {
+        //     Id = Guid.NewGuid().ToString()
+        // });
+    }
+
+
+    protected override void OnAfterRender (bool firstRender)
+    {
+        JsRuntime.InvokeVoidAsync ("onAfterRender");
+    }
+
+    #region Logging in
+
+    private LoginDto _loginModel = new ();
+    private EditContext _loginEditContext = null!;
+    private ValidationMessageStore _loginMessageStore = null!;
+
+    public void OnLoginSubmit ()
+    {
+        _loginMessageStore.Clear ();
+
+        try
+        {
+            PersianPhone phone = _loginModel.Phone!;
+        }
+        catch (ArgumentException argumentException)
+        {
+            _loginMessageStore.Add (() => _loginModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
+        }
+    }
+
+    #endregion
+
+    #region Registration
+
+    #endregion
+}

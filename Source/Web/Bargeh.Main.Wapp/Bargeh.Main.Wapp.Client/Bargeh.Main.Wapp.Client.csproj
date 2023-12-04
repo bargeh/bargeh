@@ -28,10 +28,4 @@
 		</Protobuf>
 	</ItemGroup>
 
-	<ItemGroup>
-		<Content Update="Components\Login.razor">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		</Content>
-	</ItemGroup>
-
 </Project>
