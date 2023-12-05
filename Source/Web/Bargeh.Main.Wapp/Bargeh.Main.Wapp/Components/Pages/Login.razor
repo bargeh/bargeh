@@ -104,7 +104,6 @@
 
     private void OnLoginSubmit ()
     {
-        // TODO: Fix invalid phone number exists even after fixing it after the first fail
         _loginMessageStore.Clear ();
 
         if (!_loginEditContext.Validate ())
@@ -112,9 +111,7 @@
             return;
         }
 
-        bool isPersianPhoneValid = _loginModel.Phone!.IsPersianPhoneValid ();
-
-        if (!isPersianPhoneValid)
+        if (!_loginModel.PhoneValid)
         {
             _loginMessageStore.Add (() => _loginModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
         }
@@ -135,9 +132,7 @@
             return;
         }
 
-        bool isPersianPhoneValid = _registerModel.Phone!.IsPersianPhoneValid ();
-
-        if (!isPersianPhoneValid)
+        if (!_registerModel.PhoneValid)
         {
             _registerMessageStore.Add (() => _registerModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
         }

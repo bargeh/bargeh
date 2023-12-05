@@ -1,14 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using MatinDevs.PersianPhoneNumbers;
 
 namespace Bargeh.Main.Wapp.Infrastructure.Dtos;
 
-public class LoginDto
+public class LoginDto : AuthenticationDtoBase
 {
-    [Required (ErrorMessage = "لطفا شماره‌ی همراهت رو وارد کن")]
-    public string? Phone { get; set; }
-
     [Required (ErrorMessage = "لطفا رمز عبورت رو هم وارد کن")]
     [DataType (DataType.Password)]
     public string? Password { get; set; }
-
 }
