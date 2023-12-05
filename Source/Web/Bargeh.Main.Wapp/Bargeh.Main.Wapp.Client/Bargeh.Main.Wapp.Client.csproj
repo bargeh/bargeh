@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
@@ -15,17 +15,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="MatinDevs.PersianPhoneNumbers" Version="1.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Protobuf Include="..\..\..\Services\Bargeh.SMS.API\Protos\sms.proto" GrpcServices="Client">
-			<Link>Protos\sms.proto</Link>
-		</Protobuf>
-		<Protobuf Include="..\..\..\Services\Bargeh.Users.API\Protos\user.proto" GrpcServices="Client">
-			<Link>Protos\user.proto</Link>
-		</Protobuf>
 	</ItemGroup>
 
 </Project>

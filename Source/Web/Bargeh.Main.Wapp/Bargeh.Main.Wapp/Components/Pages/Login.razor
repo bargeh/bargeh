@@ -16,42 +16,78 @@
 </HeadContent>
 
 <div class="popup">
-    <span class="no-block-margin padding-buttom horizontal-align center-flex"><img src="/img/User.svg" class="tiny-icon" alt="کاربر"/>ورود / ثبت نام</span>
+    <span class="no-block-margin padding-buttom horizontal-align center-flex"><img src="/img/User.svg" class="tiny-icon" alt="کاربر" />ورود / ثبت نام</span>
 
-    <EditForm EditContext="_loginEditContext" FormName="login" OnValidSubmit="OnLoginSubmit">
-        <DataAnnotationsValidator/>
+    @switch (_loginState)
+    {
+        case LoginState.Login:
+            <EditForm EditContext="_loginEditContext" FormName="login" OnSubmit="OnLoginSubmit">
+                <DataAnnotationsValidator />
 
-        <div class="input-group">
-            <label>شماره‌ی همراه</label>
-            <InputText autocomplete="username" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_loginModel.Phone"/>
-        </div>
+                <div class="input-group">
+                    <label>شماره‌ی همراه</label>
+                    <InputText autocomplete="username" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_loginModel.Phone" />
+                </div>
 
-        <div class="input-group">
-            <label>رمز عبور</label>
-            <InputText type="password" autocomplete="current-password" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="_loginModel.Password"/>
-        </div>
+                <div class="input-group">
+                    <label>رمز عبور</label>
+                    <InputText type="password" autocomplete="current-password" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="_loginModel.Password" />
+                </div>
 
-        <button class="button-bubble-static-inline" type="submit">بعدی</button>
+                <button class="button-bubble-static-inline" type="submit">بعدی</button>
 
-        <a class="center" >حساب کاربری نداری؟</a>
-        <a class="center">رمزت رو فراموش کردی؟</a>
+                <a class="center" @onclick="OnRegisterRequested">حساب کاربری نداری؟</a>
+                <a class="center">رمزت رو فراموش کردی؟</a>
 
-        <ValidationSummary class="red form-errors"/>
-    </EditForm>
+                <ValidationSummary class="red form-errors" />
+            </EditForm>
+            break;
+
+        case LoginState.Register:
+            <EditForm EditContext="_resisterEditContext" FormName="register" OnValidSubmit="OnRegisterSubmit">
+                <DataAnnotationsValidator />
+
+                <div class="input-group">
+                    <label>شماره‌ی همراه</label>
+                    <InputText autocomplete="username" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.Phone" />
+                </div>
+
+                <div class="input-group">
+                    <label>نام کاربری</label>
+                    <InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.Username" />
+                </div>
+
+                <div class="input-group">
+                    <label>نام نمایشی</label>
+                    <InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.DisplayName" />
+                </div>
+
+                <button class="button-bubble-static-inline" type="submit">بعدی</button>
+
+                <ValidationSummary class="red form-errors" />
+            </EditForm>
+            break;
+    }
 </div>
 
 @code {
+    private LoginState _loginState = LoginState.Login;
+
     protected override void OnInitialized ()
     {
+        #region Login Initialization
+
         _loginEditContext = new (_loginModel);
         _loginMessageStore = new (_loginEditContext);
 
-        // var channel = UsersApi.GetUsersApiClient();
+        #endregion
 
-        // channel.GetUserById(new()
-        // {
-        //     Id = Guid.NewGuid().ToString()
-        // });
+        #region Register Initialization
+
+        _resisterEditContext = new (_registerModel);
+        _registerMessageStore = new (_resisterEditContext);
+
+        #endregion
     }
 
 
@@ -60,21 +96,25 @@
         JsRuntime.InvokeVoidAsync ("onAfterRender");
     }
 
-    #region Logging in
+    #region Login
 
     private LoginDto _loginModel = new ();
     private EditContext _loginEditContext = null!;
     private ValidationMessageStore _loginMessageStore = null!;
 
-    public void OnLoginSubmit ()
+    private void OnLoginSubmit ()
     {
+        // TODO: Fix invalid phone number exists even after fixing it after the first fail
         _loginMessageStore.Clear ();
 
-        try
+        if (!_loginEditContext.Validate ())
         {
-            PersianPhone phone = _loginModel.Phone!;
+            return;
         }
-        catch (ArgumentException argumentException)
+
+        bool isPersianPhoneValid = _loginModel.Phone!.IsPersianPhoneValid ();
+
+        if (!isPersianPhoneValid)
         {
             _loginMessageStore.Add (() => _loginModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
         }
@@ -82,7 +122,43 @@
 
     #endregion
 
-    #region Registration
+    #region Register
+
+    private RegisterDto _registerModel = new ();
+    private EditContext _resisterEditContext = null!;
+    private ValidationMessageStore _registerMessageStore = null!;
+
+    private void OnRegisterSubmit ()
+    {
+        if (!_resisterEditContext.Validate ())
+        {
+            return;
+        }
+
+        bool isPersianPhoneValid = _registerModel.Phone!.IsPersianPhoneValid ();
+
+        if (!isPersianPhoneValid)
+        {
+            _registerMessageStore.Add (() => _registerModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
+        }
+    }
 
     #endregion
+
+    #region Events
+
+    private void OnRegisterRequested ()
+    {
+        _loginState = LoginState.Register;
+        StateHasChanged ();
+    }
+
+    #endregion
+
+
+    private enum LoginState
+    {
+        Login,
+        Register
+    }
 }
