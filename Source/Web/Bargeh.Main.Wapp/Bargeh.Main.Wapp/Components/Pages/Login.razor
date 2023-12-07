@@ -60,9 +60,16 @@
 					<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.Username" />
 				</div>
 
+				@* TODO: Improve Tos Style *@
 				<div class="input-group">
 					<label>نام نمایشی</label>
 					<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.DisplayName" />
+				</div>
+				
+				
+				<div class="center">
+					<label>شرایط استفاده از برگه رو خوندم و قبول می‌کنم</label>
+					<InputCheckbox aria-required="true" @bind-Value="_registerModel.AcceptedTos" />
 				</div>
 
 				<button class="button-bubble-static-inline" type="submit">بعدی</button>
@@ -71,7 +78,7 @@
 			</EditForm>
 			break;
 
-		case LoginState.Verification:
+		case LoginState.Verify:
 			<EditForm EditContext="_verificationEditContext" FormName="verification" OnSubmit="OnVerificationSubmit">
 				<DataAnnotationsValidator />
 
@@ -131,7 +138,7 @@
 
 		#endregion
 
-		#region Verification Initialization
+		#region Verify Initialization
 
 		_verificationEditContext = new (_verificationModel);
 		_verificationMessageStore = new (_verificationEditContext);
@@ -199,12 +206,12 @@
 
 		_info += $"The verification code is {Random.Shared.Next (1000, 9999)}";
 
-		_loginState = LoginState.Verification;
+		_loginState = LoginState.Verify;
 	}
 
 	#endregion
 
-	#region Verification
+	#region Verify
 
 	private VerificationDto _verificationModel = new ();
 	private EditContext _verificationEditContext = null!;
@@ -260,7 +267,7 @@
 
 	private void OnVerificationRequested()
 	{
-		_loginState = LoginState.Verification;
+		_loginState = LoginState.Verify;
 		StateHasChanged();
 	}
 
@@ -271,7 +278,7 @@
 	{
 		Login,
 		Register,
-		Verification,
+		Verify,
 		SetPassword
 	}
 }
