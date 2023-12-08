@@ -1,7 +1,7 @@
-﻿using MatinDevs.PersianPhoneNumbers;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using MatinDevs.PersianPhoneNumbers;
 
-namespace Bargeh.Main.Wapp.Infrastructure.Dtos;
+namespace Bargeh.Main.Wapp.Infrastructure.Dtos.Login;
 
 public class AuthenticationDtoBase
 {

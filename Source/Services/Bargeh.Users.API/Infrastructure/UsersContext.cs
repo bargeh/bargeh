@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Users.API.Models;
+﻿using Bargeh.Users.API.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace Users.API.Infrastructure;
+namespace Bargeh.Users.API.Infrastructure;
 
 public class UsersContext : DbContext
 {

@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Users.API.Models;
+﻿using Bargeh.Users.API.Models;
 
-namespace Users.API.Infrastructure;
+namespace Bargeh.Users.API.Infrastructure;
 
 public class UsersDbInitializer
 {

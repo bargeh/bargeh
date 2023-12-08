@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Bargeh.Main.Wapp.Infrastructure.Dtos;
+namespace Bargeh.Main.Wapp.Infrastructure.Dtos.Login;
 
 public class SetPasswordDto
 {

@@ -1,25 +1,19 @@
 using Grpc.Core;
+using SMS.API;
 
-namespace SMS.API.Services;
+namespace Bargeh.SMS.API.Services;
 
-public class SmsService : SMSProto.SMSProtoBase
+public class SmsService (ILogger<SmsService> logger) : SMSProto.SMSProtoBase
 {
-	private readonly ILogger<SmsService> _logger;
-
-	public SmsService (ILogger<SmsService> logger)
-	{
-		_logger = logger;
-	}
-
 	public override async Task<SendVerificationReply> SendVerification (SendVerificationRequest request,
 	                                                                    ServerCallContext context)
 	{
 		var code = (uint)Random.Shared.Next (1000, 9999);
 
 		// TODO: Add real sms api
-		await Task.Run (() => { _logger.LogInformation ($"The verification code {code} sent to {request.Phone}"); });
+		await Task.Run (() => { logger.LogInformation ("The verification code {0} sent to {1}", code, request.Phone); });
 
-		return new SendVerificationReply
+		return new ()
 		{
 			Code = code.ToString()
 		};

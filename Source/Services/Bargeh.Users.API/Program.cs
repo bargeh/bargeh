@@ -1,6 +1,7 @@
+using Bargeh.Aspire.ServiceDefaults;
+using Bargeh.Users.API.Infrastructure;
+using Bargeh.Users.API.Services;
 using Microsoft.EntityFrameworkCore;
-using Users.API.Infrastructure;
-using Users.API.Services;
 
 var builder = WebApplication.CreateBuilder (args);
 

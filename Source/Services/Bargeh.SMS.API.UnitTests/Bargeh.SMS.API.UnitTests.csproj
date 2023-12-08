@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Bargeh.SMS.API\Bargeh.SMS.API.csproj" />
+  </ItemGroup>
+
 </Project>

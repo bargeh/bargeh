@@ -1,9 +1,10 @@
+using Bargeh.Users.API.Infrastructure;
+using Bargeh.Users.API.Models;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
-using Users.API.Infrastructure;
-using Users.API.Models;
+using Users.API;
 
-namespace Users.API.Services;
+namespace Bargeh.Users.API.Services;
 
 public class UserService : UsersProto.UsersProtoBase
 {

@@ -1,4 +1,5 @@
-using SMS.API.Services;
+using Bargeh.Aspire.ServiceDefaults;
+using Bargeh.SMS.API.Services;
 
 var builder = WebApplication.CreateBuilder (args);
 

@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 
 @using Bargeh.Main.Wapp.Infrastructure.Dtos
+@using Bargeh.Main.Wapp.Infrastructure.Dtos.Login
 
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
@@ -60,13 +61,11 @@
 					<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.Username" />
 				</div>
 
-				@* TODO: Improve Tos Style *@
 				<div class="input-group">
 					<label>نام نمایشی</label>
 					<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.DisplayName" />
 				</div>
-				
-				
+
 				<div class="center">
 					<label>شرایط استفاده از برگه رو خوندم و قبول می‌کنم</label>
 					<InputCheckbox aria-required="true" @bind-Value="_registerModel.AcceptedTos" />
@@ -83,11 +82,16 @@
 				<DataAnnotationsValidator />
 
 				<div class="input-group">
+					<label>شماره‌ی همراه</label>
+					<InputText disabled="@_verificationIsPhoneDisabled" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_verificationModel.Phone" />
+				</div>
+
+				<div class="input-group">
 					<label>کد تایید</label>
 					<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_verificationModel.VerificationCode" />
 				</div>
 
-				<button class="button-bubble-static-inline" type="submit">ارسال</button>
+				<button class="button-bubble-static-inline" type="submit">@_verificationButtonText</button>
 
 				<ValidationSummary class="red form-errors" />
 			</EditForm>
@@ -153,7 +157,6 @@
 		#endregion
 	}
 
-
 	protected override void OnAfterRender (bool firstRender)
 	{
 		JsRuntime.InvokeVoidAsync ("onAfterRender");
@@ -198,6 +201,7 @@
 		if (!_registerModel.PhoneValid)
 		{
 			_registerMessageStore.Add (() => _registerModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
+			return;
 		}
 
 		// TODO: Check if user is not currently registered
@@ -207,6 +211,9 @@
 		_info += $"The verification code is {Random.Shared.Next (1000, 9999)}";
 
 		_loginState = LoginState.Verify;
+		_verificationModel.Phone = _registerModel.Phone;
+		_verificationIsPhoneDisabled = true;
+		_verificationButtonText = VERIFICATION_VERIFY_CODE;
 	}
 
 	#endregion
@@ -217,12 +224,26 @@
 	private EditContext _verificationEditContext = null!;
 	private ValidationMessageStore _verificationMessageStore = null!;
 
+	private const string VERIFICATION_SEND_CODE = "ارسال کد فعال‌سازی";
+	private const string VERIFICATION_VERIFY_CODE = "تایید کد فعال‌سازی";
+
+	private string _verificationButtonText = VERIFICATION_SEND_CODE;
+	private bool _verificationIsPhoneDisabled;
+
 	private void OnVerificationSubmit ()
 	{
-		_verificationMessageStore.Clear();
+		_verificationMessageStore.Clear ();
 
 		if (!_verificationEditContext.Validate ())
 		{
+			return;
+		}
+
+		// TODO: From here, for reset password
+
+		if (!_verificationModel.PhoneValid)
+		{
+			_verificationMessageStore.Add (() => _verificationModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
 			return;
 		}
 
@@ -241,19 +262,23 @@
 
 	#region Set Password
 
-	private SetPasswordDto _setPasswordModel = new();
+	private SetPasswordDto _setPasswordModel = new ();
 	private EditContext _setPasswordEditContext = null!;
 	private ValidationMessageStore _setPasswordValidationMessageStore = null!;
 
-	private void OnSetPasswordSubmit()
+	private void OnSetPasswordSubmit ()
 	{
-		if (!_setPasswordEditContext.Validate())
+		if (!_setPasswordEditContext.Validate ())
 		{
 			return;
 		}
 
-		NavigationManager.NavigateTo("/", true, true);
+		NavigationManager.NavigateTo ("/", true, true);
 	}
+
+	#endregion
+
+	#region Verify Phone
 
 	#endregion
 
@@ -262,17 +287,14 @@
 	private void OnRegisterRequested ()
 	{
 		_loginState = LoginState.Register;
-		StateHasChanged ();
 	}
 
-	private void OnVerificationRequested()
+	private void OnVerificationRequested ()
 	{
 		_loginState = LoginState.Verify;
-		StateHasChanged();
 	}
 
 	#endregion
-
 
 	private enum LoginState
 	{

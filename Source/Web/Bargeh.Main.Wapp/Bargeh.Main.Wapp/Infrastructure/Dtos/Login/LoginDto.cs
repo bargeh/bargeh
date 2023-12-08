@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using MatinDevs.PersianPhoneNumbers;
 
-namespace Bargeh.Main.Wapp.Infrastructure.Dtos;
+namespace Bargeh.Main.Wapp.Infrastructure.Dtos.Login;
 
 public class LoginDto : AuthenticationDtoBase
 {
