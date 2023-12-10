@@ -20,6 +20,7 @@ public class UsersDbInitializer
 		{
 			User user = new ()
 			{
+				Id = new ("9844fd47-3236-46cb-898d-607b5c5563c1"),
 				Username = "test",
 				DisplayName = "test display name",
 				Email = "test@gmail.bargeh",

@@ -1,5 +1,7 @@
 ﻿using Bargeh.Aspire.ServiceDefaults;
 using Bargeh.Main.Wapp.Components;
+using Bargeh.Main.Wapp.Infrastructure.GrpcProviders;
+using Users.API;
 
 var builder = WebApplication.CreateBuilder (args);
 
@@ -13,11 +15,10 @@ builder.Services.AddControllers ();
 
 builder.Services.AddHttpContextAccessor ();
 
-//builder.Services.AddSingleton<UsersApiGrpcClientProvider> (
-//    _ => new ("http://usersapi"));
 
-
-//builder.Services.AddHttpClient<UsersApiChannelProvider> (client => client.BaseAddress = new ("http://usersapi"));
+builder.Services.AddSingleton<UsersApiGrpcProvider>()
+	.AddGrpcClient<UsersProto.UsersProtoClient>(o =>
+		o.Address = builder.Configuration.GetValue<Uri>("services:usersapi:1"));
 
 var app = builder.Build ();
 

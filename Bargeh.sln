@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bargeh.SMS.API", "Source\Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bargeh.Users.API", "Source\Services\Bargeh.Users.API\Bargeh.Users.API.csproj", "{C05837D2-F10A-4B5E-895A-D360D05A68C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.SMS.API.UnitTests", "Source\Services\Bargeh.SMS.API.UnitTests\Bargeh.SMS.API.UnitTests.csproj", "{8BBC5CDC-C340-4C04-8C9D-465D437FFAFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bargeh.SMS.API.UnitTests", "Source\Services\Bargeh.SMS.API.UnitTests\Bargeh.SMS.API.UnitTests.csproj", "{8BBC5CDC-C340-4C04-8C9D-465D437FFAFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
