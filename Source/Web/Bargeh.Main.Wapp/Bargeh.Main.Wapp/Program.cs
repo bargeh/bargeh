@@ -1,6 +1,7 @@
 ﻿using Bargeh.Aspire.ServiceDefaults;
 using Bargeh.Main.Wapp.Components;
 using Bargeh.Main.Wapp.Infrastructure.GrpcProviders;
+using SMS.API;
 using Users.API;
 
 var builder = WebApplication.CreateBuilder (args);
@@ -8,28 +9,32 @@ var builder = WebApplication.CreateBuilder (args);
 builder.AddServiceDefaults ();
 
 builder.Services.AddRazorComponents ()
-    .AddInteractiveServerComponents ()
-    .AddInteractiveWebAssemblyComponents ();
+	.AddInteractiveServerComponents ()
+	.AddInteractiveWebAssemblyComponents ();
 
 builder.Services.AddControllers ();
 
 builder.Services.AddHttpContextAccessor ();
 
 
-builder.Services.AddSingleton<UsersApiGrpcProvider>()
-	.AddGrpcClient<UsersProto.UsersProtoClient>(o =>
-		o.Address = builder.Configuration.GetValue<Uri>("services:usersapi:1"));
+builder.Services.AddSingleton<UsersApiGrpcProvider> ()
+	.AddGrpcClient<UsersProto.UsersProtoClient> (o =>
+		o.Address = builder.Configuration.GetValue<Uri> ("services:usersapi:1"));
+
+builder.Services.AddSingleton<SmsApiGrpcProvider> ()
+	.AddGrpcClient<SMSProto.SMSProtoClient> (o => 
+		o.Address = builder.Configuration.GetValue<Uri> ("services:smsapi:1"));
 
 var app = builder.Build ();
 
 if (app.Environment.IsDevelopment ())
 {
-    app.UseWebAssemblyDebugging ();
+	app.UseWebAssemblyDebugging ();
 }
 else
 {
-    app.UseExceptionHandler ("/Error", createScopeForErrors: true);
-    app.UseHsts ();
+	app.UseExceptionHandler ("/Error", createScopeForErrors: true);
+	app.UseHsts ();
 }
 
 app.UseHttpsRedirection ();
@@ -38,9 +43,9 @@ app.UseStaticFiles ();
 app.UseAntiforgery ();
 
 app.MapRazorComponents<App> ()
-    .AddInteractiveServerRenderMode ()
-    .AddInteractiveWebAssemblyRenderMode ()
-    .AddAdditionalAssemblies (typeof (Bargeh.Main.Wapp.Client._Imports).Assembly);
+	.AddInteractiveServerRenderMode ()
+	.AddInteractiveWebAssemblyRenderMode ()
+	.AddAdditionalAssemblies (typeof (Bargeh.Main.Wapp.Client._Imports).Assembly);
 
 app.MapDefaultControllerRoute ();
 
