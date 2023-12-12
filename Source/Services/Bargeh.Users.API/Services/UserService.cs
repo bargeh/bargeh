@@ -11,7 +11,7 @@ public class UserService (UsersContext context) : UsersProto.UsersProtoBase
 	public override async Task<GetUserReply> GetUserByUsername (GetUserByUsernameRequest request,
 																ServerCallContext callContext)
 	{
-		var user = await context.Users.FirstOrDefaultAsync (u => u.Username == request.Username);
+		var user = await context.GetUserByUsernameAsync (request.Username);
 
 		if (user == null)
 		{
@@ -33,7 +33,8 @@ public class UserService (UsersContext context) : UsersProto.UsersProtoBase
 		};
 	}
 
-	public override async Task<GetUserReply> GetUserByPhone (GetUserByPhoneRequest request, ServerCallContext callContext)
+	public override async Task<GetUserReply> GetUserByPhone (GetUserByPhoneRequest request,
+															 ServerCallContext callContext)
 	{
 		var user = await context.Users.FirstOrDefaultAsync (u => u.PhoneNumber == request.Phone);
 
