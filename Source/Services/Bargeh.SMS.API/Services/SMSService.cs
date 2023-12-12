@@ -6,7 +6,7 @@ namespace Bargeh.SMS.API.Services;
 public class SmsService (ILogger<SmsService> logger) : SMSProto.SMSProtoBase
 {
 	public override async Task<SendVerificationReply> SendVerification (SendVerificationRequest request,
-	                                                                    ServerCallContext context)
+																		ServerCallContext context)
 	{
 		var code = (uint)Random.Shared.Next (1000, 9999);
 
@@ -15,7 +15,7 @@ public class SmsService (ILogger<SmsService> logger) : SMSProto.SMSProtoBase
 
 		return new ()
 		{
-			Code = code.ToString()
+			Code = code.ToString ()
 		};
 	}
 }

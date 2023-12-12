@@ -6,27 +6,19 @@ using Users.API;
 
 namespace Bargeh.Users.API.Services;
 
-public class UserService : UsersProto.UsersProtoBase
+public class UserService (UsersContext context) : UsersProto.UsersProtoBase
 {
-	private readonly UsersContext _context;
-
-	public UserService (ILogger<UserService> logger, UsersContext context)
-	{
-		_context = context;
-	}
-
 	public override async Task<GetUserReply> GetUserByUsername (GetUserByUsernameRequest request,
-	                                                            ServerCallContext context)
+																ServerCallContext callContext)
 	{
-		Metadata metadata = new ();
-		var user = await _context.Users.FirstOrDefaultAsync (u => u.Username == request.Username);
+		var user = await context.Users.FirstOrDefaultAsync (u => u.Username == request.Username);
 
 		if (user == null)
 		{
-			throw new RpcException (new Status (StatusCode.NotFound, "Not Found"), metadata);
+			throw new RpcException (new (StatusCode.NotFound, "Not Found"));
 		}
 
-		return new GetUserReply
+		return new ()
 		{
 			Id = user.Id.ToString (),
 			Username = user.Username,
@@ -41,17 +33,16 @@ public class UserService : UsersProto.UsersProtoBase
 		};
 	}
 
-	public override async Task<GetUserReply> GetUserByPhone (GetUserByPhoneRequest request, ServerCallContext context)
+	public override async Task<GetUserReply> GetUserByPhone (GetUserByPhoneRequest request, ServerCallContext callContext)
 	{
-		Metadata metadata = new ();
-		var user = await _context.Users.FirstOrDefaultAsync (u => u.PhoneNumber == request.Phone);
+		var user = await context.Users.FirstOrDefaultAsync (u => u.PhoneNumber == request.Phone);
 
 		if (user == null)
 		{
-			throw new RpcException (new Status (StatusCode.NotFound, "Not Found"), metadata);
+			throw new RpcException (new (StatusCode.NotFound, "Not Found"));
 		}
 
-		return new GetUserReply
+		return new ()
 		{
 			Id = user.Id.ToString (),
 			Username = user.Username,
@@ -66,9 +57,8 @@ public class UserService : UsersProto.UsersProtoBase
 		};
 	}
 
-	public override async Task<GetUserReply> GetUserById (GetUserByIdRequest request, ServerCallContext context)
+	public override async Task<GetUserReply> GetUserById (GetUserByIdRequest request, ServerCallContext callContext)
 	{
-		Metadata metadata = new ();
 		Guid? guid;
 
 		try
@@ -77,17 +67,17 @@ public class UserService : UsersProto.UsersProtoBase
 		}
 		catch (Exception)
 		{
-			throw new RpcException (new Status (StatusCode.InvalidArgument, "Invalid Argument"), metadata);
+			throw new RpcException (new (StatusCode.InvalidArgument, "Invalid Argument"));
 		}
 
-		var user = await _context.Users.FirstOrDefaultAsync (u => u.Id == guid);
+		var user = await context.Users.FirstOrDefaultAsync (u => u.Id == guid);
 
 		if (user == null)
 		{
-			throw new RpcException (new Status (StatusCode.NotFound, "Not Found"), metadata);
+			throw new RpcException (new (StatusCode.NotFound, "Not Found"));
 		}
 
-		return new GetUserReply
+		return new ()
 		{
 			Id = user.Id.ToString (),
 			Username = user.Username,
@@ -103,27 +93,24 @@ public class UserService : UsersProto.UsersProtoBase
 	}
 
 	public override async Task<GetUserReply> GetUserByPhoneAndPassword (GetUserByPhoneAndPasswordRequest request,
-	                                                                    ServerCallContext context)
+																		ServerCallContext callContext)
 	{
-		//TODO: Fix null user
-		Metadata metadata = new ();
-
-		var user = await _context.Users.FirstOrDefaultAsync (u =>
+		var user = await context.Users.FirstOrDefaultAsync (u =>
 			u.PhoneNumber == request.Phone && u.Password == request.Password.Hash (HashType.SHA256));
 
 		// TODO: Verify captcha
 
 		if (user == null)
 		{
-			throw new RpcException (new Status (StatusCode.NotFound, "Not Found"), metadata);
+			throw new RpcException (new (StatusCode.NotFound, "Not Found"));
 		}
 
 		if (!user.Enabled)
 		{
-			throw new RpcException (new Status (StatusCode.PermissionDenied, "Permission Denied"), metadata);
+			throw new RpcException (new (StatusCode.PermissionDenied, "Permission Denied"));
 		}
 
-		return new GetUserReply
+		return new ()
 		{
 			Id = user.Id.ToString (),
 			Username = user.Username,
@@ -139,37 +126,28 @@ public class UserService : UsersProto.UsersProtoBase
 	}
 
 	public override async Task<VoidOperationReply> SetUserPassword (SetUserPasswordRequest request,
-	                                                                ServerCallContext context)
+																	ServerCallContext callContext)
 	{
-		Metadata metadata = new ();
-
-		var user = await _context.Users.FirstOrDefaultAsync (u => u.Id == Guid.Parse (request.Id));
-
-		if (user == null)
-		{
-			throw new RpcException (new Status (StatusCode.NotFound, "Not Found"), metadata);
-		}
+		var user = await context.Users.FirstOrDefaultAsync (u => u.Id == Guid.Parse (request.Id)) ?? throw new RpcException (new (StatusCode.NotFound, "Not Found"));
 
 		user.Password = request.Password;
 
-		await _context.SaveChangesAsync ();
+		await context.SaveChangesAsync ();
 
-		return new VoidOperationReply
+		return new ()
 		{
 			Success = true
 		};
 	}
 
-	public override async Task<VoidOperationReply> AddUser (AddUserRequest request, ServerCallContext context)
+	public override async Task<VoidOperationReply> AddUser (AddUserRequest request, ServerCallContext callContext)
 	{
-		Metadata metadata = new ();
-
 		var userExists =
-			await _context.Users.AnyAsync (u => u.PhoneNumber == request.Phone);
+			await context.Users.AnyAsync (u => u.PhoneNumber == request.Phone);
 
 		if (userExists)
 		{
-			throw new RpcException (new Status (StatusCode.AlreadyExists, "Already Exists"), metadata);
+			throw new RpcException (new (StatusCode.AlreadyExists, "Already Exists"));
 		}
 
 		int discriminator = Random.Shared.Next (10000, 99999);
@@ -186,9 +164,9 @@ public class UserService : UsersProto.UsersProtoBase
 			Password = request.Password.Hash (HashType.SHA256)
 		};
 
-		_context.Add (user);
-		await _context.SaveChangesAsync ();
+		context.Add (user);
+		await context.SaveChangesAsync ();
 
-		return new VoidOperationReply ();
+		return new ();
 	}
 }

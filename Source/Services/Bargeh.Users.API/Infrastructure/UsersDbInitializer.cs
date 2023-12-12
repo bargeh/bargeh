@@ -1,12 +1,13 @@
 ﻿using Bargeh.Users.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bargeh.Users.API.Infrastructure;
 
-public class UsersDbInitializer
+public static class UsersDbInitializer
 {
 	public static async Task InitializeDbAsync (IServiceScope scope, ILogger logger)
 	{
-		var context = scope.ServiceProvider.GetService<UsersContext> ();
+		UsersContext? context = scope.ServiceProvider.GetService<UsersContext> ();
 
 		if (context == null)
 		{
@@ -14,7 +15,7 @@ public class UsersDbInitializer
 			return;
 		}
 
-		//await context.Database.MigrateAsync ();
+		// context.Database.MigrateAsync();
 
 		if (!context.Users.Any ())
 		{
