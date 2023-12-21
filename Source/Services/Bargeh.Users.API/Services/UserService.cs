@@ -11,7 +11,7 @@ public class UserService (UsersContext context) : UsersProto.UsersProtoBase
 	public override async Task<GetUserReply> GetUserByUsername (GetUserByUsernameRequest request,
 																ServerCallContext callContext)
 	{
-		var user = await context.GetUserByUsernameAsync (request.Username);
+		User? user = await context.GetUserByUsernameAsync (request.Username);
 
 		if (user == null)
 		{
@@ -36,7 +36,7 @@ public class UserService (UsersContext context) : UsersProto.UsersProtoBase
 	public override async Task<GetUserReply> GetUserByPhone (GetUserByPhoneRequest request,
 															 ServerCallContext callContext)
 	{
-		var user = await context.GetUserByPhoneNumberAsync (request.Phone);
+		User? user = await context.GetUserByPhoneNumberAsync (request.Phone);
 
 		if (user == null)
 		{
@@ -86,7 +86,7 @@ public class UserService (UsersContext context) : UsersProto.UsersProtoBase
 	public override async Task<GetUserReply> GetUserByPhoneAndPassword (GetUserByPhoneAndPasswordRequest request,
 																		ServerCallContext callContext)
 	{
-		var user = await context.GetUserByPhoneAndPasswordAsync (request.Phone, request.Password);
+		User? user = await context.GetUserByPhoneAndPasswordAsync (request.Phone, request.Password);
 
 		// TODO: Verify captcha
 

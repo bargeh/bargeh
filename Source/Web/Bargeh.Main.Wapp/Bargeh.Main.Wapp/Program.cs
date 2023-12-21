@@ -4,7 +4,7 @@ using Bargeh.Main.Wapp.Infrastructure.GrpcProviders;
 using SMS.API;
 using Users.API;
 
-var builder = WebApplication.CreateBuilder (args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder (args);
 
 builder.AddServiceDefaults ();
 
@@ -33,7 +33,7 @@ builder.Services.AddSingleton<SmsApiGrpcProvider> ()
 
 #endregion
 
-var app = builder.Build ();
+WebApplication app = builder.Build ();
 
 #region Blazor
 
