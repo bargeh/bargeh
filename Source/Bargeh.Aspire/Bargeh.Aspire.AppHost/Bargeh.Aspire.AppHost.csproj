@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Services\Bargeh.Identity.API\Bargeh.Identity.API.csproj" />
     <ProjectReference Include="..\..\Services\Bargeh.SMS.API\Bargeh.SMS.API.csproj" />
     <ProjectReference Include="..\..\Services\Bargeh.Users.API\Bargeh.Users.API.csproj" />
     <ProjectReference Include="..\..\Web\Bargeh.Main.Wapp\Bargeh.Main.Wapp\Bargeh.Main.Wapp.csproj" />

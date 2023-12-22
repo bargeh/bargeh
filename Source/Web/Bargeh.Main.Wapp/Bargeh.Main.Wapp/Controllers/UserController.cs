@@ -29,13 +29,13 @@ public class UserController : Controller
 
 		// var response = await httpClient.PostAsync (verifyUrl, content);
 
-		var client = new UsersProto.UsersProtoClient (GrpcChannel.ForAddress ("http://usersapi"));
+		UsersProto.UsersProtoClient client = new UsersProto.UsersProtoClient (GrpcChannel.ForAddress ("http://usersapi"));
 
 		// FROMHERE: Implement JWT Authentication
 
 		try
 		{
-			var user = await client.GetUserByPhoneAndPasswordAsync (new ()
+			GetUserReply? user = await client.GetUserByPhoneAndPasswordAsync (new ()
 			{
 				Phone = phone,
 				Password = password.Hash (HashType.SHA256)
@@ -45,17 +45,17 @@ public class UserController : Controller
 
 			await HttpContext.SignOutAsync ();
 
-			var claims = new List<Claim>
+			List<Claim> claims = new List<Claim>
 			{
 				new (ClaimTypes.Name, user.Username),
 				new ("Email", user.Email),
 				new ("DisplayName", user.DisplayName)
 			};
 
-			var claimsIdentity = new ClaimsIdentity (
+			ClaimsIdentity claimsIdentity = new ClaimsIdentity (
 				claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-			var authProperties = new AuthenticationProperties
+			AuthenticationProperties authProperties = new AuthenticationProperties
 			{
 				AllowRefresh = false,
 				IsPersistent = true,
