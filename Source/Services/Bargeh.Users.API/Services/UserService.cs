@@ -1,7 +1,6 @@
 using Bargeh.Users.API.Infrastructure;
 using Bargeh.Users.API.Models;
 using Grpc.Core;
-using Microsoft.EntityFrameworkCore;
 using Users.API;
 
 namespace Bargeh.Users.API.Services;
