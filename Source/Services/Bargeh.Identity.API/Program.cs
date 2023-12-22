@@ -2,8 +2,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using Bargeh.Aspire.ServiceDefaults;
+using Grpc.Core;
+using Grpc.Net.Client;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Users.API;
 
 WebApplicationBuilder builder = WebApplication.CreateSlimBuilder (args);
 
@@ -13,15 +16,23 @@ WebApplication app = builder.Build ();
 
 app.MapDefaultEndpoints ();
 
-app.MapPost ("/Login", (HttpContext context,
+app.MapPost ("/Login", async (HttpContext context,
 										 IConfiguration configuration,
 										 [FromHeader] string phone,
 										 [FromHeader] string password,
 										 [FromHeader] string validationToken) =>
 {
-	string? value = configuration.GetValue<string>("services:usersapi:1");
+	string usersApiAddress = configuration.GetValue<string> ("services:usersapi:1")!;
+	GrpcChannel usersApiChannel = GrpcChannel.ForAddress (usersApiAddress);
+	UsersProto.UsersProtoClient client = new (usersApiChannel);
 
-	return value;
+	GetUserReply? user = await client.GetUserByPhoneAndPasswordAsync (new ()
+	{
+		Phone = phone,
+		Password = password
+	});
+
+	return user?.Email;
 	//string token = GenerateJwt(phone);
 
 	//context.Response.Cookies.Append ("jwt", token, new ()
