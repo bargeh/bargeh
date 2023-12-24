@@ -10,8 +10,10 @@ builder.AddServiceDefaults ();
 //builder.Services.AddDbContext<UsersContext> (options =>
 //	options.UseMySQL (Environment.GetEnvironmentVariable ("FORUM_CONNECTION_STRING")));
 
-builder.Services.AddDbContext<UsersContext> (options =>
-	options.UseInMemoryDatabase ("test"));
+builder.AddNpgsqlDbContext<UsersContext> ("postgres", settings =>
+{
+	settings.MaxRetryCount = 10;
+});
 
 builder.Services.AddGrpc ();
 

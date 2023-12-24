@@ -15,6 +15,11 @@ WebApplication app = builder.Build ();
 
 app.MapDefaultEndpoints ();
 
+app.MapGet("/", () =>
+{
+	return "Hi!";
+});
+
 app.MapPost ("/Login", async (HttpContext context,
 										 IConfiguration configuration,
 										 [FromHeader] string phone,

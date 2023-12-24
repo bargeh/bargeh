@@ -1,4 +1,5 @@
 ﻿using Bargeh.Users.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bargeh.Users.API.Infrastructure;
 
@@ -14,7 +15,7 @@ public static class UsersDbInitializer
 			return;
 		}
 
-		// context.Database.MigrateAsync();
+		await context.Database.MigrateAsync ();
 
 		if (!context.Users.Any ())
 		{
@@ -25,7 +26,7 @@ public static class UsersDbInitializer
 				DisplayName = "test display name",
 				Email = "test@gmail.bargeh",
 				VerificationCode = "0",
-				Password = "".Hash (HashType.SHA256),
+				Password = "5".Hash (HashType.SHA256),
 				PhoneNumber = "09123456789"
 			};
 

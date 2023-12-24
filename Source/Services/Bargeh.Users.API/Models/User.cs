@@ -12,8 +12,8 @@ public class User
 	public string CoverImage { get; set; } = "Cover.webp";
 	public ushort PremiumDaysLeft { get; set; } = 0;
 
-	public DateTime OnlineDate { get; set; } = DateTime.Now;
-	public DateTime RegisterDate { get; set; } = DateTime.Now;
+	public DateTime OnlineDate { get; set; } = DateTime.UtcNow;
+	public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
 	public required string VerificationCode { get; set; }
 	public bool Enabled { get; set; } = true;
 	public bool CanCreateForums { get; set; } = true;
