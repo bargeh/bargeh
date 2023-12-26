@@ -15,6 +15,19 @@ public static class UsersDbInitializer
 			return;
 		}
 
+		byte retires = 20;
+
+	TryConnect:
+
+		if (!await context.Database.CanConnectAsync () && retires >= 1)
+		{
+			await Task.Delay (1000);
+			logger.LogInformation("Unable to connect to the database, retrying...");
+			retires--;
+
+			goto TryConnect;
+		}
+
 		await context.Database.MigrateAsync ();
 
 		if (!context.Users.Any ())

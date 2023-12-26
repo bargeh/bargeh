@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option csharp_namespace = "Identity.API";
+
+package identity;
+
+service IdentityProto {
+	rpc Login (LoginRequest) returns (LoginResponse);
+}
+
+message LoginRequest {
+	string phone = 1;
+	string password = 2;
+	string captcha = 3;
+}
+
+message LoginResponse {
+	string jwtToken = 1;
+	string refreshToken = 2;
+}

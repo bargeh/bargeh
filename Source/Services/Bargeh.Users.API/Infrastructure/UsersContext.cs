@@ -31,7 +31,7 @@ public class UsersContext (DbContextOptions<UsersContext> options) : DbContext (
 	private static Func<UsersContext, string, string, Task<User?>> _getUserByPhoneAndPassword =
 		EF.CompileAsyncQuery (
 			(UsersContext context, string phone, string password) =>
-				context.Users.FirstOrDefault (u => u.PhoneNumber == phone && u.Password == password.Hash (HashType.SHA256)));
+				context.Users.FirstOrDefault (u => u.PhoneNumber == phone && u.Password == password));
 
 	private static Func<UsersContext, string, Task<bool>> _userExistsByPhone =
 		EF.CompileAsyncQuery (
@@ -64,6 +64,7 @@ public class UsersContext (DbContextOptions<UsersContext> options) : DbContext (
 
 	public async Task<User?> GetUserByPhoneAndPasswordAsync (string phone, string password)
 	{
+		password = password.Hash (HashType.SHA256);
 		return await _getUserByPhoneAndPassword (this, phone, password);
 	}
 

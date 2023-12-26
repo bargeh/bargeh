@@ -28,6 +28,7 @@ message GetUserByIdRequest {
 message GetUserByPhoneAndPasswordRequest {
   string phone = 1;
   string password = 2;
+  string captcha = 3;
 }
 
 message SetUserPasswordRequest {
