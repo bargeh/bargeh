@@ -17,12 +17,12 @@ public static class UsersDbInitializer
 
 		byte retires = 20;
 
-	TryConnect:
+		TryConnect:
 
 		if (!await context.Database.CanConnectAsync () && retires >= 1)
 		{
 			await Task.Delay (1000);
-			logger.LogInformation("Unable to connect to the database, retrying...");
+			logger.LogInformation ("Unable to connect to the database, retrying...");
 			retires--;
 
 			goto TryConnect;

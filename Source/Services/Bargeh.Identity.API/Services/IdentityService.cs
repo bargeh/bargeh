@@ -1,34 +1,37 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using Bargeh.Identity.API.Infrastructure;
 using Bargeh.Identity.API.Models;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grpc.Net.Client;
 using Identity.API;
 using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Users.API;
 using LoginRequest = Identity.API.LoginRequest;
+using RefreshRequest = Identity.API.RefreshRequest;
 
 namespace Bargeh.Identity.API.Services;
 
-public class IdentityService (IConfiguration configuration, IdentityDbContext context) : IdentityProto.IdentityProtoBase
+public class IdentityService (IConfiguration configuration, IdentityDbContext dbContext, TimeProvider timeProvider) : IdentityProto.IdentityProtoBase
 {
+	private readonly UsersProto.UsersProtoClient _usersApiClient =
+		new (GrpcChannel.ForAddress (configuration.GetValue<string> ("services:usersapi:1")!));
+
 	#region Grpc Endpoints
 
-	public override async Task<LoginResponse> Login (LoginRequest request, ServerCallContext callContext)
+	public override async Task<TokenResponse> Login (LoginRequest request, ServerCallContext callContext)
 	{
-
-		//FROMHERE: Make db work
-		string usersApiAddress = configuration.GetValue<string> ("services:usersapi:1")!;
-		GrpcChannel usersApiChannel = GrpcChannel.ForAddress (usersApiAddress);
-		UsersProto.UsersProtoClient client = new (usersApiChannel);
 		GetUserReply user = new ();
 
 		try
 		{
-			user = await client.GetUserByPhoneAndPasswordAsync (new ()
+			user = await _usersApiClient.GetUserByPhoneAndPasswordAsync (new ()
 			{
 				Phone = request.Phone,
 				Password = request.Password,
@@ -45,7 +48,7 @@ public class IdentityService (IConfiguration configuration, IdentityDbContext co
 		}
 
 		string jwtToken = GenerateJwt (user);
-		string refreshToken = await GenerateRefreshToken (Guid.Parse(user.Id));
+		string refreshToken = await GenerateRefreshToken (Guid.Parse (user.Id));
 
 		return new ()
 		{
@@ -54,11 +57,55 @@ public class IdentityService (IConfiguration configuration, IdentityDbContext co
 		};
 	}
 
+	public override async Task<TokenResponse> Refresh (RefreshRequest request, ServerCallContext callContext)
+	{
+		RefreshToken oldToken = await dbContext.RefreshTokens.FirstOrDefaultAsync (r => r.Token == request.OldRefreshToken)
+			?? throw new RpcException (new (StatusCode.NotFound, "The refresh token was not found"));
+
+		if (oldToken.ExpireDate <= timeProvider.GetUtcNow ())
+		{
+			dbContext.Remove (oldToken);
+			await dbContext.SaveChangesAsync ();
+			throw new RpcException (new (StatusCode.FailedPrecondition, "The token is expired"));
+		}
+
+		GetUserReply? user = _usersApiClient.GetUserById (new ()
+		{
+			Id = oldToken.UserId.ToString ()
+		});
+
+		if (!user.Enabled)
+		{
+			throw new RpcException (new (StatusCode.PermissionDenied, "The user can not get refresh token"));
+		}
+
+		Guid userId = Guid.Parse (user.Id);
+
+		string newToken = await GenerateRefreshToken (userId);
+
+		dbContext.Remove (oldToken);
+		dbContext.Add (new RefreshToken
+		{
+			Token = newToken,
+			UserId = userId
+		});
+
+		await dbContext.SaveChangesAsync ();
+
+		string jwtToken = GenerateJwt (user);
+
+		return new ()
+		{
+			JwtToken = jwtToken,
+			RefreshToken = newToken
+		};
+	}
+
 	#endregion
 
 	#region Static Methods
 
-	private string GenerateJwt (GetUserReply user)
+	private static string GenerateJwt (GetUserReply user)
 	{
 		RsaSecurityKey securityKey = new (new X509Certificate2 ("C:/Users/Matin/Desktop/private_key.pfx", "bargeh.dev").GetRSAPrivateKey ());
 
@@ -97,11 +144,11 @@ public class IdentityService (IConfiguration configuration, IdentityDbContext co
 		RefreshToken refreshToken = new ()
 		{
 			UserId = userId,
-			Token = token
+			Token = token,
 		};
 
-		context.RefreshTokens.Add (refreshToken);
-		await context.SaveChangesAsync ();
+		dbContext.RefreshTokens.Add (refreshToken);
+		await dbContext.SaveChangesAsync ();
 
 		return token;
 	}
