@@ -5,10 +5,8 @@ namespace Bargeh.Users.API.Infrastructure;
 
 public static class UsersDbInitializer
 {
-	public static async Task InitializeDbAsync (IServiceScope scope, ILogger logger)
+	public static async Task InitializeDbAsync (UsersContext? context, ILogger logger)
 	{
-		UsersContext? context = scope.ServiceProvider.GetService<UsersContext> ();
-
 		if (context == null)
 		{
 			logger.LogError ("UsersContext was null. UsersDbInitializer exits.");

@@ -21,6 +21,7 @@ WebApplication app = builder.Build ();
 
 app.MapGrpcService<UserService> ();
 
-await UsersDbInitializer.InitializeDbAsync (app.Services.CreateScope (), app.Logger);
+await UsersDbInitializer.InitializeDbAsync 
+	(app.Services.CreateScope ().ServiceProvider.GetRequiredService<UsersContext> (), app.Logger);
 
 app.Run ();

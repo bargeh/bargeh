@@ -7,7 +7,7 @@ namespace Bargeh.Users.API.UnitTests;
 
 public static class UnitTestsDbProvider
 {
-	public static async Task PreparePostgresDb ()
+	public static async Task<string> PreparePostgresDb ()
 	{
 		try
 		{
@@ -26,11 +26,15 @@ public static class UnitTestsDbProvider
 					CreateNoWindow = true,
 				};
 
-				Process process = new() { StartInfo = startInfo };
+				Process process = new () { StartInfo = startInfo };
 				process.Start ();
 
 				await process.WaitForExitAsync ();
+
+				return "Host=localhost;Port=5432;Username=postgres;Password=5;Database=postgres";
 			}
 		}
+
+		throw new NotImplementedException ();
 	}
 }
