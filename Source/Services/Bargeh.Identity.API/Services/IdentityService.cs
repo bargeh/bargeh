@@ -27,9 +27,7 @@ public class IdentityService (IConfiguration configuration, IdentityDbContext db
 
 	public override async Task<TokenResponse> Login (LoginRequest request, ServerCallContext callContext)
 	{
-		GetUserReply user = new ();
-
-		user = await _usersApiClient.GetUserByPhoneAndPasswordAsync (new ()
+		GetUserReply user = await _usersApiClient.GetUserByPhoneAndPasswordAsync (new ()
 		{
 			Phone = request.Phone,
 			Password = request.Password,

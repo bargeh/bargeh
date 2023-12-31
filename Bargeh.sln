@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bargeh.SMS.API.UnitTests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bargeh.Identity.API", "Source\Services\Bargeh.Identity.API\Bargeh.Identity.API.csproj", "{46580017-92B2-4419-BE6F-F5297DB22FE0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Users.API.UnitTests", "Source\Services\Bargeh.Users.API.UnitTests\Bargeh.Users.API.UnitTests.csproj", "{7303AE1F-62B2-4EE0-A160-5C153B045262}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{46580017-92B2-4419-BE6F-F5297DB22FE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46580017-92B2-4419-BE6F-F5297DB22FE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46580017-92B2-4419-BE6F-F5297DB22FE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7303AE1F-62B2-4EE0-A160-5C153B045262}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7303AE1F-62B2-4EE0-A160-5C153B045262}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7303AE1F-62B2-4EE0-A160-5C153B045262}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7303AE1F-62B2-4EE0-A160-5C153B045262}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +87,7 @@ Global
 		{C05837D2-F10A-4B5E-895A-D360D05A68C0} = {17A4CC7B-C887-41B0-8CC6-8E7C3B4FFD93}
 		{8BBC5CDC-C340-4C04-8C9D-465D437FFAFE} = {17A4CC7B-C887-41B0-8CC6-8E7C3B4FFD93}
 		{46580017-92B2-4419-BE6F-F5297DB22FE0} = {17A4CC7B-C887-41B0-8CC6-8E7C3B4FFD93}
+		{7303AE1F-62B2-4EE0-A160-5C153B045262} = {17A4CC7B-C887-41B0-8CC6-8E7C3B4FFD93}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {111713D6-2B48-486B-8146-1C0C44639E16}
