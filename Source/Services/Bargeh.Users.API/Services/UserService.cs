@@ -1,6 +1,7 @@
 using Bargeh.Users.API.Infrastructure;
 using Bargeh.Users.API.Models;
 using Grpc.Core;
+using Microsoft.EntityFrameworkCore;
 using Users.API;
 
 namespace Bargeh.Users.API.Services;
@@ -91,12 +92,12 @@ public class UserService (UsersContext context) : UsersProto.UsersProtoBase
 
 		if (user == null)
 		{
-			throw new RpcException (new (StatusCode.NotFound, "Not Found"));
+			throw new RpcException (new (StatusCode.NotFound, "The user with this phone number and password was not found"));
 		}
 
 		if (!user.Enabled)
 		{
-			throw new RpcException (new (StatusCode.PermissionDenied, "Permission Denied"));
+			throw new RpcException (new (StatusCode.FailedPrecondition, "The user is disabled"));
 		}
 
 		return new ()
@@ -155,6 +156,39 @@ public class UserService (UsersContext context) : UsersProto.UsersProtoBase
 
 		context.Add (user);
 		await context.SaveChangesAsync ();
+
+		return new ();
+	}
+
+	public override async Task<VoidOperationReply> DisableUser (DisableUserRequest request, ServerCallContext callContext)
+	{
+		Guid userId;
+
+		try
+		{
+			userId = Guid.Parse (request.Id);
+		}
+		catch (Exception)
+		{
+			throw new RpcException (new (StatusCode.InvalidArgument, "Guid is not valid"));
+		}
+
+		GetUserReply user = await GetUserById (new ()
+		{
+			Id = request.Id
+		},
+			callContext);
+
+		if (user is null)
+		{
+			throw new RpcException (new (StatusCode.NotFound, "User not found"));
+		}
+
+		User dbUser = (await context.Users.FirstOrDefaultAsync (u => u.Id == userId))!;
+
+		dbUser.Enabled = false;
+
+		await context.SaveChangesAsync();
 
 		return new ();
 	}

@@ -29,23 +29,12 @@ public class IdentityService (IConfiguration configuration, IdentityDbContext db
 	{
 		GetUserReply user = new ();
 
-		try
+		user = await _usersApiClient.GetUserByPhoneAndPasswordAsync (new ()
 		{
-			user = await _usersApiClient.GetUserByPhoneAndPasswordAsync (new ()
-			{
-				Phone = request.Phone,
-				Password = request.Password,
-				Captcha = request.Captcha
-			});
-		}
-		catch (RpcException exception)
-		{
-			if (exception.Status.StatusCode == StatusCode.NotFound)
-			{
-				throw new RpcException (new (StatusCode.NotFound,
-					"The user with this phone number and password was not found"));
-			}
-		}
+			Phone = request.Phone,
+			Password = request.Password,
+			Captcha = request.Captcha
+		});
 
 		string jwtToken = GenerateJwt (user);
 		string refreshToken = await GenerateRefreshToken (Guid.Parse (user.Id));
@@ -74,12 +63,24 @@ public class IdentityService (IConfiguration configuration, IdentityDbContext db
 			Id = oldToken.UserId.ToString ()
 		});
 
+		if (oldToken.ExpireDate >= timeProvider.GetUtcNow ().AddMinutes (-4))
+		{
+			await _usersApiClient.DisableUserAsync (new ()
+			{
+				Id = user.Id
+			});
+
+			dbContext.Remove (oldToken);
+			await dbContext.SaveChangesAsync ();
+			throw new RpcException (new (StatusCode.Internal, "Internal Error"));
+		}
+
+		Guid userId = Guid.Parse (user.Id);
+
 		if (!user.Enabled)
 		{
 			throw new RpcException (new (StatusCode.PermissionDenied, "The user can not get refresh token"));
 		}
-
-		Guid userId = Guid.Parse (user.Id);
 
 		string newToken = await GenerateRefreshToken (userId);
 
