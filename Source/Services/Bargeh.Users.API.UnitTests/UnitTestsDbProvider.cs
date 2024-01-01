@@ -1,40 +1,51 @@
 ﻿using System.Diagnostics;
-using System.Net;
-using System.Net.Sockets;
-using Xunit.Abstractions;
 
 namespace Bargeh.Users.API.UnitTests;
 
-public static class UnitTestsDbProvider
+public class UnitTestsDbProvider
 {
-	public static async Task<string> PreparePostgresDb ()
+	private readonly int _databaseId = Random.Shared.Next (1025, 8191);
+	private readonly string _containerName;
+
+	public UnitTestsDbProvider ()
 	{
-		try
+		_containerName = $"test-postgres-{_databaseId}";
+	}
+
+	public async Task<string> PreparePostgresDbAsync ()
+	{
+		ProcessStartInfo startInfo = new ()
 		{
-			await new HttpClient ().GetAsync ("http://localhost:5432");
-		}
-		catch (HttpRequestException exception)
+			FileName = "docker",
+			Arguments =
+				$"run --name {_containerName} -e POSTGRES_PASSWORD=5 -e POSTGRES_USER=postgres -e POSTGRES_DB=postgres -p {_databaseId}:5432 -d postgres",
+			RedirectStandardOutput = true,
+			UseShellExecute = false,
+			CreateNoWindow = true,
+		};
+
+		Process process = new () { StartInfo = startInfo };
+		process.Start ();
+
+		await process.WaitForExitAsync ();
+
+		return $"Host=localhost;Port={_databaseId};Username=postgres;Password=5;Database=postgres";
+	}
+
+	public async Task DisposePostgresDbAsync ()
+	{
+		ProcessStartInfo startInfo = new ()
 		{
-			if (exception.InnerException!.GetType () != typeof (HttpIOException))
-			{
-				ProcessStartInfo startInfo = new ()
-				{
-					FileName = "docker",
-					Arguments = "run --name test-postgres -e POSTGRES_PASSWORD=5 -e POSTGRES_USER=postgres -e POSTGRES_DB=postgres -p 5432:5432 -d postgres",
-					RedirectStandardOutput = true,
-					UseShellExecute = false,
-					CreateNoWindow = true,
-				};
+			FileName = "docker",
+			Arguments = $"rm -f {_containerName}",
+			RedirectStandardOutput = true,
+			UseShellExecute = false,
+			CreateNoWindow = true,
+		};
 
-				Process process = new () { StartInfo = startInfo };
-				process.Start ();
+		Process process = new () { StartInfo = startInfo };
+		process.Start ();
 
-				await process.WaitForExitAsync ();
-
-				return "Host=localhost;Port=5432;Username=postgres;Password=5;Database=postgres";
-			}
-		}
-
-		throw new NotImplementedException ();
+		await process.WaitForExitAsync ();
 	}
 }

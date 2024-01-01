@@ -2,5 +2,5 @@
   <Repository />
   <ParallelBuilds>true</ParallelBuilds>
   <ParallelTestRuns>true</ParallelTestRuns>
-  <TestCaseTimeout>30000</TestCaseTimeout>
+  <TestCaseTimeout>180000</TestCaseTimeout>
 </LUTConfig>

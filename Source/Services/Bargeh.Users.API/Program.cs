@@ -1,7 +1,6 @@
 using Bargeh.Aspire.ServiceDefaults;
 using Bargeh.Users.API.Infrastructure;
 using Bargeh.Users.API.Services;
-using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder (args);
 
