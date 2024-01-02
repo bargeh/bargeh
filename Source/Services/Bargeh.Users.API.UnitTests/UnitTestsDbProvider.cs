@@ -12,7 +12,7 @@ public class UnitTestsDbProvider
 		_containerName = $"test-postgres-{_databaseId}";
 	}
 
-	public async Task<string> PreparePostgresDbAsync ()
+	public string PreparePostgresDbAsync ()
 	{
 		ProcessStartInfo startInfo = new ()
 		{
@@ -27,12 +27,12 @@ public class UnitTestsDbProvider
 		Process process = new () { StartInfo = startInfo };
 		process.Start ();
 
-		await process.WaitForExitAsync ();
+		process.WaitForExit ();
 
 		return $"Host=localhost;Port={_databaseId};Username=postgres;Password=5;Database=postgres";
 	}
 
-	public async Task DisposePostgresDbAsync ()
+	public void DisposePostgresDbAsync ()
 	{
 		ProcessStartInfo startInfo = new ()
 		{
@@ -46,6 +46,6 @@ public class UnitTestsDbProvider
 		Process process = new () { StartInfo = startInfo };
 		process.Start ();
 
-		await process.WaitForExitAsync ();
+		process.WaitForExit ();
 	}
 }
