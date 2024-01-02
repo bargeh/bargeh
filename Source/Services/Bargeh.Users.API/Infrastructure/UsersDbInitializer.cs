@@ -28,24 +28,6 @@ public static class UsersDbInitializer
 
 		await context.Database.MigrateAsync ();
 
-		if (!context.Users.Any ())
-		{
-			User user = new ()
-			{
-				Id = new ("9844fd47-3236-46cb-898d-607b5c5563c1"),
-				Username = "test",
-				DisplayName = "test display name",
-				Email = "test@gmail.bargeh",
-				VerificationCode = "0",
-				Password = "5".Hash (HashType.SHA256),
-				PhoneNumber = "09123456789"
-			};
-
-			context.Add (user);
-
-			await context.SaveChangesAsync ();
-
-			logger.LogDebug ("Users database initialization completed successfully");
-		}
+		logger.LogDebug ("Users database initialization completed successfully");
 	}
 }
