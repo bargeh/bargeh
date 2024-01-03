@@ -7,15 +7,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
+using Npgsql;
 using Users.API;
+using Xunit.Abstractions;
 
 namespace Bargeh.Users.API.UnitTests;
 
 public class UnitTests : IDisposable
 {
+	private readonly ITestOutputHelper _testOutputHelper;
 	private readonly UsersContext _context;
 	private readonly UnitTestsDbProvider _dbProvider = new ();
-	private UserService _userService;
+	private readonly UserService _userService;
+	private readonly string _connectionString;
 	private readonly ServerCallContext _callContext = TestServerCallContext.Create (
 		"testMethod",
 		null,
@@ -29,36 +33,35 @@ public class UnitTests : IDisposable
 		() => new (),
 		_ => { });
 
-	public UnitTests ()
+	public UnitTests (ITestOutputHelper testOutputHelper)
 	{
-		string connectionString = _dbProvider.PreparePostgresDbAsync ();
+		//FROMHERE: Test if async helps
+		_testOutputHelper = testOutputHelper;
+		_connectionString = _dbProvider.PreparePostgresDb ().Result;
 		DbContextOptionsBuilder<UsersContext> optionsBuilder = new ();
-		optionsBuilder.UseNpgsql (connectionString);
+		optionsBuilder.UseNpgsql (_connectionString);
 		_context = new (optionsBuilder.Options);
 		UsersDbInitializer.InitializeDbAsync (_context, new Logger<UnitTests> (new NullLoggerFactory ())).Wait ();
 		_userService = new (_context);
 
-		if (!_context.Users.Any ())
+		if (_context.Users.Any ())
 		{
-			User user = new ()
-			{
-				Id = new ("9844fd47-3236-46cb-898d-607b5c5563c1"),
-				Username = "test",
-				DisplayName = "test display name",
-				Email = "test@gmail.bargeh",
-				VerificationCode = "0",
-				Password = "5".Hash (HashType.SHA256),
-				PhoneNumber = "09123456789"
-			};
-
-			_context.Add (user);
-			_context.SaveChanges ();
+			return;
 		}
-	}
 
-	public void Dispose ()
-	{
-		_dbProvider.DisposePostgresDbAsync ();
+		User user = new ()
+		{
+			Id = new ("9844fd47-3236-46cb-898d-607b5c5563c1"),
+			Username = "test",
+			DisplayName = "test display name",
+			Email = "test@gmail.bargeh",
+			VerificationCode = "0",
+			Password = "5".Hash (HashType.SHA256),
+			PhoneNumber = "09123456789"
+		};
+
+		_context.Add (user);
+		_context.SaveChanges ();
 	}
 
 	[Fact]
@@ -149,7 +152,7 @@ public class UnitTests : IDisposable
 		// Arrange
 		User user = new ()
 		{
-			Id = new ("8844fd47-3236-46cb-898d-607b5c5563c1"),
+			Id = new ("8844fd47-3236-46cb-898d-607b0c5563c1"),
 			Username = "disabled",
 			DisplayName = "test disabled name",
 			Email = "test@gmail.disabled",
@@ -199,5 +202,10 @@ public class UnitTests : IDisposable
 				Id = "9844fd47-3236-46cb-898d-607b5c5560c1"
 			}, _callContext);
 		}).Wait ();
+	}
+
+	public void Dispose ()
+	{
+		
 	}
 }
