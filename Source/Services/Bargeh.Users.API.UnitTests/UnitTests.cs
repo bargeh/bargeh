@@ -16,6 +16,7 @@ public class UnitTests : IAsyncLifetime
 {
     #region Valiables
 
+    private const string VALID_USER_ID = "9844fd47-3236-46cb-898d-607b5c5560c1";
     private readonly UnitTestsDbProvider _dbProvider = new ();
     private UsersContext _context = null!;
     private UserService _userService = null!;
@@ -51,7 +52,7 @@ public class UnitTests : IAsyncLifetime
 
         User user = new ()
         {
-            Id = new ("9844fd47-3236-46cb-898d-607b5c5563c1"),
+            Id = new (VALID_USER_ID),
             Username = "test",
             DisplayName = "test display name",
             Email = "test@gmail.bargeh",
@@ -207,12 +208,12 @@ public class UnitTests : IAsyncLifetime
         {
             await _userService.GetUserById (new ()
             {
-                Id = "9844fd47-3236-46cb-898d-607b5c5560c1"
-            }, 
+                Id = VALID_USER_ID
+            },
                 _callContext);
         }).Wait ();
     }
-    
+
     [Fact]
     public void SetUserPassword_ThrowsIfUserIsNotFound ()
     {
@@ -222,10 +223,21 @@ public class UnitTests : IAsyncLifetime
             await _userService.SetUserPassword (new ()
             {
                 Id = "9844fd47-3236-46cb-898d-60s35c5560f1",
-                Password = "blah blah blah",
-                Ip = "8.8.8.8"
+                Password = "blah blah blah"
             },
                 _callContext);
         }).Wait ();
+    }
+
+    [Fact]
+    public void SetUserPassword_SetsUsersPassword ()
+    {
+        // Act
+        _userService.SetUserPassword (new ()
+        {
+            Id = VALID_USER_ID,
+            Password = "blah blah blah"
+        },
+            _callContext).Wait ();
     }
 }

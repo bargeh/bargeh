@@ -35,7 +35,6 @@ message GetUserByPhoneAndPasswordRequest {
 message SetUserPasswordRequest {
   string id = 1;
   string password = 2;
-  string ip = 3;
 }
 
 message AddUserRequest {
@@ -48,9 +47,7 @@ message DisableUserRequest {
 	string id = 1;
 }
 
-message VoidOperationReply {
-  bool success = 1;
-}
+message VoidOperationReply {}
 
 message OperationReply {
   uint32 result = 1;
