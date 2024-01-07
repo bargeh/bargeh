@@ -59,10 +59,10 @@ public class UnitTestsDbProvider
 				ProcessStartInfo startInfo = new ()
 				{
 					FileName = "docker",
-					Arguments = $"run --name test-postgres -e POSTGRES_PASSWORD=5 -e POSTGRES_USER=postgres -e POSTGRES_DB=postgres -p 5432:5432 -d postgres",
+					Arguments = "run --name test-postgres -e POSTGRES_PASSWORD=5 -e POSTGRES_USER=postgres -e POSTGRES_DB=postgres -p 5432:5432 -d postgres",
 					RedirectStandardOutput = true,
 					UseShellExecute = false,
-					CreateNoWindow = true,
+					CreateNoWindow = true
 				};
 
 				Process process = new () { StartInfo = startInfo };

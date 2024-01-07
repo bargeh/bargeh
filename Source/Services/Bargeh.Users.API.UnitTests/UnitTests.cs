@@ -6,8 +6,6 @@ using Grpc.Core.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using System;
-using Npgsql;
 using Users.API;
 using Xunit.Abstractions;
 
@@ -41,6 +39,7 @@ public class UnitTests : IDisposable
 		DbContextOptionsBuilder<UsersContext> optionsBuilder = new ();
 		optionsBuilder.UseNpgsql (_connectionString);
 		_context = new (optionsBuilder.Options);
+		//
 		UsersDbInitializer.InitializeDbAsync (_context, new Logger<UnitTests> (new NullLoggerFactory ())).Wait ();
 		_userService = new (_context);
 
