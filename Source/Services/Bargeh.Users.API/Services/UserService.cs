@@ -88,7 +88,7 @@ public class UserService (UsersContext context) : UsersProto.UsersProtoBase
 	{
 		User? user = await context.GetUserByPhoneAndPasswordAsync (request.Phone, request.Password);
 
-		// TODO: Verify captcha
+		// PRODUCTION: Verify captcha
 
 		if (user == null)
 		{

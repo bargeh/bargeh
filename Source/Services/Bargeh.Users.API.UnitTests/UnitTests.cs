@@ -14,6 +14,8 @@ namespace Bargeh.Users.API.UnitTests;
 
 public class UnitTests : IAsyncLifetime
 {
+    #region Valiables
+
     private readonly UnitTestsDbProvider _dbProvider = new ();
     private UsersContext _context = null!;
     private UserService _userService = null!;
@@ -30,6 +32,8 @@ public class UnitTests : IAsyncLifetime
         _ => Task.CompletedTask,
         () => new (),
         _ => { });
+
+    #endregion
 
     public async Task InitializeAsync ()
     {
@@ -59,6 +63,14 @@ public class UnitTests : IAsyncLifetime
         _context.Add (user);
         await _context.SaveChangesAsync ();
     }
+
+    public Task DisposeAsync ()
+    {
+        return Task.CompletedTask;
+    }
+
+
+
 
     [Fact]
     public void GetUserByUsername_ReturnsCorrectUser ()
@@ -196,13 +208,24 @@ public class UnitTests : IAsyncLifetime
             await _userService.GetUserById (new ()
             {
                 Id = "9844fd47-3236-46cb-898d-607b5c5560c1"
-            }, _callContext);
+            }, 
+                _callContext);
         }).Wait ();
     }
-
-    public Task DisposeAsync ()
+    
+    [Fact]
+    public void SetUserPassword_ThrowsIfUserIsNotFound ()
     {
-        return Task.CompletedTask;
-        //throw new NotImplementedException();
+        // Act & Assert
+        Assert.ThrowsAsync<RpcException> (async () =>
+        {
+            await _userService.SetUserPassword (new ()
+            {
+                Id = "9844fd47-3236-46cb-898d-60s35c5560f1",
+                Password = "blah blah blah",
+                Ip = "8.8.8.8"
+            },
+                _callContext);
+        }).Wait ();
     }
 }
