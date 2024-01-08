@@ -159,17 +159,6 @@ public class UserService (UsersContext context) : UsersProto.UsersProtoBase
 
     public override async Task<VoidOperationReply> DisableUser (DisableUserRequest request, ServerCallContext callContext)
     {
-        Guid userId;
-
-        try
-        {
-            userId = Guid.Parse (request.Id);
-        }
-        catch (Exception)
-        {
-            throw new RpcException (new (StatusCode.InvalidArgument, "Guid is not valid"));
-        }
-
         GetUserReply user = await GetUserById (new ()
         {
             Id = request.Id
@@ -181,7 +170,7 @@ public class UserService (UsersContext context) : UsersProto.UsersProtoBase
             throw new RpcException (new (StatusCode.NotFound, "User not found"));
         }
 
-        User dbUser = (await context.Users.FirstOrDefaultAsync (u => u.Id == userId))!;
+        User dbUser = (await context.Users.FirstOrDefaultAsync (u => u.Id.ToString () == request.Id))!;
 
         dbUser.Enabled = false;
 

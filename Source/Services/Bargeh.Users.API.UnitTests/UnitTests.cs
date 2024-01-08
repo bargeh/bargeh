@@ -70,9 +70,6 @@ public class UnitTests : IAsyncLifetime
         return Task.CompletedTask;
     }
 
-
-
-
     [Fact]
     public void GetUserByUsername_ReturnsCorrectUser ()
     {
@@ -193,7 +190,7 @@ public class UnitTests : IAsyncLifetime
         // Act
         GetUserReply user = _userService.GetUserById (new ()
         {
-            Id = "9844fd47-3236-46cb-898d-607b5c5563c1"
+            Id = VALID_USER_ID
         }, _callContext).Result;
 
         // Assert
@@ -208,7 +205,7 @@ public class UnitTests : IAsyncLifetime
         {
             await _userService.GetUserById (new ()
             {
-                Id = VALID_USER_ID
+                Id = "9844fd47-3236-46cb-898d-607b5c5sl0c1"
             },
                 _callContext);
         }).Wait ();
@@ -239,5 +236,58 @@ public class UnitTests : IAsyncLifetime
             Password = "blah blah blah"
         },
             _callContext).Wait ();
+    }
+
+    [Fact]
+    public void AddUser_ThrowsIfUserExists ()
+    {
+        Assert.ThrowsAsync<RpcException> (async () =>
+        {
+            await _userService.AddUser (new ()
+            {
+                Phone = "09123456789",
+                Captcha = "1",
+                Password = "pwd"
+            },
+                _callContext);
+        }).Wait ();
+
+    }
+
+    [Fact]
+    public void AddUser_AddsUser ()
+    {
+        _userService.AddUser (new ()
+        {
+            Phone = "09001234567",
+            Captcha = "1",
+            Password = "pwd"
+        },
+            _callContext).Wait ();
+    }
+
+    [Fact]
+    public void DisableUser_ThrowsIfUserIsNotFound ()
+    {
+        // Act and Assert
+        Assert.ThrowsAsync<RpcException> (async () =>
+        {
+            await _userService.DisableUser (new ()
+            {
+                Id = VALID_USER_ID.Replace ('0', '1')
+            },
+                 _callContext);
+        }).Wait ();
+    }
+
+    [Fact]
+    public async Task DisableUser_DisablesUser ()
+    {
+        // Act
+        await _userService.DisableUser (new ()
+        {
+            Id = VALID_USER_ID
+        },
+            _callContext);
     }
 }
