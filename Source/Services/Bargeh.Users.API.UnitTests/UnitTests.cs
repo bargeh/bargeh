@@ -38,7 +38,7 @@ public class UnitTests : IAsyncLifetime
 
     public async Task InitializeAsync ()
     {
-        _connectionString = _dbProvider.PreparePostgresDb ().Result;
+        _connectionString = await _dbProvider.PreparePostgresDb ();
         DbContextOptionsBuilder<UsersContext> optionsBuilder = new ();
         optionsBuilder.UseNpgsql (_connectionString);
         _context = new (optionsBuilder.Options);
@@ -71,77 +71,77 @@ public class UnitTests : IAsyncLifetime
     }
 
     [Fact]
-    public void GetUserByUsername_ReturnsCorrectUser ()
+    public async Task GetUserByUsername_ReturnsCorrectUser ()
     {
         // Act
-        GetUserReply user = _userService.GetUserByUsername (new ()
+        GetUserReply user = await _userService.GetUserByUsername (new ()
         {
             Username = "test"
-        }, _callContext).Result;
+        }, _callContext);
 
         // Assert
         Assert.Equal ("test", user.Username);
     }
 
     [Fact]
-    public void GetUserByUsername_ThrowsIfUserIsNotFound ()
+    public async Task GetUserByUsername_ThrowsIfUserIsNotFound ()
     {
         // Act & Assert
-        Assert.ThrowsAsync<RpcException> (async () =>
+        await Assert.ThrowsAsync<RpcException> (async () =>
         {
             await _userService.GetUserByUsername (new ()
             {
                 Username = "haha"
             }, _callContext);
-        }).Wait ();
+        });
     }
 
     [Fact]
-    public void GetUserByPhone_ReturnsCorrectUser ()
+    public async Task GetUserByPhone_ReturnsCorrectUser ()
     {
         // Act
-        GetUserReply user = _userService.GetUserByPhone (new ()
+        GetUserReply user = await _userService.GetUserByPhone (new ()
         {
             Phone = "09123456789"
-        }, _callContext).Result;
+        }, _callContext);
 
         // Assert
         Assert.Equal ("test", user.Username);
     }
 
     [Fact]
-    public void GetUserByPhone_ThrowsIfUserIsNotFound ()
+    public async Task GetUserByPhone_ThrowsIfUserIsNotFound ()
     {
         // Act & Assert
-        Assert.ThrowsAsync<RpcException> (async () =>
+        await Assert.ThrowsAsync<RpcException> (async () =>
         {
             await _userService.GetUserByPhone (new ()
             {
                 Phone = "09112345678"
             }, _callContext);
-        }).Wait ();
+        });
     }
 
     [Fact]
-    public void GetUserByPhoneAndPassword_ReturnsCorrectUser ()
+    public async Task GetUserByPhoneAndPassword_ReturnsCorrectUser ()
     {
         // Act
-        GetUserReply user = _userService.GetUserByPhoneAndPassword (new ()
+        GetUserReply user = await _userService.GetUserByPhoneAndPassword (new ()
         {
             Phone = "09123456789",
             Password = "5",
             Captcha = "556565"
-        }, _callContext).Result;
+        }, _callContext);
 
         // Assert
         Assert.Equal ("test", user.Username);
     }
 
     [Fact]
-    public void GetUserByPhoneAndPassword_ThrowsIfUserIsNotFound ()
+    public async Task GetUserByPhoneAndPassword_ThrowsIfUserIsNotFound ()
     {
         // Act & Assert
-        Assert.ThrowsAsync<RpcException> (async () =>
+        await Assert.ThrowsAsync<RpcException> (async () =>
         {
             await _userService.GetUserByPhoneAndPassword (new ()
             {
@@ -149,11 +149,11 @@ public class UnitTests : IAsyncLifetime
                 Password = "10",
                 Captcha = "5"
             }, _callContext);
-        }).Wait ();
+        });
     }
 
     [Fact]
-    public void GetUserByPhoneAndPassword_ThrowsIfUserIsDisabled ()
+    public async Task GetUserByPhoneAndPassword_ThrowsIfUserIsDisabled ()
     {
         // Arrange
         User user = new ()
@@ -172,7 +172,7 @@ public class UnitTests : IAsyncLifetime
         _context.SaveChanges ();
 
         // Act & Assert
-        Assert.ThrowsAsync<RpcException> (async () =>
+        await Assert.ThrowsAsync<RpcException> (async () =>
         {
             await _userService.GetUserByPhoneAndPassword (new ()
             {
@@ -181,41 +181,41 @@ public class UnitTests : IAsyncLifetime
                 Captcha = "5"
             },
                 _callContext);
-        }).Wait ();
+        });
     }
 
     [Fact]
-    public void GetUserById_ReturnsCorrectUser ()
+    public async Task GetUserById_ReturnsCorrectUser ()
     {
         // Act
-        GetUserReply user = _userService.GetUserById (new ()
+        GetUserReply user = await _userService.GetUserById (new ()
         {
             Id = VALID_USER_ID
-        }, _callContext).Result;
+        }, _callContext);
 
         // Assert
         Assert.Equal ("test", user.Username);
     }
 
     [Fact]
-    public void GetUserById_ThrowsIfUserIsNotFound ()
+    public async Task GetUserById_ThrowsIfUserIsNotFound ()
     {
         // Act & Assert
-        Assert.ThrowsAsync<RpcException> (async () =>
+        await Assert.ThrowsAsync<RpcException> (async () =>
         {
             await _userService.GetUserById (new ()
             {
                 Id = "9844fd47-3236-46cb-898d-607b5c5sl0c1"
             },
                 _callContext);
-        }).Wait ();
+        });
     }
 
     [Fact]
-    public void SetUserPassword_ThrowsIfUserIsNotFound ()
+    public async Task SetUserPassword_ThrowsIfUserIsNotFound ()
     {
         // Act & Assert
-        Assert.ThrowsAsync<RpcException> (async () =>
+        await Assert.ThrowsAsync<RpcException> (async () =>
         {
             await _userService.SetUserPassword (new ()
             {
@@ -223,11 +223,11 @@ public class UnitTests : IAsyncLifetime
                 Password = "blah blah blah"
             },
                 _callContext);
-        }).Wait ();
+        });
     }
 
     [Fact]
-    public void SetUserPassword_SetsUsersPassword ()
+    public async Task SetUserPassword_SetsUsersPassword ()
     {
         // Act
         _userService.SetUserPassword (new ()
@@ -235,13 +235,13 @@ public class UnitTests : IAsyncLifetime
             Id = VALID_USER_ID,
             Password = "blah blah blah"
         },
-            _callContext).Wait ();
+            _callContext);
     }
 
     [Fact]
-    public void AddUser_ThrowsIfUserExists ()
+    public async Task AddUser_ThrowsIfUserExists ()
     {
-        Assert.ThrowsAsync<RpcException> (async () =>
+        await Assert.ThrowsAsync<RpcException> (async () =>
         {
             await _userService.AddUser (new ()
             {
@@ -250,34 +250,34 @@ public class UnitTests : IAsyncLifetime
                 Password = "pwd"
             },
                 _callContext);
-        }).Wait ();
+        });
 
     }
 
     [Fact]
-    public void AddUser_AddsUser ()
+    public async Task AddUser_AddsUser ()
     {
-        _userService.AddUser (new ()
+        await _userService.AddUser (new ()
         {
             Phone = "09001234567",
             Captcha = "1",
             Password = "pwd"
         },
-            _callContext).Wait ();
+            _callContext);
     }
 
     [Fact]
-    public void DisableUser_ThrowsIfUserIsNotFound ()
+    public async Task DisableUser_ThrowsIfUserIsNotFound ()
     {
         // Act and Assert
-        Assert.ThrowsAsync<RpcException> (async () =>
+        await Assert.ThrowsAsync<RpcException> (async () =>
         {
             await _userService.DisableUser (new ()
             {
                 Id = VALID_USER_ID.Replace ('0', '1')
             },
                  _callContext);
-        }).Wait ();
+        });
     }
 
     [Fact]
