@@ -1,7 +1,7 @@
-﻿using Bargeh.Users.API.Models;
+﻿using Bargeh.Users.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Bargeh.Users.API.Infrastructure;
+namespace Bargeh.Users.Api.Infrastructure;
 
 public class UsersContext (DbContextOptions<UsersContext> options) : DbContext (options)
 {

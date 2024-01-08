@@ -1,5 +1,5 @@
 using Bargeh.Aspire.ServiceDefaults;
-using Bargeh.Sms.API.Services;
+using Bargeh.Sms.Api.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder (args);
 

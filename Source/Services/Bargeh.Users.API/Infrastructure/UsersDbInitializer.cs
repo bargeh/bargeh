@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Bargeh.Users.API.Infrastructure;
+namespace Bargeh.Users.Api.Infrastructure;
 
 public static class UsersDbInitializer
 {

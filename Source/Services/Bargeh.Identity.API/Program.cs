@@ -1,6 +1,6 @@
 using Bargeh.Aspire.ServiceDefaults;
-using Bargeh.Identity.API.Infrastructure;
-using Bargeh.Identity.API.Services;
+using Bargeh.Identity.Api.Infrastructure;
+using Bargeh.Identity.Api.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder (args);
 

@@ -1,7 +1,7 @@
-﻿using Bargeh.Identity.API.Models;
+﻿using Bargeh.Identity.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Bargeh.Identity.API.Infrastructure;
+namespace Bargeh.Identity.Api.Infrastructure;
 
 public class IdentityDbContext (DbContextOptions<IdentityDbContext> options) : DbContext (options)
 {

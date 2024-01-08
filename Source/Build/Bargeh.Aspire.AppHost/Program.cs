@@ -4,10 +4,10 @@ IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder (a
 IResourceBuilder<PostgresContainerResource> postgres = builder.AddPostgresContainer ("postgres", 5432, "5");
 
 IResourceBuilder<ProjectResource> usersApi = builder
-	.AddProject<Projects.Bargeh_Users_API> ("usersapi")
+	.AddProject<Projects.Bargeh_Users_Api> ("usersapi")
 	.WithReference (postgres);
 
-IResourceBuilder<ProjectResource> smsApi = builder.AddProject<Projects.Bargeh_Sms_API> ("smsapi");
+IResourceBuilder<ProjectResource> smsApi = builder.AddProject<Projects.Bargeh_Sms_Api> ("smsapi");
 
 //var sqlServer = builder.AddSqlServerContainer ("sqlserver");
 
@@ -17,7 +17,7 @@ builder.AddProject<Projects.Bargeh_Main_Wapp> ("bargehmainwapp")
 	.WithReference (smsApi)
 	.WithLaunchProfile ("https");
 
-builder.AddProject<Projects.Bargeh_Identity_API> ("identityapi")
+builder.AddProject<Projects.Bargeh_Identity_Api> ("identityapi")
 	.WithReference (usersApi)
 	.WithReference (postgres);
 

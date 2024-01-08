@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "Sms.API";
+option csharp_namespace = "Sms.Api";
 
 package sms;
 

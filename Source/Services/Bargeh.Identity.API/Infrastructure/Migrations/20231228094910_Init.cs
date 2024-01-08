@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Bargeh.Identity.API.Migrations
+namespace Bargeh.Identity.Api.Migrations
 {
     /// <inheritdoc />
     public partial class Init : Migration

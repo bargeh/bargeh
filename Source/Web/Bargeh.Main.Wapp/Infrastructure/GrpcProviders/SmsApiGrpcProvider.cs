@@ -1,4 +1,4 @@
-﻿using Sms.API;
+﻿using Sms.Api;
 
 namespace Bargeh.Main.Wapp.Infrastructure.GrpcProviders;
 

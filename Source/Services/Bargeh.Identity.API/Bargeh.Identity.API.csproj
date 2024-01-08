@@ -22,7 +22,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<Protobuf Include="..\Bargeh.Users.API\Protos\user.proto" GrpcServices="Client">
+		<Protobuf Include="..\Bargeh.Users.Api\Protos\user.proto" GrpcServices="Client">
 			<Link>Protos\user.proto</Link>
 		</Protobuf>
 	</ItemGroup>

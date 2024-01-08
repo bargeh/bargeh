@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Bargeh.Identity.API.Infrastructure;
+namespace Bargeh.Identity.Api.Infrastructure;
 
 public static class IdentityDbInitializer
 {

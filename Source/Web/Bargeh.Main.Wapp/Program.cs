@@ -1,8 +1,8 @@
 ﻿using Bargeh.Aspire.ServiceDefaults;
 using Bargeh.Main.Wapp.Components;
 using Bargeh.Main.Wapp.Infrastructure.GrpcProviders;
-using Sms.API;
-using Users.API;
+using Sms.Api;
+using Users.Api;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder (args);
 

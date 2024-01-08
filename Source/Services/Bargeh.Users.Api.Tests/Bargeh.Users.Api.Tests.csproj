@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bargeh.Users.API\Bargeh.Users.API.csproj" />
+    <ProjectReference Include="..\Bargeh.Users.Api\Bargeh.Users.Api.csproj" />
   </ItemGroup>
 
 </Project>

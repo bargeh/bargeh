@@ -1,4 +1,4 @@
-﻿namespace Bargeh.Identity.API.Models;
+﻿namespace Bargeh.Identity.Api.Models;
 
 public sealed class RefreshToken
 {

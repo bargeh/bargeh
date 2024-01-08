@@ -1,6 +1,6 @@
 ﻿@page "/LoginOld"
-@using Users.API
-@using Sms.API
+@using Users.Api
+@using Sms.Api
 @using Grpc.Core
 @using Grpc.Net.Client
 @using Microsoft.AspNetCore.Antiforgery

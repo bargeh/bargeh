@@ -1,18 +1,18 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
-using Bargeh.Identity.API.Infrastructure;
-using Bargeh.Identity.API.Models;
+using Bargeh.Identity.Api.Infrastructure;
+using Bargeh.Identity.Api.Models;
 using Grpc.Core;
 using Grpc.Net.Client;
-using Identity.API;
+using Identity.Api;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Users.API;
-using LoginRequest = Identity.API.LoginRequest;
-using RefreshRequest = Identity.API.RefreshRequest;
+using Users.Api;
+using LoginRequest = Identity.Api.LoginRequest;
+using RefreshRequest = Identity.Api.RefreshRequest;
 
-namespace Bargeh.Identity.API.Services;
+namespace Bargeh.Identity.Api.Services;
 
 public class IdentityService (IConfiguration configuration, IdentityDbContext dbContext, TimeProvider timeProvider) : IdentityProto.IdentityProtoBase
 {

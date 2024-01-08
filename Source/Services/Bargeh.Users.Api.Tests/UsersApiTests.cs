@@ -1,14 +1,14 @@
-using Bargeh.Users.API.Infrastructure;
-using Bargeh.Users.API.Models;
-using Bargeh.Users.API.Services;
+using Bargeh.Users.Api.Infrastructure;
+using Bargeh.Users.Api.Models;
+using Bargeh.Users.Api.Services;
 using Grpc.Core;
 using Grpc.Core.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using Users.API;
+using Users.Api;
 
-namespace Bargeh.Users.API.Tests;
+namespace Bargeh.Users.Api.Tests;
 
 public class UsersApiTests : IAsyncLifetime
 {

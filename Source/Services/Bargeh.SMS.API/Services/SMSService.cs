@@ -1,7 +1,7 @@
 using Grpc.Core;
-using Sms.API;
+using Sms.Api;
 
-namespace Bargeh.Sms.API.Services;
+namespace Bargeh.Sms.Api.Services;
 
 public class SmsService (ILogger<SmsService> logger) : SmsProto.SmsProtoBase
 {

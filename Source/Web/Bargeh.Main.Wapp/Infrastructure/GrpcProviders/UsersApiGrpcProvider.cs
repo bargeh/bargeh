@@ -1,4 +1,4 @@
-﻿using Users.API;
+﻿using Users.Api;
 
 namespace Bargeh.Main.Wapp.Infrastructure.GrpcProviders;
 
