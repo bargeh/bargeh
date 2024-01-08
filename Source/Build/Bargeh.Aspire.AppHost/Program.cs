@@ -15,7 +15,7 @@ builder.AddProject<Projects.Bargeh_Main_Wapp> ("bargeh.main.wapp")
 	.WithReference (smsApi)
 	.WithLaunchProfile ("https");
 
-builder.AddProject<Projects.Bargeh_Identity_Api> ("identityapi")
+builder.AddProject<Projects.Bargeh_Identity_Api> ("identity.api")
 	.WithReference (usersApi)
 	.WithReference (postgres);
 
