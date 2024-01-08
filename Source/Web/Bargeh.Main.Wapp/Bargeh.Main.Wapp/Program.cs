@@ -1,7 +1,7 @@
 ﻿using Bargeh.Aspire.ServiceDefaults;
 using Bargeh.Main.Wapp.Components;
 using Bargeh.Main.Wapp.Infrastructure.GrpcProviders;
-using SMS.API;
+using Sms.API;
 using Users.API;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder (args);
@@ -28,7 +28,7 @@ builder.Services.AddSingleton<UsersApiGrpcProvider> ()
 		o.Address = builder.Configuration.GetValue<Uri> ("services:usersapi:1"));
 
 builder.Services.AddSingleton<SmsApiGrpcProvider> ()
-	.AddGrpcClient<SMSProto.SMSProtoClient> (o =>
+	.AddGrpcClient<SmsProto.SmsProtoClient> (o =>
 		o.Address = builder.Configuration.GetValue<Uri> ("services:smsapi:1"));
 
 #endregion

@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-option csharp_namespace = "SMS.API";
+option csharp_namespace = "Sms.API";
 
 package sms;
 
-service SMSProto {
+service SmsProto {
   rpc SendVerification (SendVerificationRequest) returns (SendVerificationReply);
 }
 

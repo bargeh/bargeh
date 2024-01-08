@@ -1,8 +1,8 @@
-﻿using SMS.API;
+﻿using Sms.API;
 
 namespace Bargeh.Main.Wapp.Infrastructure.GrpcProviders;
 
-public class SmsApiGrpcProvider (SMSProto.SMSProtoClient client)
+public class SmsApiGrpcProvider (SmsProto.SmsProtoClient client)
 {
 
 }

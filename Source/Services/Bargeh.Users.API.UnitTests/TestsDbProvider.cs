@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 
-namespace Bargeh.Users.API.UnitTests;
+namespace Bargeh.Users.API.Tests;
 
-public class UnitTestsDbProvider
+public class TestsDbProvider
 {
 	private readonly string _dbName = "db" + Random.Shared.Next(1024, 8192);
 

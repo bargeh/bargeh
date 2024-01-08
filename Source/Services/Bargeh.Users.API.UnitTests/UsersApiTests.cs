@@ -7,17 +7,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Users.API;
-using Xunit.Abstractions;
-using Xunit.Sdk;
 
-namespace Bargeh.Users.API.UnitTests;
+namespace Bargeh.Users.API.Tests;
 
-public class UnitTests : IAsyncLifetime
+public class UsersApiTests : IAsyncLifetime
 {
     #region Valiables
 
     private const string VALID_USER_ID = "9844fd47-3236-46cb-898d-607b5c5560c1";
-    private readonly UnitTestsDbProvider _dbProvider = new ();
+    private readonly TestsDbProvider _dbProvider = new ();
     private UsersContext _context = null!;
     private UserService _userService = null!;
     private string _connectionString = null!;
@@ -42,7 +40,7 @@ public class UnitTests : IAsyncLifetime
         DbContextOptionsBuilder<UsersContext> optionsBuilder = new ();
         optionsBuilder.UseNpgsql (_connectionString);
         _context = new (optionsBuilder.Options);
-        await UsersDbInitializer.InitializeDbAsync (_context, new Logger<UnitTests> (new NullLoggerFactory ()));
+        await UsersDbInitializer.InitializeDbAsync (_context, new Logger<UsersApiTests> (new NullLoggerFactory ()));
         _userService = new (_context);
 
         if (await _context.Users.AnyAsync ())

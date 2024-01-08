@@ -7,7 +7,7 @@ IResourceBuilder<ProjectResource> usersApi = builder
 	.AddProject<Projects.Bargeh_Users_API> ("usersapi")
 	.WithReference (postgres);
 
-IResourceBuilder<ProjectResource> smsApi = builder.AddProject<Projects.Bargeh_SMS_API> ("smsapi");
+IResourceBuilder<ProjectResource> smsApi = builder.AddProject<Projects.Bargeh_Sms_API> ("smsapi");
 
 //var sqlServer = builder.AddSqlServerContainer ("sqlserver");
 

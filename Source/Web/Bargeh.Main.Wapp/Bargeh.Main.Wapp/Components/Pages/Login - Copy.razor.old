@@ -1,6 +1,6 @@
 ﻿@page "/LoginOld"
 @using Users.API
-@using SMS.API
+@using Sms.API
 @using Grpc.Core
 @using Grpc.Net.Client
 @using Microsoft.AspNetCore.Antiforgery
@@ -124,7 +124,7 @@
 	private string _verificationCodeNotMatchError = string.Empty;
 	private HttpContext _httpContext = default!;
 	readonly UsersProto.UsersProtoClient _userClient = new (GrpcChannel.ForAddress ("http://usersapi"));
-	readonly SMSProto.SMSProtoClient _smsClient = new (GrpcChannel.ForAddress ("http://smsapi"));
+	readonly SmsProto.SmsProtoClient _smsClient = new (GrpcChannel.ForAddress ("http://smsapi"));
 
 	protected override void OnInitialized ()
 	{

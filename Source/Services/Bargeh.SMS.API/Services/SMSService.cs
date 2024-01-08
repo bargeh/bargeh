@@ -1,9 +1,9 @@
 using Grpc.Core;
-using SMS.API;
+using Sms.API;
 
-namespace Bargeh.SMS.API.Services;
+namespace Bargeh.Sms.API.Services;
 
-public class SmsService (ILogger<SmsService> logger) : SMSProto.SMSProtoBase
+public class SmsService (ILogger<SmsService> logger) : SmsProto.SmsProtoBase
 {
 	public override async Task<SendVerificationReply> SendVerification (SendVerificationRequest request,
 																		ServerCallContext context)
