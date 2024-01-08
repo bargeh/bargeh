@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Bargeh.Aspire\Bargeh.Aspire.ServiceDefaults\Bargeh.Aspire.ServiceDefaults.csproj" />
+      <ProjectReference Include="..\..\Build\Bargeh.Aspire.ServiceDefaults\Bargeh.Aspire.ServiceDefaults.csproj" />
     </ItemGroup>
 
 
