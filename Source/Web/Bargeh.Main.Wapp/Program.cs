@@ -25,11 +25,11 @@ builder.Services.AddHttpContextAccessor ();
 
 builder.Services.AddSingleton<UsersApiGrpcProvider> ()
 	.AddGrpcClient<UsersProto.UsersProtoClient> (o =>
-		o.Address = builder.Configuration.GetValue<Uri> ("services:usersapi:1"));
+		o.Address = builder.Configuration.GetValue<Uri> ("services:users:1"));
 
 builder.Services.AddSingleton<SmsApiGrpcProvider> ()
 	.AddGrpcClient<SmsProto.SmsProtoClient> (o =>
-		o.Address = builder.Configuration.GetValue<Uri> ("services:smsapi:1"));
+		o.Address = builder.Configuration.GetValue<Uri> ("services:sms:1"));
 
 #endregion
 

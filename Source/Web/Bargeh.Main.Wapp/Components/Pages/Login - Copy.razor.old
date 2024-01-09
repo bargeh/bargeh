@@ -123,8 +123,8 @@
 	private string? _verificationCode;
 	private string _verificationCodeNotMatchError = string.Empty;
 	private HttpContext _httpContext = default!;
-	readonly UsersProto.UsersProtoClient _userClient = new (GrpcChannel.ForAddress ("http://usersapi"));
-	readonly SmsProto.SmsProtoClient _smsClient = new (GrpcChannel.ForAddress ("http://smsapi"));
+	readonly UsersProto.UsersProtoClient _userClient = new (GrpcChannel.ForAddress ("http://users"));
+	readonly SmsProto.SmsProtoClient _smsClient = new (GrpcChannel.ForAddress ("http://sms"));
 
 	protected override void OnInitialized ()
 	{

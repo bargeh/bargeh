@@ -29,7 +29,7 @@ public class UserController : Controller
 
 		// var response = await httpClient.PostAsync (verifyUrl, content);
 
-		UsersProto.UsersProtoClient client = new(GrpcChannel.ForAddress ("http://usersapi"));
+		UsersProto.UsersProtoClient client = new(GrpcChannel.ForAddress ("http://users"));
 
 		try
 		{

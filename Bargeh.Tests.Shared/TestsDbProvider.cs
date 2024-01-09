@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Bargeh.Users.Api.Tests;
+namespace Bargeh.Tests.Shared;
 
 public class TestsDbProvider
 {

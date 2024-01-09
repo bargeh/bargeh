@@ -10,7 +10,7 @@ public class SmsService (ILogger<SmsService> logger) : SmsProto.SmsProtoBase
 	{
 		uint code = (uint)Random.Shared.Next (1000, 9999);
 
-		// TODO: Add real sms api
+		// PRODUCTION: Add real sms api
 		await Task.Run (() => { logger.LogInformation ("The verification code {0} sent to {1}", code, request.Phone); });
 
 		return new ()

@@ -14,10 +14,12 @@ using RefreshRequest = Identity.Api.RefreshRequest;
 
 namespace Bargeh.Identity.Api.Services;
 
-public class IdentityService (IConfiguration configuration, IdentityDbContext dbContext, TimeProvider timeProvider) : IdentityProto.IdentityProtoBase
+public class IdentityService 
+    (IConfiguration configuration, IdentityDbContext dbContext, TimeProvider timeProvider) 
+    : IdentityProto.IdentityProtoBase
 {
 	private readonly UsersProto.UsersProtoClient _usersApiClient =
-		new (GrpcChannel.ForAddress (configuration.GetValue<string> ("services:usersapi:1")!));
+		new (GrpcChannel.ForAddress (configuration.GetValue<string> ("services:users:1")!));
 
 	#region Grpc Endpoints
 
