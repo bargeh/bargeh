@@ -4,8 +4,8 @@ using Bargeh.Users.Api.Services;
 using Grpc.Core;
 using Grpc.Core.Testing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
 namespace Bargeh.Tests.Shared;
@@ -15,7 +15,6 @@ public abstract class UsersTestsBase : IAsyncLifetime
     protected internal const string VALID_USER_ID = "9844fd47-3236-46cb-898d-607b5c5560c1";
     protected internal readonly TestsDbProvider DbProvider = new ();
     protected internal UsersContext Context = null!;
-    protected internal UserService UserService = null!;
     protected internal string ConnectionString = null!;
     protected internal readonly ServerCallContext CallContext = TestServerCallContext.Create (
         "testMethod",
@@ -30,14 +29,13 @@ public abstract class UsersTestsBase : IAsyncLifetime
         () => new (),
         _ => { });
 
-    public async Task InitializeAsync ()
+    public virtual async Task InitializeAsync ()
     {
         ConnectionString = await DbProvider.PreparePostgresDb ();
         DbContextOptionsBuilder<UsersContext> optionsBuilder = new ();
         optionsBuilder.UseNpgsql (ConnectionString);
         Context = new (optionsBuilder.Options);
         await UsersDbInitializer.InitializeDbAsync (Context, new Logger<UsersTestsBase> (new NullLoggerFactory ()));
-        UserService = new (Context);
 
         if (await Context.Users.AnyAsync ())
         {

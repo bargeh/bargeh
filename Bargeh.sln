@@ -27,11 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bargeh.Main.Wapp", "Source\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bargeh.Main.Wapp.Client", "Source\Web\Bargeh.Main.Wapp.Client\Bargeh.Main.Wapp.Client.csproj", "{5081056B-6C68-4959-919B-09E7A22AD3D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Identity.Api.Tests", "Source\Services\Bargeh.Identity.Api.Tests\Bargeh.Identity.Api.Tests.csproj", "{DF1A8669-110C-45AD-8B95-EF746E1DF27E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bargeh.Identity.Api.Tests", "Source\Services\Bargeh.Identity.Api.Tests\Bargeh.Identity.Api.Tests.csproj", "{DF1A8669-110C-45AD-8B95-EF746E1DF27E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8624FD5E-94CA-4DFE-9C05-ED9957B2FCEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Tests.Shared", "Bargeh.Tests.Shared\Bargeh.Tests.Shared.csproj", "{DD10638F-037C-4099-92C5-E9FEFD72619B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bargeh.Tests.Shared", "Source\Shared\Bargeh.Tests.Shared\Bargeh.Tests.Shared.csproj", "{21C5719D-99D2-4EB5-ABDC-A0B5801E45EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,10 +75,10 @@ Global
 		{DF1A8669-110C-45AD-8B95-EF746E1DF27E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF1A8669-110C-45AD-8B95-EF746E1DF27E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF1A8669-110C-45AD-8B95-EF746E1DF27E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DD10638F-037C-4099-92C5-E9FEFD72619B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD10638F-037C-4099-92C5-E9FEFD72619B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD10638F-037C-4099-92C5-E9FEFD72619B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD10638F-037C-4099-92C5-E9FEFD72619B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21C5719D-99D2-4EB5-ABDC-A0B5801E45EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21C5719D-99D2-4EB5-ABDC-A0B5801E45EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21C5719D-99D2-4EB5-ABDC-A0B5801E45EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21C5719D-99D2-4EB5-ABDC-A0B5801E45EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,7 +97,7 @@ Global
 		{5081056B-6C68-4959-919B-09E7A22AD3D7} = {907B30E9-3449-48C7-8F37-B05602407109}
 		{DF1A8669-110C-45AD-8B95-EF746E1DF27E} = {8624FD5E-94CA-4DFE-9C05-ED9957B2FCEF}
 		{8624FD5E-94CA-4DFE-9C05-ED9957B2FCEF} = {17A4CC7B-C887-41B0-8CC6-8E7C3B4FFD93}
-		{DD10638F-037C-4099-92C5-E9FEFD72619B} = {8624FD5E-94CA-4DFE-9C05-ED9957B2FCEF}
+		{21C5719D-99D2-4EB5-ABDC-A0B5801E45EE} = {8624FD5E-94CA-4DFE-9C05-ED9957B2FCEF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {111713D6-2B48-486B-8146-1C0C44639E16}

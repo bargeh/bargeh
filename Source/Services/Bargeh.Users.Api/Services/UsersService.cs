@@ -1,12 +1,13 @@
 using Bargeh.Users.Api.Infrastructure;
 using Bargeh.Users.Api.Models;
 using Grpc.Core;
+using MatinDevs.PersianPhoneNumbers;
 using Microsoft.EntityFrameworkCore;
 using Users.Api;
 
 namespace Bargeh.Users.Api.Services;
 
-public class UserService (UsersContext context) : UsersProto.UsersProtoBase
+public class UsersService (UsersContext context) : UsersProto.UsersProtoBase
 {
     public override async Task<GetUserReply> GetUserByUsername (GetUserByUsernameRequest request,
                                                                 ServerCallContext callContext)
@@ -129,8 +130,13 @@ public class UserService (UsersContext context) : UsersProto.UsersProtoBase
 
     public override async Task<VoidOperationReply> AddUser (AddUserRequest request, ServerCallContext callContext)
     {
+        if (!request.Phone.ConvertToEnglish ().IsPersianPhoneValid ())
+        {
+            throw new RpcException (new (StatusCode.FailedPrecondition, "Invalid phone number"));
+        }
+
         bool userExists =
-            await context.UserExistsByPhoneAsync (request.Phone);
+            await context.UserExistsByPhoneAsync (request.Phone.ConvertToEnglish ());
 
         if (userExists)
         {
@@ -144,7 +150,7 @@ public class UserService (UsersContext context) : UsersProto.UsersProtoBase
 
         User user = new ()
         {
-            PhoneNumber = request.Phone,
+            PhoneNumber = request.Phone.ConvertToEnglish (),
             DisplayName = displayName,
             Username = username,
             VerificationCode = Guid.NewGuid ().ToString ().Replace ("-", ""),

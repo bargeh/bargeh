@@ -4,7 +4,6 @@ using System.Security.Cryptography.X509Certificates;
 using Bargeh.Identity.Api.Infrastructure;
 using Bargeh.Identity.Api.Models;
 using Grpc.Core;
-using Grpc.Net.Client;
 using Identity.Api;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -15,17 +14,15 @@ using RefreshRequest = Identity.Api.RefreshRequest;
 namespace Bargeh.Identity.Api.Services;
 
 public class IdentityService 
-    (IConfiguration configuration, IdentityDbContext dbContext, TimeProvider timeProvider) 
+    (UsersProto.UsersProtoClient usersApiClient, IdentityDbContext dbContext, TimeProvider timeProvider) 
     : IdentityProto.IdentityProtoBase
 {
-	private readonly UsersProto.UsersProtoClient _usersApiClient =
-		new (GrpcChannel.ForAddress (configuration.GetValue<string> ("services:users:1")!));
 
 	#region Grpc Endpoints
 
 	public override async Task<TokenResponse> Login (LoginRequest request, ServerCallContext callContext)
 	{
-		GetUserReply user = await _usersApiClient.GetUserByPhoneAndPasswordAsync (new ()
+		GetUserReply user = await usersApiClient.GetUserByPhoneAndPasswordAsync (new ()
 		{
 			Phone = request.Phone,
 			Password = request.Password,
@@ -54,14 +51,14 @@ public class IdentityService
 			throw new RpcException (new (StatusCode.FailedPrecondition, "The token is expired"));
 		}
 
-		GetUserReply? user = _usersApiClient.GetUserById (new ()
+		GetUserReply? user = usersApiClient.GetUserById (new ()
 		{
 			Id = oldToken.UserId.ToString ()
 		});
 
 		if (oldToken.ExpireDate >= timeProvider.GetUtcNow ().AddMinutes (-4))
 		{
-			await _usersApiClient.DisableUserAsync (new ()
+			await usersApiClient.DisableUserAsync (new ()
 			{
 				Id = user.Id
 			});
@@ -132,7 +129,7 @@ public class IdentityService
 
 	private async Task<string> GenerateRefreshToken (Guid userId)
 	{
-		const short length = 64;
+		const short length = 128;
 		const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 		string token = new (Enumerable.Repeat (chars, length)
@@ -141,7 +138,7 @@ public class IdentityService
 		RefreshToken refreshToken = new ()
 		{
 			UserId = userId,
-			Token = token,
+			Token = token
 		};
 
 		dbContext.RefreshTokens.Add (refreshToken);
