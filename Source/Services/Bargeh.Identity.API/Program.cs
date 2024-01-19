@@ -29,6 +29,6 @@ app.MapDefaultEndpoints ();
 // Configure the HTTP request pipeline.
 app.MapGrpcService<IdentityService> ();
 
-await IdentityDbInitializer.InitializeDbAsync (app.Services.CreateScope (), app.Logger);
+await IdentityDbInitializer.InitializeDbAsync (app.Services.CreateScope ().ServiceProvider.GetRequiredService<IdentityDbContext> (), app.Logger);
 
 app.Run ();

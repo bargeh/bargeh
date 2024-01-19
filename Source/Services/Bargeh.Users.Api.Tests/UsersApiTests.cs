@@ -13,7 +13,7 @@ public class UsersApiTests : UsersTestsBase
     public override async Task InitializeAsync ()
     {
         await base.InitializeAsync ();
-        _userService = new (Context);
+        _userService = new (UsersDbContext);
     }
 
     [Fact]
@@ -115,8 +115,8 @@ public class UsersApiTests : UsersTestsBase
             Enabled = false
         };
 
-        Context.Add (user);
-        Context.SaveChanges ();
+        UsersDbContext.Add (user);
+        await UsersDbContext.SaveChangesAsync ();
 
         // Act & Assert
         await Assert.ThrowsAsync<RpcException> (async () =>

@@ -4,31 +4,23 @@ namespace Bargeh.Identity.Api.Infrastructure;
 
 public static class IdentityDbInitializer
 {
-	public static async Task InitializeDbAsync (IServiceScope scope, ILogger logger)
-	{
-		IdentityDbContext? context = scope.ServiceProvider.GetService<IdentityDbContext> ();
+    public static async Task InitializeDbAsync (IdentityDbContext identityDbContext, ILogger logger)
+    {
+        byte retires = 20;
 
-		if (context == null)
-		{
-			logger.LogError ("IdentityDbContext was null. IdentityDbInitializer exits.");
-			return;
-		}
+        TryConnect:
 
-		byte retires = 20;
+        if (!await identityDbContext.Database.CanConnectAsync () && retires >= 1)
+        {
+            await Task.Delay (1000);
+            logger.LogInformation ("Unable to connect to the database, retrying...");
+            retires--;
 
-	TryConnect:
+            goto TryConnect;
+        }
 
-		if (!await context.Database.CanConnectAsync () && retires >= 1)
-		{
-			await Task.Delay (1000);
-			logger.LogInformation ("Unable to connect to the database, retrying...");
-			retires--;
+        await identityDbContext.Database.MigrateAsync ();
 
-			goto TryConnect;
-		}
-
-		await context.Database.MigrateAsync ();
-
-		logger.LogDebug ("Users database initialization completed successfully");
-	}
+        logger.LogDebug ("Users database initialization completed successfully");
+    }
 }

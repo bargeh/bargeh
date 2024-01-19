@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -34,10 +34,6 @@
     <ProjectReference Include="..\..\Shared\Bargeh.Tests.Shared\Bargeh.Tests.Shared.csproj" />
     <ProjectReference Include="..\Bargeh.Identity.API\Bargeh.Identity.Api.csproj" />
     <ProjectReference Include="..\Bargeh.Users.API\Bargeh.Users.Api.csproj" />
-
-    <Protobuf Include="..\..\Services\Bargeh.Users.Api\Protos\user.proto" GrpcServices="Both">
-      <Link>Protos\user.proto</Link>
-    </Protobuf>
   </ItemGroup>
 
 </Project>

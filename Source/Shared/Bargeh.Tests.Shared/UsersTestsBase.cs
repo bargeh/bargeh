@@ -14,7 +14,7 @@ public abstract class UsersTestsBase : IAsyncLifetime
 {
     protected internal const string VALID_USER_ID = "9844fd47-3236-46cb-898d-607b5c5560c1";
     protected internal readonly TestsDbProvider DbProvider = new ();
-    protected internal UsersContext Context = null!;
+    protected internal UsersContext UsersDbContext = null!;
     protected internal string ConnectionString = null!;
     protected internal readonly ServerCallContext CallContext = TestServerCallContext.Create (
         "testMethod",
@@ -34,10 +34,10 @@ public abstract class UsersTestsBase : IAsyncLifetime
         ConnectionString = await DbProvider.PreparePostgresDb ();
         DbContextOptionsBuilder<UsersContext> optionsBuilder = new ();
         optionsBuilder.UseNpgsql (ConnectionString);
-        Context = new (optionsBuilder.Options);
-        await UsersDbInitializer.InitializeDbAsync (Context, new Logger<UsersTestsBase> (new NullLoggerFactory ()));
+        UsersDbContext = new (optionsBuilder.Options);
+        await UsersDbInitializer.InitializeDbAsync (UsersDbContext, new Logger<UsersTestsBase> (new NullLoggerFactory ()));
 
-        if (await Context.Users.AnyAsync ())
+        if (await UsersDbContext.Users.AnyAsync ())
         {
             return;
         }
@@ -53,8 +53,8 @@ public abstract class UsersTestsBase : IAsyncLifetime
             PhoneNumber = "09123456789"
         };
 
-        Context.Add (user);
-        await Context.SaveChangesAsync ();
+        UsersDbContext.Add (user);
+        await UsersDbContext.SaveChangesAsync ();
     }
 
     public Task DisposeAsync ()

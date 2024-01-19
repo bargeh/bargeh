@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Bargeh.Tests.Shared\Bargeh.Tests.Shared.csproj" />
+    <ProjectReference Include="..\..\Shared\Bargeh.Tests.Shared\Bargeh.Tests.Shared.csproj" />
     <ProjectReference Include="..\Bargeh.Users.Api\Bargeh.Users.Api.csproj" />
   </ItemGroup>
 
