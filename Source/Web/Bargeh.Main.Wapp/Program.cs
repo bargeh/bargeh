@@ -1,6 +1,6 @@
 ﻿using Bargeh.Aspire.ServiceDefaults;
 using Bargeh.Main.Wapp.Components;
-using Bargeh.Main.Wapp.Infrastructure.GrpcProviders;
+using Identity.Api;
 using Sms.Api;
 using Users.Api;
 
@@ -23,13 +23,12 @@ builder.Services.AddHttpContextAccessor ();
 
 #region gRPC Providers
 
-builder.Services.AddSingleton<UsersApiGrpcProvider> ()
-	.AddGrpcClient<UsersProto.UsersProtoClient> (o =>
-		o.Address = builder.Configuration.GetValue<Uri> ("services:users:1"));
+builder.Services.AddGrpcClient<IdentityProto.IdentityProtoClient> (o =>
+		o.Address = builder.Configuration.GetValue<Uri> ("services:identity:1"));
 
-builder.Services.AddSingleton<SmsApiGrpcProvider> ()
-	.AddGrpcClient<SmsProto.SmsProtoClient> (o =>
-		o.Address = builder.Configuration.GetValue<Uri> ("services:sms:1"));
+//builder.Services.AddSingleton<SmsApiGrpcProvider> ()
+//	.AddGrpcClient<SmsProto.SmsProtoClient> (o =>
+//		o.Address = builder.Configuration.GetValue<Uri> ("services:sms:1"));
 
 #endregion
 

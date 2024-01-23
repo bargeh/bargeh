@@ -19,7 +19,14 @@ public static class IdentityDbInitializer
             goto TryConnect;
         }
 
-        await identityDbContext.Database.MigrateAsync ();
+        try
+        {
+            await identityDbContext.Database.MigrateAsync();
+        }
+        catch
+        {
+            // ignored
+        }
 
         logger.LogDebug ("Users database initialization completed successfully");
     }

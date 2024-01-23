@@ -1,10 +1,7 @@
 using Bargeh.Identity.Api.Infrastructure;
 using Bargeh.Identity.Api.Services;
 using Bargeh.Tests.Shared;
-using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
 
 namespace Bargeh.Identity.Api.Tests;
 

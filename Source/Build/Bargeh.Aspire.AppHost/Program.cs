@@ -9,14 +9,16 @@ IResourceBuilder<ProjectResource> usersApi = builder
 
 IResourceBuilder<ProjectResource> smsApi = builder.AddProject<Projects.Bargeh_Sms_Api> ("sms");
 
+IResourceBuilder<ProjectResource> identityApi = builder.AddProject<Projects.Bargeh_Identity_Api> ("identity")
+	.WithReference (usersApi)
+	.WithReference (postgres);
+
 builder.AddProject<Projects.Bargeh_Main_Wapp> ("wapp")
 	//.WithReference (sqlServer)
 	.WithReference (usersApi)
 	.WithReference (smsApi)
+    .WithReference(identityApi)
 	.WithLaunchProfile ("https");
 
-builder.AddProject<Projects.Bargeh_Identity_Api> ("identity")
-	.WithReference (usersApi)
-	.WithReference (postgres);
 
 builder.Build ().Run ();

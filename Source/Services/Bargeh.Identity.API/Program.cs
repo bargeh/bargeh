@@ -1,7 +1,6 @@
 using Bargeh.Aspire.ServiceDefaults;
 using Bargeh.Identity.Api.Infrastructure;
 using Bargeh.Identity.Api.Services;
-using Grpc.Net.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Users.Api;
 

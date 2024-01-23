@@ -1,17 +1,1 @@
 ﻿@page "/p"
-@using Bargeh.Main.Wapp.Infrastructure.GrpcProviders
-
-@inject UsersApiGrpcProvider UsersApi
-
-<h1>@_text</h1>
-
-@code
-{
-	private string _text = string.Empty;
-
-	protected override void OnInitialized ()
-	{
-		_text = UsersApi.GetUserById ();
-	}
-
-}

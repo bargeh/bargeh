@@ -1,20 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Bargeh.Users.Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bargeh.Users.Api.Infrastructure;
 
 public static class UsersDbInitializer
 {
-    public static async Task InitializeDbAsync (UsersContext? context, ILogger logger)
+    public static async Task InitializeDbAsync (UsersContext context, ILogger logger)
     {
-        if (context == null)
-        {
-            logger.LogError ("UsersContext was null. UsersDbInitializer exits.");
-            return;
-        }
-
         byte retires = 20;
 
-    TryConnect:
+        TryConnect:
 
         if (!await context.Database.CanConnectAsync () && retires >= 1)
         {
@@ -25,7 +20,33 @@ public static class UsersDbInitializer
             goto TryConnect;
         }
 
-        await context.Database.MigrateAsync ();
+        try
+        {
+            await context.Database.MigrateAsync ();
+        }
+        catch
+        {
+            // ignored
+        }
+
+        if (!context.Users.Any ())
+        {
+            User user = new ()
+            {
+                Id = new ("9844fd47-3236-46cb-898d-607b5c5563c1"),
+                Username = "test",
+                DisplayName = "test display name",
+                Email = "test@gmail.bargeh",
+                VerificationCode = "0",
+                Password = "5".Hash (HashType.SHA256),
+                PhoneNumber = "09123456789"
+            };
+
+            context.Add (user);
+
+            await context.SaveChangesAsync ();
+
+        }
 
         logger.LogDebug ("Users database initialization completed successfully");
     }

@@ -1,10 +1,14 @@
 ﻿@page "/Login"
 @rendermode InteractiveServer
 @using Bargeh.Main.Wapp.Infrastructure.Dtos.Login
+@using Grpc.Core
+@using Identity.Api
+@using Users.Api
 
 @inject IJSRuntime JsRuntime
+@inject ILogger<Login> Logger
 @inject NavigationManager NavigationManager
-@* @inject UsersApiGrpcClientProvider UsersApi *@
+@inject IdentityProto.IdentityProtoClient IdentityService
 
 <PageTitle>ورود و عضویت - برگه</PageTitle>
 
@@ -119,6 +123,7 @@
 
 <p>@_info</p>
 
+@* ReSharper disable FieldCanBeMadeReadOnly.Local *@
 @code {
 	private LoginState _loginState = LoginState.Login;
 
@@ -166,7 +171,7 @@
 	private EditContext _loginEditContext = null!;
 	private ValidationMessageStore _loginMessageStore = null!;
 
-	private void OnLoginSubmit ()
+	private async Task OnLoginSubmit ()
 	{
 		_loginMessageStore.Clear ();
 
@@ -178,6 +183,29 @@
 		if (!_loginModel.PhoneValid)
 		{
 			_loginMessageStore.Add (() => _loginModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
+			return;
+		}
+
+		try
+		{
+			TokenResponse loginResult = await IdentityService.LoginAsync (new ()
+			{
+				Phone = _loginModel.Phone,
+				Password = _loginModel.Password
+			});
+
+			loginResult.
+		}
+		catch (RpcException exception)
+		{
+			if (exception.StatusCode == StatusCode.NotFound)
+			{
+				Logger.LogInformation("Here it calls!");
+				Logger.LogInformation($"Phone: {_loginModel.Phone}");
+
+				_loginMessageStore.Add (() => _loginModel.Phone!, "حساب کاربری با این شماره همراه و رمز عبور وجود نداره. مطمئنی همه چیز رو درست وارد کردی؟");
+				_loginEditContext.NotifyValidationStateChanged ();
+			}
 		}
 	}
 

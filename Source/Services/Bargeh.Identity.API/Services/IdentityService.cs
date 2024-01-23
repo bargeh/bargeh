@@ -13,139 +13,151 @@ using RefreshRequest = Identity.Api.RefreshRequest;
 
 namespace Bargeh.Identity.Api.Services;
 
-public class IdentityService 
-    (UsersProto.UsersProtoClient usersApiClient, IdentityDbContext dbContext, TimeProvider timeProvider) 
+public class IdentityService
+    (UsersProto.UsersProtoClient usersApiClient, IdentityDbContext dbContext, TimeProvider timeProvider)
     : IdentityProto.IdentityProtoBase
 {
 
-	#region Grpc Endpoints
+    #region Grpc Endpoints
 
-	public override async Task<TokenResponse> Login (LoginRequest request, ServerCallContext callContext)
-	{
-		GetUserReply user = await usersApiClient.GetUserByPhoneAndPasswordAsync (new ()
-		{
-			Phone = request.Phone,
-			Password = request.Password,
-			Captcha = request.Captcha
-		});
+    public override async Task<TokenResponse> Login (LoginRequest request, ServerCallContext callContext)
+    {
+        GetUserReply user = default!;
 
-		string jwtToken = GenerateJwt (user);
-		string refreshToken = await GenerateRefreshToken (Guid.Parse (user.Id));
+        try
+        {
+            user = await usersApiClient.GetUserByPhoneAndPasswordAsync (new ()
+            {
+                Phone = request.Phone,
+                Password = request.Password,
+                Captcha = request.Captcha
+            });
+        }
+        catch (RpcException exception)
+        {
+            if (exception.StatusCode == StatusCode.NotFound)
+            {
+                throw new RpcException (new (StatusCode.NotFound, "The user with this info was not found"));
+            }
+        }
 
-		return new ()
-		{
-			JwtToken = jwtToken,
-			RefreshToken = refreshToken
-		};
-	}
+        string jwtToken = GenerateJwt (user);
+        string refreshToken = await GenerateRefreshToken (Guid.Parse (user.Id));
 
-	public override async Task<TokenResponse> Refresh (RefreshRequest request, ServerCallContext callContext)
-	{
-		RefreshToken oldToken = await dbContext.RefreshTokens.FirstOrDefaultAsync (r => r.Token == request.OldRefreshToken)
-			?? throw new RpcException (new (StatusCode.NotFound, "The refresh token was not found"));
+        return new ()
+        {
+            JwtToken = jwtToken,
+            RefreshToken = refreshToken
+        };
+    }
 
-		if (oldToken.ExpireDate <= timeProvider.GetUtcNow ())
-		{
-			dbContext.Remove (oldToken);
-			await dbContext.SaveChangesAsync ();
-			throw new RpcException (new (StatusCode.FailedPrecondition, "The token is expired"));
-		}
+    public override async Task<TokenResponse> Refresh (RefreshRequest request, ServerCallContext callContext)
+    {
+        RefreshToken oldToken = await dbContext.RefreshTokens.FirstOrDefaultAsync (r => r.Token == request.OldRefreshToken)
+            ?? throw new RpcException (new (StatusCode.NotFound, "The refresh token was not found"));
 
-		GetUserReply? user = usersApiClient.GetUserById (new ()
-		{
-			Id = oldToken.UserId.ToString ()
-		});
+        if (oldToken.ExpireDate <= timeProvider.GetUtcNow ())
+        {
+            dbContext.Remove (oldToken);
+            await dbContext.SaveChangesAsync ();
+            throw new RpcException (new (StatusCode.FailedPrecondition, "The token is expired"));
+        }
 
-		if (oldToken.ExpireDate >= timeProvider.GetUtcNow ().AddMinutes (-4))
-		{
-			await usersApiClient.DisableUserAsync (new ()
-			{
-				Id = user.Id
-			});
+        GetUserReply? user = usersApiClient.GetUserById (new ()
+        {
+            Id = oldToken.UserId.ToString ()
+        });
 
-			dbContext.Remove (oldToken);
-			await dbContext.SaveChangesAsync ();
-			throw new RpcException (new (StatusCode.Internal, "Internal Error"));
-		}
+        if (oldToken.ExpireDate >= timeProvider.GetUtcNow ().AddMinutes (-4))
+        {
+            await usersApiClient.DisableUserAsync (new ()
+            {
+                Id = user.Id
+            });
 
-		Guid userId = Guid.Parse (user.Id);
+            dbContext.Remove (oldToken);
+            await dbContext.SaveChangesAsync ();
+            throw new RpcException (new (StatusCode.Internal, "Internal Error"));
+        }
 
-		if (!user.Enabled)
-		{
-			throw new RpcException (new (StatusCode.PermissionDenied, "The user can not get refresh token"));
-		}
+        Guid userId = Guid.Parse (user.Id);
 
-		string newToken = await GenerateRefreshToken (userId);
+        if (!user.Enabled)
+        {
+            throw new RpcException (new (StatusCode.PermissionDenied, "The user can not get refresh token"));
+        }
 
-		dbContext.Remove (oldToken);
-		dbContext.Add (new RefreshToken
-		{
-			Token = newToken,
-			UserId = userId
-		});
+        string newToken = await GenerateRefreshToken (userId);
 
-		await dbContext.SaveChangesAsync ();
+        dbContext.Remove (oldToken);
+        dbContext.Add (new RefreshToken
+        {
+            Token = newToken,
+            UserId = userId
+        });
 
-		string jwtToken = GenerateJwt (user);
+        await dbContext.SaveChangesAsync ();
 
-		return new ()
-		{
-			JwtToken = jwtToken,
-			RefreshToken = newToken
-		};
-	}
+        string jwtToken = GenerateJwt (user);
 
-	#endregion
+        return new ()
+        {
+            JwtToken = jwtToken,
+            RefreshToken = newToken
+        };
+    }
 
-	#region Static Methods
+    #endregion
 
-	private static string GenerateJwt (GetUserReply user)
-	{
-		RsaSecurityKey securityKey = new (new X509Certificate2 ("C:/Users/Matin/Desktop/private_key.pfx", "bargeh.dev").GetRSAPrivateKey ());
+    #region Static Methods
 
-		SigningCredentials credentials = new (securityKey, SecurityAlgorithms.RsaSha256);
+    private static string GenerateJwt (GetUserReply user)
+    {
+        RsaSecurityKey securityKey = new (new X509Certificate2 ("C:/Users/Matin/Desktop/private_key.pfx", "bargeh.dev").GetRSAPrivateKey ());
 
-		List<Claim> claims =
-		[
-			new (ClaimsIdentity.DefaultNameClaimType, user.Phone),
-			new (JwtRegisteredClaimNames.Email, user.Email),
-			new (JwtRegisteredClaimNames.GivenName, user.DisplayName),
-			new (JwtRegisteredClaimNames.UniqueName, user.Username),
-			new ("premiumDaysLeft", user.PremiumDaysLeft.ToString()),
-			new ("avatar", user.ProfileImage)
-		];
+        SigningCredentials credentials = new (securityKey, SecurityAlgorithms.RsaSha256);
 
-		JwtSecurityToken jwtToken = new (
-			issuer: "https://bargeh.net",
-			audience: "https://bargeh.net",
-			claims,
-			expires: DateTime.UtcNow.AddMinutes (5),
-			signingCredentials: credentials);
+        List<Claim> claims =
+        [
+            new (ClaimsIdentity.DefaultNameClaimType, user.Phone),
+            new (JwtRegisteredClaimNames.Email, user.Email),
+            new (JwtRegisteredClaimNames.GivenName, user.DisplayName),
+            new (JwtRegisteredClaimNames.UniqueName, user.Username),
+            new ("premiumDaysLeft", user.PremiumDaysLeft.ToString()),
+            new ("avatar", user.ProfileImage)
+        ];
 
-		string token = new JwtSecurityTokenHandler ().WriteToken (jwtToken);
+        JwtSecurityToken jwtToken = new (
+            issuer: "https://bargeh.net",
+            audience: "https://bargeh.net",
+            claims,
+            expires: DateTime.UtcNow.AddMinutes (5),
+            signingCredentials: credentials);
 
-		return token;
-	}
+        string token = new JwtSecurityTokenHandler ().WriteToken (jwtToken);
 
-	private async Task<string> GenerateRefreshToken (Guid userId)
-	{
-		const short length = 128;
-		const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        return token;
+    }
 
-		string token = new (Enumerable.Repeat (chars, length)
-			.Select (s => s[Random.Shared.Next (s.Length)]).ToArray ());
+    private async Task<string> GenerateRefreshToken (Guid userId)
+    {
+        const short length = 128;
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-		RefreshToken refreshToken = new ()
-		{
-			UserId = userId,
-			Token = token
-		};
+        string token = new (Enumerable.Repeat (chars, length)
+            .Select (s => s[Random.Shared.Next (s.Length)]).ToArray ());
 
-		dbContext.RefreshTokens.Add (refreshToken);
-		await dbContext.SaveChangesAsync ();
+        RefreshToken refreshToken = new ()
+        {
+            UserId = userId,
+            Token = token
+        };
 
-		return token;
-	}
+        dbContext.RefreshTokens.Add (refreshToken);
+        await dbContext.SaveChangesAsync ();
 
-	#endregion
+        return token;
+    }
+
+    #endregion
 }
