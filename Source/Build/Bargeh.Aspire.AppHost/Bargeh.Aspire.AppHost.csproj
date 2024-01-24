@@ -12,4 +12,11 @@
 	  <PackageReference Include="Aspire.Hosting" Version="8.0.0-preview.2.23619.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Services\Bargeh.Identity.API\Bargeh.Identity.Api.csproj" />
+    <ProjectReference Include="..\..\Services\Bargeh.SMS.API\Bargeh.Sms.Api.csproj" />
+    <ProjectReference Include="..\..\Services\Bargeh.Users.API\Bargeh.Users.Api.csproj" />
+    <ProjectReference Include="..\..\Web\Bargeh.Main.Wapp\Bargeh.Main.Wapp.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,6 @@
 ﻿using Bargeh.Aspire.ServiceDefaults;
 using Bargeh.Main.Wapp.Components;
+using Bargeh.Main.Wapp.Services;
 using Identity.Api;
 using Sms.Api;
 using Users.Api;
@@ -8,23 +9,24 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder (args);
 
 builder.AddServiceDefaults ();
 
-#region Blazor
+#region Builder
 
 builder.Services.AddRazorComponents ()
-	.AddInteractiveServerComponents ()
-	.AddInteractiveWebAssemblyComponents ();
+    .AddInteractiveServerComponents ()
+    .AddInteractiveWebAssemblyComponents ();
 
 builder.Services.AddControllers ();
 
 builder.Services.AddHttpContextAccessor ();
 
+builder.Services.AddScoped<LocalStorageService> ();
 
 #endregion
 
 #region gRPC Providers
 
 builder.Services.AddGrpcClient<IdentityProto.IdentityProtoClient> (o =>
-		o.Address = builder.Configuration.GetValue<Uri> ("services:identity:1"));
+        o.Address = builder.Configuration.GetValue<Uri> ("services:identity:1"));
 
 //builder.Services.AddSingleton<SmsApiGrpcProvider> ()
 //	.AddGrpcClient<SmsProto.SmsProtoClient> (o =>
@@ -38,12 +40,12 @@ WebApplication app = builder.Build ();
 
 if (app.Environment.IsDevelopment ())
 {
-	app.UseWebAssemblyDebugging ();
+    app.UseWebAssemblyDebugging ();
 }
 else
 {
-	app.UseExceptionHandler ("/Error", createScopeForErrors: true);
-	app.UseHsts ();
+    app.UseExceptionHandler ("/Error", createScopeForErrors: true);
+    app.UseHsts ();
 }
 
 app.UseHttpsRedirection ();
@@ -52,9 +54,9 @@ app.UseStaticFiles ();
 app.UseAntiforgery ();
 
 app.MapRazorComponents<App> ()
-	.AddInteractiveServerRenderMode ()
-	.AddInteractiveWebAssemblyRenderMode ()
-	.AddAdditionalAssemblies (typeof (Bargeh.Main.Wapp.Client._Imports).Assembly);
+    .AddInteractiveServerRenderMode ()
+    .AddInteractiveWebAssemblyRenderMode ()
+    .AddAdditionalAssemblies (typeof (Bargeh.Main.Wapp.Client._Imports).Assembly);
 
 app.MapDefaultControllerRoute ();
 

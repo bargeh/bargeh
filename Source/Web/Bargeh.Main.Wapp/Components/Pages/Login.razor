@@ -1,6 +1,7 @@
 ﻿@page "/Login"
 @rendermode InteractiveServer
 @using Bargeh.Main.Wapp.Infrastructure.Dtos.Login
+@using Bargeh.Main.Wapp.Services
 @using Grpc.Core
 @using Identity.Api
 @using Users.Api
@@ -9,6 +10,7 @@
 @inject ILogger<Login> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityProto.IdentityProtoClient IdentityService
+@inject LocalStorageService LocalStorageService
 
 <PageTitle>ورود و عضویت - برگه</PageTitle>
 
@@ -194,7 +196,10 @@
 				Password = _loginModel.Password
 			});
 
-			loginResult.
+			await LocalStorageService.SetItemAsync ("login.jwt", loginResult.JwtToken);
+			await LocalStorageService.SetItemAsync ("login.refresh_token", loginResult.RefreshToken);
+
+			// FROMHERE: Code the rest of login + sending the tokens to the server
 		}
 		catch (RpcException exception)
 		{
