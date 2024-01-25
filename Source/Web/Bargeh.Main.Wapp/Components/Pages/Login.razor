@@ -162,6 +162,15 @@
 		#endregion
 	}
 
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		string thing = await LocalStorageService.GetItemAsync<string>("login.refresh_token");
+		if (!string.IsNullOrWhiteSpace (await LocalStorageService.GetItemAsync<string> ("login.refresh_token")))
+		{
+			NavigationManager.NavigateTo("/", false, true);
+		}
+	}
+
 	protected override void OnAfterRender (bool firstRender)
 	{
 		JsRuntime.InvokeVoidAsync ("onAfterRender");
