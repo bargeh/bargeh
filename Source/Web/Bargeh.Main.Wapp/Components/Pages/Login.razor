@@ -196,10 +196,13 @@
 				Password = _loginModel.Password
 			});
 
+			await LocalStorageService.RemoveItemAsync("login.jwt");
+			await LocalStorageService.RemoveItemAsync("login.refresh_token");
+
 			await LocalStorageService.SetItemAsync ("login.jwt", loginResult.JwtToken);
 			await LocalStorageService.SetItemAsync ("login.refresh_token", loginResult.RefreshToken);
 
-			// FROMHERE: Code the rest of login + sending the tokens to the server
+			NavigationManager.NavigateTo("/", true, true);
 		}
 		catch (RpcException exception)
 		{
