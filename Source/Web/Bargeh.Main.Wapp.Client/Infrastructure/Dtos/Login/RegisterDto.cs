@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Bargeh.Main.Wapp.Infrastructure.Dtos.Login;
+namespace Bargeh.Main.Wapp.Client.Infrastructure.Dtos.Login;
 
 public class RegisterDto : AuthenticationDtoBase
 {

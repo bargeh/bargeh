@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿
+
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
 <head>
@@ -12,14 +14,15 @@
 	<script src="js/jquery-3.6.0.min.js"></script>
 	<script src="js/header.js" defer></script>
 	<script src="js/bargeh.js" defer></script>
-	<HeadOutlet />
+
+	<HeadOutlet @rendermode="InteractiveAuto" />
 </head>
 
 <body>
-<Routes />
-@* ReSharper disable Html.PathError *@
-<script src="_framework/blazor.web.js"></script>
-@* ReSharper restore Html.PathError *@
+	<Routes @rendermode="InteractiveAuto" />
+	@* ReSharper disable Html.PathError *@
+	<script src="_framework/blazor.web.js"></script>
+	@* ReSharper restore Html.PathError *@
 </body>
 
 </html>

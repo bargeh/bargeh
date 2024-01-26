@@ -1,9 +1,7 @@
 ﻿using Bargeh.Aspire.ServiceDefaults;
+using Bargeh.Main.Wapp.Client.Services;
 using Bargeh.Main.Wapp.Components;
-using Bargeh.Main.Wapp.Services;
 using Identity.Api;
-using Sms.Api;
-using Users.Api;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder (args);
 
