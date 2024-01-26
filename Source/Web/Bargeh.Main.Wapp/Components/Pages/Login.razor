@@ -204,7 +204,7 @@
 			await LocalStorageService.RemoveItemAsync("login.jwt");
 			await LocalStorageService.RemoveItemAsync("login.refresh_token");
 
-			await LocalStorageService.SetItemAsync ("login.jwt", loginResult.JwtToken);
+			await LocalStorageService.SetItemAsync ("login.jwt", $"{loginResult.JwtToken}@{DateTime.UtcNow.AddMinutes (5)}");
 			await LocalStorageService.SetItemAsync ("login.refresh_token", loginResult.RefreshToken);
 
 			NavigationManager.NavigateTo("/", true, true);
