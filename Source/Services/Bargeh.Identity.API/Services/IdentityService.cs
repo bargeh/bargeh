@@ -113,7 +113,6 @@ public class IdentityService
 
     private static string GenerateJwt (GetUserReply user)
     {
-	    // PRODUCTION: Make a real key
         RsaSecurityKey securityKey = new (new X509Certificate2 ("C:/Users/Matin/Desktop/private_key.pfx", "bargeh.dev").GetRSAPrivateKey ());
 
         SigningCredentials credentials = new (securityKey, SecurityAlgorithms.RsaSha256);
