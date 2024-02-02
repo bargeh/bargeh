@@ -161,6 +161,7 @@
 
 	protected override async Task OnAfterRenderAsync (bool firstRender)
 	{
+		// FROMHERE: Fix breakpoint's not working
 		if (!string.IsNullOrWhiteSpace (await LocalStorageService.GetItemAsync<string> ("login.refresh_token")))
 		{
 			NavigationManager.NavigateTo("/", false, true);

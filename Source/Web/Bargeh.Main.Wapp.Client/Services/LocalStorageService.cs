@@ -5,11 +5,11 @@ namespace Bargeh.Main.Wapp.Client.Services;
 
 public class LocalStorageService (IJSRuntime jsRuntime)
 {
-	public async Task<T> GetItemAsync<T> (string key)
+	public async Task<T?> GetItemAsync<T> (string key)
 	{
 		string json = await jsRuntime.InvokeAsync<string> ("localStorage.getItem", key);
 
-		return JsonSerializer.Deserialize<T> (json)!;
+		return JsonSerializer.Deserialize<T> (json);
 	}
 
 	public async Task SetItemAsync<T> (string key, T value)
