@@ -3,14 +3,18 @@ using System.Text.Json;
 
 namespace Bargeh.Main.Wapp.Client.Services;
 
-public class LocalStorageService (IJSRuntime jsRuntime)
+public class LocalStorageService (IJSRuntime jsRuntime, ILogger<LocalStorageService> logger)
 {
-	public async Task<T?> GetItemAsync<T> (string key)
+	public async Task<T?> GetItemAsync<T> (string key) where T : class
 	{
-		string json = await jsRuntime.InvokeAsync<string> ("localStorage.getItem", key);
+		string? json = await jsRuntime.InvokeAsync<string> ("localStorage.getItem", key);
 
-		return JsonSerializer.Deserialize<T> (json);
+		// ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+		return json is null ?
+			// ReSharper restore ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+			null : JsonSerializer.Deserialize<T> (json);
 	}
+
 
 	public async Task SetItemAsync<T> (string key, T value)
 	{
