@@ -6,6 +6,8 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder (args);
 
 builder.AddServiceDefaults ();
 
+// FROMHERE: Fix CORS errors
+
 //builder.Services.AddDbContext<UsersContext> (options =>
 //	options.UseMySQL (Environment.GetEnvironmentVariable ("FORUM_CONNECTION_STRING")));
 
