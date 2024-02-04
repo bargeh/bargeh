@@ -13,6 +13,7 @@
 
     <ItemGroup>
         <PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
+        <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.60.0" />
         <PackageReference Include="Matinm.Cryptography" Version="1.0.0" />
         <PackageReference Include="MatinDevs.PersianPhoneNumbers" Version="1.2.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />

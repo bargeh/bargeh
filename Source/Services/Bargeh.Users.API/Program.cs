@@ -17,12 +17,18 @@ builder.AddNpgsqlDbContext<UsersContext> ("postgres", settings =>
 });
 
 builder.Services.AddGrpc ();
+builder.Services.AddGrpcReflection ();
 
 WebApplication app = builder.Build ();
 
 app.MapGrpcService<UsersService> ();
 
-await UsersDbInitializer.InitializeDbAsync 
+await UsersDbInitializer.InitializeDbAsync
 	(app.Services.CreateScope ().ServiceProvider.GetRequiredService<UsersContext> (), app.Logger);
+
+if (app.Environment.IsDevelopment ())
+{
+	app.MapGrpcReflectionService ();
+}
 
 app.Run ();
