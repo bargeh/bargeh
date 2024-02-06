@@ -17,7 +17,7 @@ builder.AddProject<Projects.Bargeh_Main_Wapp> ("wapp")
 	//.WithReference (sqlServer)
 	.WithReference (usersApi)
 	.WithReference (smsApi)
-    .WithReference(identityApi)
+	.WithReference (identityApi)
 	.WithLaunchProfile ("https");
 
 
