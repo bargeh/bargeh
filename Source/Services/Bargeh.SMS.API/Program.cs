@@ -6,7 +6,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder (args);
 builder.AddServiceDefaults ();
 
 builder.Services.AddGrpc ();
-builder.Services.AddGrpcReflection();
+builder.Services.AddGrpcReflection ();
 
 WebApplication app = builder.Build ();
 
