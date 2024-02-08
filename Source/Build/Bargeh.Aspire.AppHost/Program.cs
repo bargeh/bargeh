@@ -7,6 +7,8 @@ IResourceBuilder<ProjectResource> usersApi = builder
 	.AddProject<Projects.Bargeh_Users_Api> ("users")
 	.WithReference (postgres);
 
+// FROMHERE: FIX RUNNING ERORR
+
 IResourceBuilder<ProjectResource> smsApi = builder.AddProject<Projects.Bargeh_Sms_Api> ("sms");
 
 IResourceBuilder<ProjectResource> identityApi = builder.AddProject<Projects.Bargeh_Identity_Api> ("identity")
