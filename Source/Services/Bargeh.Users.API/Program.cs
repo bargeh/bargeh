@@ -1,6 +1,7 @@
 using Bargeh.Aspire.ServiceDefaults;
 using Bargeh.Users.Api.Infrastructure;
 using Bargeh.Users.Api.Services;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder (args);
 
@@ -33,7 +34,9 @@ WebApplication app = builder.Build ();
 
 app.UseCors ("test");
 
-app.MapGrpcService<UsersService> ();
+app.UseGrpcWeb ();
+
+app.MapGrpcService<UsersService> ().EnableGrpcWeb ();
 
 await UsersDbInitializer.InitializeDbAsync
 	(app.Services.CreateScope ().ServiceProvider.GetRequiredService<UsersContext> (), app.Logger);
