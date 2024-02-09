@@ -16,14 +16,14 @@ builder.Services.AddScoped (_ =>
 {
 	HttpClient httpClient = new (new GrpcWebHandler (GrpcWebMode.GrpcWeb, new HttpClientHandler ()))
 	{
-		BaseAddress = new ("https://localhost:5201")
+		BaseAddress = new ("http://localhost:5201")
 	};
 
-	return GrpcChannel.ForAddress (httpClient.BaseAddress, new() { HttpClient = httpClient });
+	GrpcChannel channel = GrpcChannel.ForAddress (httpClient.BaseAddress, new() { HttpClient = httpClient });
+
+	IdentityProto.IdentityProtoClient identityProtoClient = new(channel);
+
+	return identityProtoClient;
 });
 
-builder.Services.AddScoped<IdentityProto.IdentityProtoClient> ();
-
 await builder.Build ().RunAsync ();
-
-// FROMHERE: Fix error here :(

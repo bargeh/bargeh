@@ -21,12 +21,27 @@ builder.Services.AddGrpcClient<UsersProto.UsersProtoClient> (options =>
 	options.Address = new (builder.Configuration.GetValue<string> ("services:users:1")!);
 });
 
+builder.Services.AddCors (options =>
+{
+	options.AddDefaultPolicy (policyBuilder =>
+	{
+		policyBuilder.AllowAnyOrigin ()
+			.AllowAnyHeader ()
+			.AllowAnyMethod ()
+			.Build ();
+	});
+});
+
 WebApplication app = builder.Build ();
+
+app.UseCors ();
 
 app.MapDefaultEndpoints ();
 
+app.UseGrpcWeb ();
+
 // Configure the HTTP request pipeline.
-app.MapGrpcService<IdentityService> ();
+app.MapGrpcService<IdentityService> ().EnableGrpcWeb ();
 
 await IdentityDbInitializer.InitializeDbAsync (app.Services.CreateScope ().ServiceProvider.GetRequiredService<IdentityDbContext> (), app.Logger);
 
@@ -34,5 +49,7 @@ if (app.Environment.IsDevelopment ())
 {
 	app.MapGrpcReflectionService ();
 }
+
+app.MapGet ("/", () => "okay");
 
 app.Run ();

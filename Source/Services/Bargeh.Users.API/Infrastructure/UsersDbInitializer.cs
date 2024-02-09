@@ -20,7 +20,14 @@ public static class UsersDbInitializer
 			goto TryConnect;
 		}
 
-		await context.Database.MigrateAsync ();
+		try
+		{
+			await context.Database.MigrateAsync();
+		}
+		catch
+		{
+			// ignored
+		}
 
 		if (!context.Users.Any ())
 		{
