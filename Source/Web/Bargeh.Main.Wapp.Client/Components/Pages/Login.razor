@@ -297,15 +297,22 @@
 			return;
 		}
 
-		// TODO: From here, for reset password
-
 		if (!_verificationModel.PhoneValid)
 		{
 			_verificationMessageStore.Add (() => _verificationModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
 			return;
 		}
 
-		// TODO: Validate verification code
+		if (!_verificationPhoneDisabled)
+		{
+			_verificationButtonText = VERIFICATION_VERIFY_CODE;
+			_verificationPhoneDisabled = true;
+			return;
+
+			// FROMHERE: Send verification code
+		}
+
+		// PRODUCTION: Validate verification code
 
 		if (_verificationModel.VerificationCode != "1000")
 		{
