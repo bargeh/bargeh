@@ -490,8 +490,12 @@ input.button-bubble-static:focus {
 	color: red;
 }
 
-.padding-buttom {
+.pad-buttom {
 	padding-bottom: 10pt;
+}
+
+.pad-top {
+	padding-top: 10pt;
 }
 
 .horizontal-align {
