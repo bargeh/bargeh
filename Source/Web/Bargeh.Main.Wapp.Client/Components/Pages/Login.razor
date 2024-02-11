@@ -18,11 +18,14 @@
 </HeadContent>
 
 <div class="popup">
-	<span class="no-block-margin pad-buttom horizontal-align center-flex"><img src="/img/User.svg" class="tiny-icon" alt="کاربر" />ورود / ثبت نام</span>
+	<span class="no-block-margin pad-bottom horizontal-align center-flex"><img src="/img/User.svg" class="tiny-icon" alt="کاربر" />ورود / ثبت نام</span>
+
+	@(_loginState.ToString () // PRODUCTION: Remove this
+		)
 
 	@if (_loginState != LoginState.Login)
 	{
-		<a @onclick="OnLoginRequested" class="center pad-buttom" style="margin=10px;">برگرد به ورود ←</a>
+		<a @onclick="OnLoginRequested" class="center pad-bottom">برگرد به ورود ←</a>
 	}
 
 	@* ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault *@
@@ -92,10 +95,10 @@
 
 				<div class="input-group">
 					<label>شماره‌ی همراه</label>
-					<InputText disabled="@_verificationIsPhoneDisabled" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_verificationModel.Phone" />
+					<InputText disabled="@_verificationPhoneDisabled" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_verificationModel.Phone" />
 				</div>
 
-				<div class="input-group">
+				<div class="input-group" style="@(!_verificationPhoneDisabled ? "display: none" : string.Empty)">
 					<label>کد تایید</label>
 					<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_verificationModel.VerificationCode" />
 				</div>
@@ -267,7 +270,7 @@
 
 		_loginState = LoginState.Verify;
 		_verificationModel.Phone = _registerModel.Phone;
-		_verificationIsPhoneDisabled = true;
+		_verificationPhoneDisabled = true;
 		_verificationButtonText = VERIFICATION_VERIFY_CODE;
 	}
 
@@ -283,7 +286,7 @@
 	private const string VERIFICATION_VERIFY_CODE = "تایید کد فعال‌سازی";
 
 	private string _verificationButtonText = VERIFICATION_SEND_CODE;
-	private bool _verificationIsPhoneDisabled;
+	private bool _verificationPhoneDisabled;
 
 	private void OnVerificationSubmit ()
 	{

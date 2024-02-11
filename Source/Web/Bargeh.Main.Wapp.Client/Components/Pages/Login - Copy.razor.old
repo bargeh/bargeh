@@ -20,7 +20,7 @@
 </HeadContent>
 
 <div class="popup">
-	<span class="no-block-margin padding-buttom horizontal-align center-flex"><img src="/img/User.svg" class="tiny-icon" alt="کاربر"/>ورود / ثبت نام</span>
+	<span class="no-block-margin padding-bottom horizontal-align center-flex"><img src="/img/User.svg" class="tiny-icon" alt="کاربر"/>ورود / ثبت نام</span>
 
 	@if (_loginState == LoginState.Captcha)
 	{
