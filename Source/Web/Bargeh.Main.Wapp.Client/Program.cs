@@ -16,7 +16,7 @@ builder.Services.AddScoped (_ =>
 {
 	HttpClient httpClient = new (new GrpcWebHandler (GrpcWebMode.GrpcWeb, new HttpClientHandler ()))
 	{
-		BaseAddress = new ("http://localhost:5201")
+		BaseAddress = new ("https://localhost:5201")
 	};
 
 	GrpcChannel channel = GrpcChannel.ForAddress (httpClient.BaseAddress, new() { HttpClient = httpClient });
