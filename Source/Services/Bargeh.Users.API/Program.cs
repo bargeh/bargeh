@@ -19,7 +19,7 @@ builder.Services.AddGrpc ();
 
 builder.Services.AddCors (options =>
 {
-	options.AddPolicy ("test", policyBuilder =>
+	options.AddDefaultPolicy (policyBuilder =>
 	{
 		policyBuilder.AllowAnyOrigin ()
 			.AllowAnyHeader ()
@@ -32,7 +32,7 @@ builder.Services.AddGrpcReflection ();
 
 WebApplication app = builder.Build ();
 
-app.UseCors ("test");
+app.UseCors ();
 
 app.UseGrpcWeb ();
 

@@ -4,12 +4,14 @@
 @using Grpc.Core
 @using Identity.Api
 @using System.Text.Json
+@using Sms.Api
 @inject IJSRuntime JsRuntime
 @inject ILogger<Login> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityProto.IdentityProtoClient IdentityService
+@(/* FROMHERE: Fix the error with DI */)
 @inject LocalStorageService LocalStorageService
-@rendermode InteractiveWebAssembly
+@rendermode @(new InteractiveWebAssemblyRenderMode(false))
 
 <PageTitle>ورود و عضویت - برگه</PageTitle>
 
@@ -32,102 +34,102 @@
 	@switch (_loginState)
 	{
 		case LoginState.Login:
-			<EditForm EditContext="_loginEditContext" FormName="login" OnSubmit="OnLoginSubmit">
-				<DataAnnotationsValidator />
+		<EditForm EditContext="_loginEditContext" FormName="login" OnSubmit="OnLoginSubmit">
+			<DataAnnotationsValidator />
 
-				<div class="input-group">
-					<label>شماره‌ی همراه</label>
-					<InputText autocomplete="username" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_loginModel.Phone" />
-				</div>
+			<div class="input-group">
+				<label>شماره‌ی همراه</label>
+				<InputText autocomplete="username" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_loginModel.Phone" />
+			</div>
 
-				<div class="input-group">
-					<label>رمز عبور</label>
-					<InputText type="password" autocomplete="current-password" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="_loginModel.Password" />
-				</div>
+			<div class="input-group">
+				<label>رمز عبور</label>
+				<InputText type="password" autocomplete="current-password" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="_loginModel.Password" />
+			</div>
 
-				<button class="button-bubble-static-inline" type="submit">بعدی</button>
+			<button class="button-bubble-static-inline" type="submit">بعدی</button>
 
-				<a class="center" @onclick="OnRegisterRequested">حساب کاربری نداری؟</a>
-				<a class="center" @onclick="OnVerificationRequested">رمزت رو فراموش کردی؟</a>
+			<a class="center" @onclick="OnRegisterRequested">حساب کاربری نداری؟</a>
+			<a class="center" @onclick="OnVerificationRequested">رمزت رو فراموش کردی؟</a>
 
-				<ValidationSummary class="red form-errors" />
-			</EditForm>
-			break;
+			<ValidationSummary class="red form-errors" />
+		</EditForm>
+		break;
 
 		case LoginState.Register:
-			@* <div class="tip">
+		@* <div class="tip">
 	<img src="img/Lamp.svg" alt="چراغ">
 	<p>به برگه خوش اومدی! برای شروع کار، لطفا اول ثبت نام کن</p>
 	</div> *@
 
-			<EditForm EditContext="_resisterEditContext" FormName="register" OnValidSubmit="OnRegisterSubmit">
-				<DataAnnotationsValidator />
+		<EditForm EditContext="_resisterEditContext" FormName="register" OnValidSubmit="OnRegisterSubmit">
+			<DataAnnotationsValidator />
 
-				<div class="input-group">
-					<label>شماره‌ی همراه</label>
-					<InputText autocomplete="username" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.Phone" />
-				</div>
+			<div class="input-group">
+				<label>شماره‌ی همراه</label>
+				<InputText autocomplete="username" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.Phone" />
+			</div>
 
-				<div class="input-group">
-					<label>نام کاربری</label>
-					<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.Username" />
-				</div>
+			<div class="input-group">
+				<label>نام کاربری</label>
+				<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.Username" />
+			</div>
 
-				<div class="input-group">
-					<label>نام نمایشی</label>
-					<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.DisplayName" />
-				</div>
+			<div class="input-group">
+				<label>نام نمایشی</label>
+				<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.DisplayName" />
+			</div>
 
-				<div class="center">
-					<label>شرایط استفاده از برگه رو خوندم و قبول می‌کنم</label>
-					<InputCheckbox aria-required="true" @bind-Value="_registerModel.AcceptedTos" />
-				</div>
+			<div class="center">
+				<label>شرایط استفاده از برگه رو خوندم و قبول می‌کنم</label>
+				<InputCheckbox aria-required="true" @bind-Value="_registerModel.AcceptedTos" />
+			</div>
 
-				<button class="button-bubble-static-inline" type="submit">بعدی</button>
+			<button class="button-bubble-static-inline" type="submit">بعدی</button>
 
-				<ValidationSummary class="red form-errors" />
-			</EditForm>
-			break;
+			<ValidationSummary class="red form-errors" />
+		</EditForm>
+		break;
 
 		case LoginState.Verify:
-			<EditForm EditContext="_verificationEditContext" FormName="verification" OnSubmit="OnVerificationSubmit">
-				<DataAnnotationsValidator />
+		<EditForm EditContext="_verificationEditContext" FormName="verification" OnSubmit="OnVerificationSubmit">
+			<DataAnnotationsValidator />
 
-				<div class="input-group">
-					<label>شماره‌ی همراه</label>
-					<InputText disabled="@_verificationPhoneDisabled" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_verificationModel.Phone" />
-				</div>
+			<div class="input-group">
+				<label>شماره‌ی همراه</label>
+				<InputText disabled="@_verificationPhoneDisabled" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_verificationModel.Phone" />
+			</div>
 
-				<div class="input-group" style="@(!_verificationPhoneDisabled ? "display: none" : string.Empty)">
-					<label>کد تایید</label>
-					<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_verificationModel.VerificationCode" />
-				</div>
+			<div class="input-group" style="@(!_verificationPhoneDisabled ? "display: none" : string.Empty)">
+				<label>کد تایید</label>
+				<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_verificationModel.VerificationCode" />
+			</div>
 
-				<button class="button-bubble-static-inline" type="submit">@_verificationButtonText</button>
+			<button class="button-bubble-static-inline" type="submit">@_verificationButtonText</button>
 
-				<ValidationSummary class="red form-errors" />
-			</EditForm>
-			break;
+			<ValidationSummary class="red form-errors" />
+		</EditForm>
+		break;
 
 		case LoginState.SetPassword:
-			<EditForm EditContext="_setPasswordEditContext" FormName="verification" OnSubmit="OnSetPasswordSubmit">
-				<DataAnnotationsValidator />
+		<EditForm EditContext="_setPasswordEditContext" FormName="verification" OnSubmit="OnSetPasswordSubmit">
+			<DataAnnotationsValidator />
 
-				<div class="input-group">
-					<label>رمز عبور</label>
-					<InputText type="password" autocomplete="new-password" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="_setPasswordModel.Password" />
-				</div>
+			<div class="input-group">
+				<label>رمز عبور</label>
+				<InputText type="password" autocomplete="new-password" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="_setPasswordModel.Password" />
+			</div>
 
-				<div class="input-group">
-					<label>تایید رمز عبور</label>
-					<InputText type="password" autocomplete="new-password" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="_setPasswordModel.ConfirmPassword" />
-				</div>
+			<div class="input-group">
+				<label>تایید رمز عبور</label>
+				<InputText type="password" autocomplete="new-password" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="_setPasswordModel.ConfirmPassword" />
+			</div>
 
-				<button class="button-bubble-static-inline" type="submit">بعدی</button>
+			<button class="button-bubble-static-inline" type="submit">بعدی</button>
 
-				<ValidationSummary class="red form-errors" />
-			</EditForm>
-			break;
+			<ValidationSummary class="red form-errors" />
+		</EditForm>
+		break;
 	}
 	@* ReSharper restore SwitchStatementHandlesSomeKnownEnumValuesWithDefault *@
 
@@ -288,7 +290,7 @@
 	private string _verificationButtonText = VERIFICATION_SEND_CODE;
 	private bool _verificationPhoneDisabled;
 
-	private void OnVerificationSubmit ()
+	private async Task OnVerificationSubmit ()
 	{
 		_verificationMessageStore.Clear ();
 
@@ -307,12 +309,14 @@
 		{
 			_verificationButtonText = VERIFICATION_VERIFY_CODE;
 			_verificationPhoneDisabled = true;
+
+			// await SmsService.SendVerificationAsync (new ()
+			// 	{
+			// 		Phone = _verificationModel.Phone
+			// 	});
+
 			return;
-
-			// FROMHERE: Send verification code
 		}
-
-		// PRODUCTION: Validate verification code
 
 		if (_verificationModel.VerificationCode != "1000")
 		{

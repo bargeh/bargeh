@@ -5,13 +5,12 @@ option csharp_namespace = "Sms.Api";
 package sms;
 
 service SmsProto {
-  rpc SendVerification (SendVerificationRequest) returns (SendVerificationReply);
+  rpc SendVerification (SendVerificationRequest) returns (VoidOperationReply);
 }
 
 message SendVerificationRequest {
   string phone = 2;
 }
 
-message SendVerificationReply {
-  string code = 1;
+message VoidOperationReply {
 }

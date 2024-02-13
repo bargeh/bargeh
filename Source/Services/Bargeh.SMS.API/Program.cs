@@ -8,9 +8,23 @@ builder.AddServiceDefaults ();
 builder.Services.AddGrpc ();
 builder.Services.AddGrpcReflection ();
 
+builder.Services.AddCors (options =>
+{
+	options.AddDefaultPolicy (policyBuilder =>
+	{
+		policyBuilder.AllowAnyOrigin ()
+			.AllowAnyMethod ()
+			.AllowAnyHeader ();
+	});
+});
+
 WebApplication app = builder.Build ();
 
-app.MapGrpcService<SmsService> ();
+app.UseCors ();
+
+app.UseGrpcWeb();
+
+app.MapGrpcService<SmsService> ().EnableGrpcWeb ();
 
 if (app.Environment.IsDevelopment ())
 {
