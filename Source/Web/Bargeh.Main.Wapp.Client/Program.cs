@@ -9,29 +9,29 @@ WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault (args);
 
 builder.Services.AddScoped<LocalStorageService> ();
 
-//builder.Services.AddSingleton (_ =>
-//{
-//	HttpClient httpClient = new (new GrpcWebHandler (GrpcWebMode.GrpcWeb, new HttpClientHandler ()))
-//	{
-//		BaseAddress = new ("https://localhost:5201")
-//	};
+builder.Services.AddSingleton (_ =>
+{
+	HttpClient httpClient = new (new GrpcWebHandler (GrpcWebMode.GrpcWeb, new HttpClientHandler ()))
+	{
+		BaseAddress = new ("https://localhost:5201")
+	};
 
-//	GrpcChannel channel = GrpcChannel.ForAddress (httpClient.BaseAddress, new () { HttpClient = httpClient });
+	GrpcChannel channel = GrpcChannel.ForAddress (httpClient.BaseAddress, new () { HttpClient = httpClient });
 
-//	return new IdentityProto.IdentityProtoClient (channel);
-//});
+	return new IdentityProto.IdentityProtoClient (channel);
+});
 
 
-//builder.Services.AddSingleton (_ =>
-//{
-//	HttpClient httpClient = new (new GrpcWebHandler (GrpcWebMode.GrpcWeb, new HttpClientHandler ()))
-//	{
-//		BaseAddress = new ("https://localhost:5244")
-//	};
+builder.Services.AddSingleton (_ =>
+{
+	HttpClient httpClient = new (new GrpcWebHandler (GrpcWebMode.GrpcWeb, new HttpClientHandler ()))
+	{
+		BaseAddress = new ("https://localhost:5244")
+	};
 
-//	GrpcChannel channel = GrpcChannel.ForAddress (httpClient.BaseAddress, new () { HttpClient = httpClient });
+	GrpcChannel channel = GrpcChannel.ForAddress (httpClient.BaseAddress, new () { HttpClient = httpClient });
 
-//	return new SmsProto.SmsProtoClient (channel);
-//});
+	return new SmsProto.SmsProtoClient (channel);
+});
 
 await builder.Build ().RunAsync ();
