@@ -9,6 +9,7 @@
 @inject ILogger<Login> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityProto.IdentityProtoClient IdentityService
+@inject SmsProto.SmsProtoClient SmsService
 @inject LocalStorageService LocalStorageService
 @rendermode @(new InteractiveWebAssemblyRenderMode(false))
 
@@ -309,10 +310,10 @@
 			_verificationButtonText = VERIFICATION_VERIFY_CODE;
 			_verificationPhoneDisabled = true;
 
-			// await SmsService.SendVerificationAsync (new ()
-			// 	{
-			// 		Phone = _verificationModel.Phone
-			// 	});
+			await SmsService.SendVerificationAsync (new ()
+				{
+					Phone = _verificationModel.Phone
+				});
 
 			return;
 		}
