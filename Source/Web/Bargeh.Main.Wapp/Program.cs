@@ -13,13 +13,6 @@ builder.Services.AddRazorComponents ()
 	.AddInteractiveServerComponents ()
 	.AddInteractiveWebAssemblyComponents ();
 
-builder.Services.AddControllers ();
-
-builder.Services.AddHttpContextAccessor ();
-
-builder.Services.AddScoped<LocalStorageService> ();
-builder.Services.AddScoped<IdentityProviderService> ();
-
 #endregion
 
 #region gRPC Providers
@@ -56,8 +49,6 @@ app.MapRazorComponents<App> ()
 	.AddInteractiveServerRenderMode ()
 	.AddInteractiveWebAssemblyRenderMode ()
 	.AddAdditionalAssemblies (typeof (Bargeh.Main.Wapp.Client._Imports).Assembly);
-
-app.MapDefaultControllerRoute ();
 
 #endregion
 
