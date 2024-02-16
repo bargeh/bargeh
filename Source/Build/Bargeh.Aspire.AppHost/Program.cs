@@ -1,24 +1,25 @@
 IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(args);
 
 // PRODUCTION: Use a dedicated Db for each service
+
 IResourceBuilder<PostgresContainerResource> postgres = builder
 	.AddPostgresContainer("postgres", 5432, "5");
 
 IResourceBuilder<ProjectResource> usersApi =
-	builder.AddProject("users", "../../../Source/Services/Bargeh.Users.Api/Bargeh.Users.API.csproj")
+	builder.AddProject<Projects.Bargeh_Users_Api>("users")
 		   .WithReference(postgres);
 
 IResourceBuilder<ProjectResource> smsApi =
-	builder.AddProject("sms", "../../../Source/Services/Bargeh.Sms.Api/Bargeh.Sms.Api.csproj")
+	builder.AddProject<Projects.Bargeh_Sms_Api>("sms")
 		   .WithReference(postgres);
 
 IResourceBuilder<ProjectResource> identityApi =
-	builder.AddProject("identity", "../../../Source/Services/Bargeh.Identity.Api/Bargeh.Identity.Api.csproj")
+	builder.AddProject<Projects.Bargeh_Identity_Api>("identity")
 		   .WithReference(usersApi)
 		   .WithReference(postgres);
 
 
-builder.AddProject("wapp", "../../../Source/Web/Bargeh.Main.Wapp/Bargeh.Main.Wapp.csproj")
+builder.AddProject<Projects.Bargeh_Main_Wapp>("wapp")
 	   //.WithReference (sqlServer)
 	   .WithReference(usersApi)
 	   .WithReference(smsApi)
