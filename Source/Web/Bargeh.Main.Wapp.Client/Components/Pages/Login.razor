@@ -22,9 +22,6 @@
 <div class="popup">
 	<span class="no-block-margin pad-bottom horizontal-align center-flex"><img src="/img/User.svg" class="tiny-icon" alt="کاربر" />ورود / ثبت نام</span>
 
-	@(_loginState.ToString () // PRODUCTION: Remove this
-		)
-
 	@if (_loginState != LoginState.Login)
 	{
 		<a @onclick="OnLoginRequested" class="center pad-bottom">برگرد به ورود ←</a>
@@ -263,12 +260,6 @@
 			_registerMessageStore.Add (() => _registerModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
 			return;
 		}
-
-		// TODO: Check if user is not currently registered
-		// TODO: Connect to the Sms Api for sending code
-
-
-		_info += $"The verification code is {Random.Shared.Next (1000, 9999)}";
 
 		_loginState = LoginState.Verify;
 		_verificationModel.Phone = _registerModel.Phone;
