@@ -3,7 +3,6 @@
 @using Bargeh.Main.Wapp.Client.Services
 @using Grpc.Core
 @using Identity.Api
-@using System.Text.Json
 @using Sms.Api
 @inject IJSRuntime JsRuntime
 @inject ILogger<Login> Logger
@@ -20,113 +19,113 @@
 </HeadContent>
 
 <div class="popup">
-	<span class="no-block-margin pad-bottom horizontal-align center-flex"><img src="/img/User.svg" class="tiny-icon" alt="کاربر" />ورود / ثبت نام</span>
+	<span class="no-block-margin pad-bottom horizontal-align center-flex"><img src="/img/User.svg" class="tiny-icon" alt="کاربر"/>ورود / ثبت نام</span>
 
-	@if (_loginState != LoginState.Login)
+	@if(_loginState != LoginState.Login)
 	{
 		<a @onclick="OnLoginRequested" class="center pad-bottom">برگرد به ورود ←</a>
 	}
 
 	@* ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault *@
-	@switch (_loginState)
+	@switch(_loginState)
 	{
 		case LoginState.Login:
-		<EditForm EditContext="_loginEditContext" FormName="login" OnSubmit="OnLoginSubmit">
-			<DataAnnotationsValidator />
+			<EditForm EditContext="_loginEditContext" FormName="login" OnSubmit="OnLoginSubmit">
+				<DataAnnotationsValidator/>
 
-			<div class="input-group">
-				<label>شماره‌ی همراه</label>
-				<InputText autocomplete="username" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_loginModel.Phone" />
-			</div>
+				<div class="input-group">
+					<label>شماره‌ی همراه</label>
+					<InputText autocomplete="username" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_loginModel.Phone"/>
+				</div>
 
-			<div class="input-group">
-				<label>رمز عبور</label>
-				<InputText type="password" autocomplete="current-password" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="_loginModel.Password" />
-			</div>
+				<div class="input-group">
+					<label>رمز عبور</label>
+					<InputText type="password" autocomplete="current-password" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="_loginModel.Password"/>
+				</div>
 
-			<button class="button-bubble-static-inline" type="submit">بعدی</button>
+				<button class="button-bubble-static-inline" type="submit">بعدی</button>
 
-			<a class="center" @onclick="OnRegisterRequested">حساب کاربری نداری؟</a>
-			<a class="center" @onclick="OnVerificationRequested">رمزت رو فراموش کردی؟</a>
+				<a class="center" @onclick="OnRegisterRequested">حساب کاربری نداری؟</a>
+				<a class="center" @onclick="OnVerificationRequested">رمزت رو فراموش کردی؟</a>
 
-			<ValidationSummary class="red form-errors" />
-		</EditForm>
-		break;
+				<ValidationSummary class="red form-errors"/>
+			</EditForm>
+			break;
 
 		case LoginState.Register:
-		@* <div class="tip">
+			@* <div class="tip">
 	<img src="img/Lamp.svg" alt="چراغ">
 	<p>به برگه خوش اومدی! برای شروع کار، لطفا اول ثبت نام کن</p>
 	</div> *@
 
-		<EditForm EditContext="_resisterEditContext" FormName="register" OnValidSubmit="OnRegisterSubmit">
-			<DataAnnotationsValidator />
+			<EditForm EditContext="_resisterEditContext" FormName="register" OnValidSubmit="OnRegisterSubmit">
+				<DataAnnotationsValidator/>
 
-			<div class="input-group">
-				<label>شماره‌ی همراه</label>
-				<InputText autocomplete="username" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.Phone" />
-			</div>
+				<div class="input-group">
+					<label>شماره‌ی همراه</label>
+					<InputText autocomplete="username" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.Phone"/>
+				</div>
 
-			<div class="input-group">
-				<label>نام کاربری</label>
-				<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.Username" />
-			</div>
+				<div class="input-group">
+					<label>نام کاربری</label>
+					<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.Username"/>
+				</div>
 
-			<div class="input-group">
-				<label>نام نمایشی</label>
-				<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.DisplayName" />
-			</div>
+				<div class="input-group">
+					<label>نام نمایشی</label>
+					<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_registerModel.DisplayName"/>
+				</div>
 
-			<div class="center">
-				<label>شرایط استفاده از برگه رو خوندم و قبول می‌کنم</label>
-				<InputCheckbox aria-required="true" @bind-Value="_registerModel.AcceptedTos" />
-			</div>
+				<div class="center">
+					<label>شرایط استفاده از برگه رو خوندم و قبول می‌کنم</label>
+					<InputCheckbox aria-required="true" @bind-Value="_registerModel.AcceptedTos"/>
+				</div>
 
-			<button class="button-bubble-static-inline" type="submit">بعدی</button>
+				<button class="button-bubble-static-inline" type="submit">بعدی</button>
 
-			<ValidationSummary class="red form-errors" />
-		</EditForm>
-		break;
+				<ValidationSummary class="red form-errors"/>
+			</EditForm>
+			break;
 
 		case LoginState.Verify:
-		<EditForm EditContext="_verificationEditContext" FormName="verification" OnSubmit="OnVerificationSubmit">
-			<DataAnnotationsValidator />
+			<EditForm EditContext="_verificationEditContext" FormName="verification" OnSubmit="OnVerificationSubmit">
+				<DataAnnotationsValidator/>
 
-			<div class="input-group">
-				<label>شماره‌ی همراه</label>
-				<InputText disabled="@_verificationPhoneDisabled" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_verificationModel.Phone" />
-			</div>
+				<div class="input-group">
+					<label>شماره‌ی همراه</label>
+					<InputText disabled="@_verificationPhoneDisabled" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_verificationModel.Phone"/>
+				</div>
 
-			<div class="input-group" style="@(!_verificationPhoneDisabled ? "display: none" : string.Empty)">
-				<label>کد تایید</label>
-				<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_verificationModel.VerificationCode" />
-			</div>
+				<div class="input-group" style="@(!_verificationPhoneDisabled ? "display: none" : string.Empty)">
+					<label>کد تایید</label>
+					<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_verificationModel.VerificationCode"/>
+				</div>
 
-			<button class="button-bubble-static-inline" type="submit">@_verificationButtonText</button>
+				<button class="button-bubble-static-inline" type="submit">@_verificationButtonText</button>
 
-			<ValidationSummary class="red form-errors" />
-		</EditForm>
-		break;
+				<ValidationSummary class="red form-errors"/>
+			</EditForm>
+			break;
 
 		case LoginState.SetPassword:
-		<EditForm EditContext="_setPasswordEditContext" FormName="verification" OnSubmit="OnSetPasswordSubmit">
-			<DataAnnotationsValidator />
+			<EditForm EditContext="_setPasswordEditContext" FormName="verification" OnSubmit="OnSetPasswordSubmit">
+				<DataAnnotationsValidator/>
 
-			<div class="input-group">
-				<label>رمز عبور</label>
-				<InputText type="password" autocomplete="new-password" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="_setPasswordModel.Password" />
-			</div>
+				<div class="input-group">
+					<label>رمز عبور</label>
+					<InputText type="password" autocomplete="new-password" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="_setPasswordModel.Password"/>
+				</div>
 
-			<div class="input-group">
-				<label>تایید رمز عبور</label>
-				<InputText type="password" autocomplete="new-password" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="_setPasswordModel.ConfirmPassword" />
-			</div>
+				<div class="input-group">
+					<label>تایید رمز عبور</label>
+					<InputText type="password" autocomplete="new-password" aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="_setPasswordModel.ConfirmPassword"/>
+				</div>
 
-			<button class="button-bubble-static-inline" type="submit">بعدی</button>
+				<button class="button-bubble-static-inline" type="submit">بعدی</button>
 
-			<ValidationSummary class="red form-errors" />
-		</EditForm>
-		break;
+				<ValidationSummary class="red form-errors"/>
+			</EditForm>
+			break;
 	}
 	@* ReSharper restore SwitchStatementHandlesSomeKnownEnumValuesWithDefault *@
 
@@ -135,107 +134,108 @@
 <p>@_info</p>
 
 @* ReSharper disable FieldCanBeMadeReadOnly.Local *@
+
 @code {
 	private LoginState _loginState = LoginState.Login;
 
 	private string _info = string.Empty;
 
-	protected override void OnInitialized ()
+	protected override void OnInitialized()
 	{
 		#region Login Initialization
 
-		_loginEditContext = new (_loginModel);
-		_loginMessageStore = new (_loginEditContext);
+		_loginEditContext = new(_loginModel);
+		_loginMessageStore = new(_loginEditContext);
 
 		#endregion
 
 		#region Register Initialization
 
-		_resisterEditContext = new (_registerModel);
-		_registerMessageStore = new (_resisterEditContext);
+		_resisterEditContext = new(_registerModel);
+		_registerMessageStore = new(_resisterEditContext);
 
 		#endregion
 
 		#region Verify Initialization
 
-		_verificationEditContext = new (_verificationModel);
-		_verificationMessageStore = new (_verificationEditContext);
+		_verificationEditContext = new(_verificationModel);
+		_verificationMessageStore = new(_verificationEditContext);
 
 		#endregion
 
 		#region Set Password Initialization
 
-		_setPasswordEditContext = new (_setPasswordModel);
-		_setPasswordValidationMessageStore = new (_setPasswordEditContext);
+		_setPasswordEditContext = new(_setPasswordModel);
+		_setPasswordValidationMessageStore = new(_setPasswordEditContext);
 
 		#endregion
 	}
 
-	protected override async Task OnAfterRenderAsync (bool firstRender)
+	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		if (!string.IsNullOrWhiteSpace (await LocalStorageService.GetItemAsync<string> ("login.refresh_token")))
+		if(!string.IsNullOrWhiteSpace(await LocalStorageService.GetItemAsync<string>("login.refresh_token")))
 		{
-			NavigationManager.NavigateTo ("/", false, true);
+			NavigationManager.NavigateTo("/", false, true);
 			return;
 		}
 
-		await JsRuntime.InvokeVoidAsync ("onAfterRender");
+		await JsRuntime.InvokeVoidAsync("onAfterRender");
 	}
 
 	#region Login
 
-	private LoginDto _loginModel = new ();
+	private LoginDto _loginModel = new();
 	private EditContext _loginEditContext = null!;
 	private ValidationMessageStore _loginMessageStore = null!;
 
-	private async Task OnLoginSubmit ()
+	private async Task OnLoginSubmit()
 	{
-		Logger.LogInformation ("Okay here it goes");
+		Logger.LogInformation("Okay here it goes");
 
-		_loginMessageStore.Clear ();
+		_loginMessageStore.Clear();
 
-		if (!_loginEditContext.Validate ())
+		if(!_loginEditContext.Validate())
 		{
 			return;
 		}
 
-		Logger.LogInformation ("valid");
+		Logger.LogInformation("valid");
 
-		if (!_loginModel.PhoneValid)
+		if(!_loginModel.PhoneValid)
 		{
-			_loginMessageStore.Add (() => _loginModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
+			_loginMessageStore.Add(() => _loginModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
 			return;
 		}
 
-		Logger.LogInformation ("phone valid");
+		Logger.LogInformation("phone valid");
 
 		try
 		{
-			TokenResponse loginResult = await IdentityService.LoginAsync (new ()
-				{
-					Phone = _loginModel.Phone,
-					Password = _loginModel.Password
-				});
-
-			Logger.LogInformation ($"{loginResult.JwtToken} is jwt and \n{loginResult.RefreshToken} is refresh");
-
-			await LocalStorageService.RemoveItemAsync ("login.jwt");
-			await LocalStorageService.RemoveItemAsync ("login.refresh_token");
-
-			await LocalStorageService.SetItemAsync ("login.jwt", $"{loginResult.JwtToken}@{DateTime.UtcNow.AddMinutes (5)}");
-			await LocalStorageService.SetItemAsync ("login.refresh_token", loginResult.RefreshToken);
-
-			NavigationManager.NavigateTo ("/", true, true);
-		}
-		catch (RpcException exception)
-		{
-			if (exception.StatusCode == StatusCode.NotFound)
+			TokenResponse loginResult = await IdentityService.LoginAsync(new()
 			{
-				Logger.LogInformation ("Here it calls!");
-				Logger.LogInformation ($"Phone: {_loginModel.Phone}");
+				Phone = _loginModel.Phone,
+				Password = _loginModel.Password
+			});
 
-				_loginMessageStore.Add (() => _loginModel.Phone!, "حساب کاربری با این شماره همراه و رمز عبور وجود نداره. مطمئنی همه چیز رو درست وارد کردی؟");
-				_loginEditContext.NotifyValidationStateChanged ();
+			Logger.LogInformation($"{loginResult.JwtToken} is jwt and \n{loginResult.RefreshToken} is refresh");
+
+			await LocalStorageService.RemoveItemAsync("login.jwt");
+			await LocalStorageService.RemoveItemAsync("login.refresh_token");
+
+			await LocalStorageService.SetItemAsync("login.jwt", $"{loginResult.JwtToken}@{DateTime.UtcNow.AddMinutes(5)}");
+			await LocalStorageService.SetItemAsync("login.refresh_token", loginResult.RefreshToken);
+
+			NavigationManager.NavigateTo("/", true, true);
+		}
+		catch(RpcException exception)
+		{
+			if(exception.StatusCode == StatusCode.NotFound)
+			{
+				Logger.LogInformation("Here it calls!");
+				Logger.LogInformation($"Phone: {_loginModel.Phone}");
+
+				_loginMessageStore.Add(() => _loginModel.Phone!, "حساب کاربری با این شماره همراه و رمز عبور وجود نداره. مطمئنی همه چیز رو درست وارد کردی؟");
+				_loginEditContext.NotifyValidationStateChanged();
 			}
 		}
 	}
@@ -244,20 +244,20 @@
 
 	#region Register
 
-	private RegisterDto _registerModel = new ();
+	private RegisterDto _registerModel = new();
 	private EditContext _resisterEditContext = null!;
 	private ValidationMessageStore _registerMessageStore = null!;
 
-	private void OnRegisterSubmit ()
+	private void OnRegisterSubmit()
 	{
-		if (!_resisterEditContext.Validate ())
+		if(!_resisterEditContext.Validate())
 		{
 			return;
 		}
 
-		if (!_registerModel.PhoneValid)
+		if(!_registerModel.PhoneValid)
 		{
-			_registerMessageStore.Add (() => _registerModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
+			_registerMessageStore.Add(() => _registerModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
 			return;
 		}
 
@@ -271,7 +271,7 @@
 
 	#region Verify
 
-	private VerificationDto _verificationModel = new ();
+	private VerificationDto _verificationModel = new();
 	private EditContext _verificationEditContext = null!;
 	private ValidationMessageStore _verificationMessageStore = null!;
 
@@ -281,37 +281,37 @@
 	private string _verificationButtonText = VERIFICATION_SEND_CODE;
 	private bool _verificationPhoneDisabled;
 
-	private async Task OnVerificationSubmit ()
+	private async Task OnVerificationSubmit()
 	{
-		_verificationMessageStore.Clear ();
+		_verificationMessageStore.Clear();
 
-		if (!_verificationEditContext.Validate ())
+		if(!_verificationEditContext.Validate())
 		{
 			return;
 		}
 
-		if (!_verificationModel.PhoneValid)
+		if(!_verificationModel.PhoneValid)
 		{
-			_verificationMessageStore.Add (() => _verificationModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
+			_verificationMessageStore.Add(() => _verificationModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
 			return;
 		}
 
-		if (!_verificationPhoneDisabled)
+		if(!_verificationPhoneDisabled)
 		{
 			_verificationButtonText = VERIFICATION_VERIFY_CODE;
 			_verificationPhoneDisabled = true;
 
-			await SmsService.SendVerificationAsync (new ()
-				{
-					Phone = _verificationModel.Phone
-				});
+			await SmsService.SendVerificationAsync(new()
+			{
+				Phone = _verificationModel.Phone
+			});
 
 			return;
 		}
 
-		if (_verificationModel.VerificationCode != "1000")
+		if(_verificationModel.VerificationCode != "1000")
 		{
-			_verificationMessageStore.Add (() => _verificationModel.VerificationCode!, "کد تاییدی که وارد کردی درست نیست");
+			_verificationMessageStore.Add(() => _verificationModel.VerificationCode!, "کد تاییدی که وارد کردی درست نیست");
 			return;
 		}
 
@@ -322,18 +322,18 @@
 
 	#region Set Password
 
-	private SetPasswordDto _setPasswordModel = new ();
+	private SetPasswordDto _setPasswordModel = new();
 	private EditContext _setPasswordEditContext = null!;
 	private ValidationMessageStore _setPasswordValidationMessageStore = null!;
 
-	private void OnSetPasswordSubmit ()
+	private void OnSetPasswordSubmit()
 	{
-		if (!_setPasswordEditContext.Validate ())
+		if(!_setPasswordEditContext.Validate())
 		{
 			return;
 		}
 
-		NavigationManager.NavigateTo ("/", true, true);
+		NavigationManager.NavigateTo("/", true, true);
 	}
 
 	#endregion
@@ -344,17 +344,17 @@
 
 	#region Events
 
-	private void OnLoginRequested ()
+	private void OnLoginRequested()
 	{
 		_loginState = LoginState.Login;
 	}
 
-	private void OnRegisterRequested ()
+	private void OnRegisterRequested()
 	{
 		_loginState = LoginState.Register;
 	}
 
-	private void OnVerificationRequested ()
+	private void OnVerificationRequested()
 	{
 		_loginState = LoginState.Verify;
 	}
@@ -368,4 +368,5 @@
 		Verify,
 		SetPassword
 	}
+
 }

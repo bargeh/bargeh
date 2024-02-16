@@ -1,28 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="FakesAssemblies\**" />
-    <EmbeddedResource Remove="FakesAssemblies\**" />
-    <None Remove="FakesAssemblies\**" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="FakesAssemblies\**"/>
+        <EmbeddedResource Remove="FakesAssemblies\**"/>
+        <None Remove="FakesAssemblies\**"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Grpc.Core.Testing" Version="2.46.6" />
-    <PackageReference Include="xunit.extensibility.core" Version="2.6.6" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Grpc.Core.Testing" Version="2.46.6"/>
+        <PackageReference Include="xunit.extensibility.core" Version="2.6.6"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <AdditionalDesignTimeBuildInput Remove="FakesAssemblies\**" />
-  </ItemGroup>
+    <ItemGroup>
+        <AdditionalDesignTimeBuildInput Remove="FakesAssemblies\**"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Services\Bargeh.Users.API\Bargeh.Users.Api.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Services\Bargeh.Users.API\Bargeh.Users.Api.csproj"/>
+    </ItemGroup>
 
 </Project>

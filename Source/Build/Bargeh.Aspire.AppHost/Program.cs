@@ -20,6 +20,7 @@ IResourceBuilder<ProjectResource> identityApi =
 
 
 builder.AddProject<Projects.Bargeh_Main_Wapp>("wapp")
+
 	   //.WithReference (sqlServer)
 	   .WithReference(usersApi)
 	   .WithReference(smsApi)

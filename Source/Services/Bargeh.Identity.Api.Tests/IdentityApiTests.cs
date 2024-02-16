@@ -1,40 +1,38 @@
-using Bargeh.Identity.Api.Infrastructure;
 using Bargeh.Identity.Api.Services;
 using Bargeh.Tests.Shared;
-using Microsoft.EntityFrameworkCore;
 
 namespace Bargeh.Identity.Api.Tests;
 
 public class IdentityApiTests : UsersTestsBase
 {
-    private readonly TimeProvider _timeProvider = null!;
-    private IdentityService _identityService = null!;
+	private readonly TimeProvider _timeProvider = null!;
+	private IdentityService _identityService = null!;
 
-    //public override async Task InitializeAsync ()
-    //{
-    //    await base.InitializeAsync ();
-        
-    //    UsersProtoClient usersClient = Mock.Of<UsersProtoClient> ();
+	//public override async Task InitializeAsync ()
+	//{
+	//    await base.InitializeAsync ();
 
-    //    DbContextOptionsBuilder<IdentityDbContext> optionsBuilder = new ();
-    //    optionsBuilder.UseNpgsql (ConnectionString);
+	//    UsersProtoClient usersClient = Mock.Of<UsersProtoClient> ();
 
-    //    IdentityDbContext identityDbContext = new (optionsBuilder.Options);
-    //    await IdentityDbInitializer.InitializeDbAsync (identityDbContext, new NullLogger<IdentityDbContext> ());
+	//    DbContextOptionsBuilder<IdentityDbContext> optionsBuilder = new ();
+	//    optionsBuilder.UseNpgsql (ConnectionString);
 
-    //    _identityService = new (usersClient, identityDbContext, _timeProvider);
-    //}
+	//    IdentityDbContext identityDbContext = new (optionsBuilder.Options);
+	//    await IdentityDbInitializer.InitializeDbAsync (identityDbContext, new NullLogger<IdentityDbContext> ());
 
-    //[Fact]
-    //public async Task Login_ThrowsIfUserIsInvalid ()
-    //{
-    //    // Arrange
+	//    _identityService = new (usersClient, identityDbContext, _timeProvider);
+	//}
 
-
-    //    // Act
+	//[Fact]
+	//public async Task Login_ThrowsIfUserIsInvalid ()
+	//{
+	//    // Arrange
 
 
-    //    // Assert
+	//    // Act
 
-    //}
+
+	//    // Assert
+
+	//}
 }

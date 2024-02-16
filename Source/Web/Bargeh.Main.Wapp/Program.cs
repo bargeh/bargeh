@@ -5,6 +5,7 @@ using Grpc.Net.Client;
 using Grpc.Net.Client.Web;
 using Identity.Api;
 using Sms.Api;
+using _Imports = Bargeh.Main.Wapp.Client._Imports;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -63,7 +64,7 @@ if(app.Environment.IsDevelopment())
 }
 else
 {
-	app.UseExceptionHandler("/Error", createScopeForErrors: true);
+	app.UseExceptionHandler("/Error", true);
 	app.UseHsts();
 }
 
@@ -75,7 +76,7 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
    .AddInteractiveServerRenderMode()
    .AddInteractiveWebAssemblyRenderMode()
-   .AddAdditionalAssemblies(typeof(Bargeh.Main.Wapp.Client._Imports).Assembly);
+   .AddAdditionalAssemblies(typeof(_Imports).Assembly);
 
 #endregion
 
