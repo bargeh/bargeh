@@ -6,17 +6,17 @@ using Grpc.Net.Client.Web;
 using Identity.Api;
 using Sms.Api;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder (args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults ();
+builder.AddServiceDefaults();
 
 #region Builder
 
-builder.Services.AddRazorComponents ()
-	.AddInteractiveServerComponents ()
-	.AddInteractiveWebAssemblyComponents ();
+builder.Services.AddRazorComponents()
+	   .AddInteractiveServerComponents()
+	   .AddInteractiveWebAssemblyComponents();
 
-builder.Services.AddScoped<LocalStorageService> ();
+builder.Services.AddScoped<LocalStorageService>();
 
 #endregion
 
@@ -53,30 +53,30 @@ builder.Services.AddSingleton(_ =>
 
 #endregion
 
-WebApplication app = builder.Build ();
+WebApplication app = builder.Build();
 
 #region Blazor
 
-if (app.Environment.IsDevelopment ())
+if(app.Environment.IsDevelopment())
 {
-	app.UseWebAssemblyDebugging ();
+	app.UseWebAssemblyDebugging();
 }
 else
 {
-	app.UseExceptionHandler ("/Error", createScopeForErrors: true);
-	app.UseHsts ();
+	app.UseExceptionHandler("/Error", createScopeForErrors: true);
+	app.UseHsts();
 }
 
-app.UseHttpsRedirection ();
+app.UseHttpsRedirection();
 
-app.UseStaticFiles ();
-app.UseAntiforgery ();
+app.UseStaticFiles();
+app.UseAntiforgery();
 
-app.MapRazorComponents<App> ()
-	.AddInteractiveServerRenderMode ()
-	.AddInteractiveWebAssemblyRenderMode ()
-	.AddAdditionalAssemblies (typeof (Bargeh.Main.Wapp.Client._Imports).Assembly);
+app.MapRazorComponents<App>()
+   .AddInteractiveServerRenderMode()
+   .AddInteractiveWebAssemblyRenderMode()
+   .AddAdditionalAssemblies(typeof(Bargeh.Main.Wapp.Client._Imports).Assembly);
 
 #endregion
 
-app.Run ();
+app.Run();

@@ -50,6 +50,4 @@ if (app.Environment.IsDevelopment ())
 	app.MapGrpcReflectionService ();
 }
 
-app.MapGet ("/", () => "okay");
-
 app.Run ();

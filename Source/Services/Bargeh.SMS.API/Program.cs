@@ -1,4 +1,5 @@
 using Bargeh.Aspire.ServiceDefaults;
+using Bargeh.Sms.Api.Infrastructure;
 using Bargeh.Sms.Api.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder (args);
@@ -7,6 +8,11 @@ builder.AddServiceDefaults ();
 
 builder.Services.AddGrpc ();
 builder.Services.AddGrpcReflection ();
+
+builder.AddNpgsqlDbContext<SmsDbContext> ("postgres", settings =>
+{
+	settings.MaxRetryCount = 10;
+});
 
 builder.Services.AddCors (options =>
 {
@@ -22,7 +28,7 @@ WebApplication app = builder.Build ();
 
 app.UseCors ();
 
-app.UseGrpcWeb();
+app.UseGrpcWeb ();
 
 app.MapGrpcService<SmsService> ().EnableGrpcWeb ();
 
@@ -30,5 +36,7 @@ if (app.Environment.IsDevelopment ())
 {
 	app.MapGrpcReflectionService ();
 }
+
+await SmsDbInitializer.InitializeDbAsync (app.Services.GetRequiredService<SmsDbContext> (), app.Logger);
 
 app.Run ();
