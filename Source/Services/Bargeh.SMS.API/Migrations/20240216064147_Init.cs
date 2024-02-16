@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace WebApplication1.Migration
+namespace Bargeh.Sms.Api.Migrations
 {
     /// <inheritdoc />
     public partial class Init : Migration
