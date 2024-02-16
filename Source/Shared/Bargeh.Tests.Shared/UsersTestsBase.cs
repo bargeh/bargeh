@@ -14,7 +14,7 @@ public abstract class UsersTestsBase : IAsyncLifetime
 {
     protected internal const string VALID_USER_ID = "9844fd47-3236-46cb-898d-607b5c5560c1";
     protected internal readonly TestsDbProvider DbProvider = new ();
-    protected internal UsersContext UsersDbContext = null!;
+    protected internal UsersDbContext UsersDbContext = null!;
     protected internal string ConnectionString = null!;
     protected internal readonly ServerCallContext CallContext = TestServerCallContext.Create (
         "testMethod",
@@ -32,7 +32,7 @@ public abstract class UsersTestsBase : IAsyncLifetime
     public virtual async Task InitializeAsync ()
     {
         ConnectionString = await DbProvider.PreparePostgresDb ();
-        DbContextOptionsBuilder<UsersContext> optionsBuilder = new ();
+        DbContextOptionsBuilder<UsersDbContext> optionsBuilder = new ();
         optionsBuilder.UseNpgsql (ConnectionString);
         UsersDbContext = new (optionsBuilder.Options);
         await UsersDbInitializer.InitializeDbAsync (UsersDbContext, new Logger<UsersTestsBase> (new NullLoggerFactory ()));

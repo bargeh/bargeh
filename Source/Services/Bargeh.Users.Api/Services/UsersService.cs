@@ -7,12 +7,12 @@ using Users.Api;
 
 namespace Bargeh.Users.Api.Services;
 
-public class UsersService (UsersContext context) : UsersProto.UsersProtoBase
+public class UsersService (UsersDbContext dbContext) : UsersProto.UsersProtoBase
 {
     public override async Task<GetUserReply> GetUserByUsername (GetUserByUsernameRequest request,
                                                                 ServerCallContext callContext)
     {
-        User? user = await context.GetUserByUsernameAsync (request.Username);
+        User? user = await dbContext.GetUserByUsernameAsync (request.Username);
 
         if (user == null)
         {
@@ -37,7 +37,7 @@ public class UsersService (UsersContext context) : UsersProto.UsersProtoBase
     public override async Task<GetUserReply> GetUserByPhone (GetUserByPhoneRequest request,
                                                              ServerCallContext callContext)
     {
-        User? user = await context.GetUserByPhoneNumberAsync (request.Phone);
+        User? user = await dbContext.GetUserByPhoneNumberAsync (request.Phone);
 
         if (user == null)
         {
@@ -62,7 +62,7 @@ public class UsersService (UsersContext context) : UsersProto.UsersProtoBase
     public override async Task<GetUserReply> GetUserById (GetUserByIdRequest request,
                                                           ServerCallContext callContext)
     {
-        User? user = await context.GetUserByIdAsync (request.Id);
+        User? user = await dbContext.GetUserByIdAsync (request.Id);
 
         if (user == null)
         {
@@ -87,7 +87,7 @@ public class UsersService (UsersContext context) : UsersProto.UsersProtoBase
     public override async Task<GetUserReply> GetUserByPhoneAndPassword (GetUserByPhoneAndPasswordRequest request,
                                                                         ServerCallContext callContext)
     {
-        User? user = await context.GetUserByPhoneAndPasswordAsync (request.Phone, request.Password);
+        User? user = await dbContext.GetUserByPhoneAndPasswordAsync (request.Phone, request.Password);
 
         // PRODUCTION: Verify captcha
 
@@ -119,11 +119,11 @@ public class UsersService (UsersContext context) : UsersProto.UsersProtoBase
     public override async Task<VoidOperationReply> SetUserPassword (SetUserPasswordRequest request,
                                                                     ServerCallContext callContext)
     {
-        User user = await context.GetUserByIdAsync (request.Id) ?? throw new RpcException (new (StatusCode.NotFound, "Not Found"));
+        User user = await dbContext.GetUserByIdAsync (request.Id) ?? throw new RpcException (new (StatusCode.NotFound, "Not Found"));
 
         user.Password = request.Password;
 
-        await context.SaveChangesAsync ();
+        await dbContext.SaveChangesAsync ();
 
         return new ();
     }
@@ -136,7 +136,7 @@ public class UsersService (UsersContext context) : UsersProto.UsersProtoBase
         }
 
         bool userExists =
-            await context.UserExistsByPhoneAsync (request.Phone.ConvertToEnglish ());
+            await dbContext.UserExistsByPhoneAsync (request.Phone.ConvertToEnglish ());
 
         if (userExists)
         {
@@ -157,8 +157,8 @@ public class UsersService (UsersContext context) : UsersProto.UsersProtoBase
             Password = request.Password.Hash (HashType.SHA256)
         };
 
-        context.Add (user);
-        await context.SaveChangesAsync ();
+        dbContext.Add (user);
+        await dbContext.SaveChangesAsync ();
 
         return new ();
     }
@@ -176,11 +176,11 @@ public class UsersService (UsersContext context) : UsersProto.UsersProtoBase
             throw new RpcException (new (StatusCode.NotFound, "User not found"));
         }
 
-        User dbUser = (await context.Users.FirstOrDefaultAsync (u => u.Id.ToString () == request.Id))!;
+        User dbUser = (await dbContext.Users.FirstOrDefaultAsync (u => u.Id.ToString () == request.Id))!;
 
         dbUser.Enabled = false;
 
-        await context.SaveChangesAsync ();
+        await dbContext.SaveChangesAsync ();
 
         return new ();
     }
