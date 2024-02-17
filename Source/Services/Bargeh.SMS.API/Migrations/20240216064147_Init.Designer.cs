@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace WebApplication1.Migration
+namespace Bargeh.Sms.Api.Migrations
 {
     [DbContext(typeof(SmsDbContext))]
     [Migration("20240216064147_Init")]

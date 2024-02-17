@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BargehMigrations.Migrations
 {
-    [DbContext(typeof(UsersContext))]
+    [DbContext(typeof(UsersDbContext))]
     partial class UsersContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

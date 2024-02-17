@@ -9,6 +9,8 @@ builder.AddServiceDefaults ();
 builder.Services.AddGrpc ();
 builder.Services.AddGrpcReflection ();
 
+// FROMHERE: Fix Db DI problem
+
 builder.AddNpgsqlDbContext<SmsDbContext> ("postgres", settings =>
 {
 	settings.MaxRetryCount = 10;

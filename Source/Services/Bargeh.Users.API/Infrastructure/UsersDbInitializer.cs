@@ -5,13 +5,13 @@ namespace Bargeh.Users.Api.Infrastructure;
 
 public static class UsersDbInitializer
 {
-	public static async Task InitializeDbAsync (UsersContext context, ILogger logger)
+	public static async Task InitializeDbAsync (UsersDbContext dbContext, ILogger logger)
 	{
 		byte retires = 20;
 
 		TryConnect:
 
-		if (!await context.Database.CanConnectAsync () && retires >= 1)
+		if (!await dbContext.Database.CanConnectAsync () && retires >= 1)
 		{
 			await Task.Delay (1000);
 			logger.LogInformation ("Unable to connect to the database, retrying...");
@@ -22,14 +22,14 @@ public static class UsersDbInitializer
 
 		try
 		{
-			await context.Database.MigrateAsync();
+			await dbContext.Database.MigrateAsync();
 		}
 		catch
 		{
 			// ignored
 		}
 
-		if (!context.Users.Any ())
+		if (!dbContext.Users.Any ())
 		{
 			User user = new ()
 			{
@@ -42,9 +42,9 @@ public static class UsersDbInitializer
 				PhoneNumber = "09123456789"
 			};
 
-			context.Add (user);
+			dbContext.Add (user);
 
-			await context.SaveChangesAsync ();
+			await dbContext.SaveChangesAsync ();
 
 		}
 

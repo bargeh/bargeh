@@ -10,7 +10,7 @@ builder.AddServiceDefaults ();
 //builder.Services.AddDbContext<UsersContext> (options =>
 //	options.UseMySQL (Environment.GetEnvironmentVariable ("FORUM_CONNECTION_STRING")));
 
-builder.AddNpgsqlDbContext<UsersContext> ("postgres", settings =>
+builder.AddNpgsqlDbContext<UsersDbContext> ("postgres", settings =>
 {
 	settings.MaxRetryCount = 10;
 });
@@ -39,7 +39,7 @@ app.UseGrpcWeb ();
 app.MapGrpcService<UsersService> ().EnableGrpcWeb ();
 
 await UsersDbInitializer.InitializeDbAsync
-	(app.Services.CreateScope ().ServiceProvider.GetRequiredService<UsersContext> (), app.Logger);
+	(app.Services.CreateScope ().ServiceProvider.GetRequiredService<UsersDbContext> (), app.Logger);
 
 if (app.Environment.IsDevelopment ())
 {
