@@ -7,7 +7,7 @@ public class UsersDbContext (DbContextOptions<UsersDbContext> options) : DbConte
 {
 	#region Database Objects
 
-	public DbSet<User> Users { get; set; }
+	public DbSet<User> Users { get; init; }
 
 	#endregion
 

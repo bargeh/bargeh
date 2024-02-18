@@ -2,8 +2,8 @@
 
 public sealed class RefreshToken
 {
-	public Guid Id { get; set; } = new ();
-	public required string Token { get; set; }
-	public required Guid UserId { get; set; }
-	public DateTime ExpireDate { get; set; } = DateTime.UtcNow.AddDays (30);
+	public Guid Id { get; init; } = new ();
+	public required string Token { get; init; }
+	public required Guid UserId { get; init; }
+	public DateTime ExpireDate { get; init; } = DateTime.UtcNow.AddDays (30);
 }

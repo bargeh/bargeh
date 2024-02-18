@@ -2,26 +2,26 @@
 
 public class User
 {
-	public Guid Id { get; set; } = Guid.NewGuid ();
-	public required string Username { get; set; }
-	public required string DisplayName { get; set; }
-	public required string PhoneNumber { get; set; }
+	public Guid Id { get; init; } = Guid.NewGuid ();
+	public required string Username { get; init; }
+	public required string DisplayName { get; init; }
+	public required string PhoneNumber { get; init; }
 	public string? Password { get; set; }
-	public string Bio { get; set; } = string.Empty;
-	public string ProfileImage { get; set; } = "Default.webp";
-	public string CoverImage { get; set; } = "Cover.webp";
-	public ushort PremiumDaysLeft { get; set; } = 0;
+	public string Bio { get; init; } = string.Empty;
+	public string ProfileImage { get; init; } = "Default.webp";
+	public string CoverImage { get; init; } = "Cover.webp";
+	public ushort PremiumDaysLeft { get; init; } = 0;
 
-	public DateTime OnlineDate { get; set; } = DateTime.UtcNow;
-	public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
-	public required string VerificationCode { get; set; }
+	public DateTime OnlineDate { get; init; } = DateTime.UtcNow;
+	public DateTime RegisterDate { get; init; } = DateTime.UtcNow;
+	public required string VerificationCode { get; init; }
 	public bool Enabled { get; set; } = true;
-	public bool CanCreateForums { get; set; } = true;
+	public bool CanCreateForums { get; init; } = true;
 
-	public string? Email { get; set; }
-	public bool? IsMale { get; set; }
-	public Province? Province { get; set; }
-	public DateTime? BirthDate { get; set; }
+	public string? Email { get; init; }
+	public bool? IsMale { get; init; }
+	public Province? Province { get; init; }
+	public DateTime? BirthDate { get; init; }
 }
 
 public enum Province
