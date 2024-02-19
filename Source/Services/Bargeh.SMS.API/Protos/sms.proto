@@ -6,7 +6,7 @@ package sms;
 
 service SmsProto {
   rpc SendVerification (SendVerificationRequest) returns (VoidOperationReply);
-  rpc ValidateVerificationCode (ValidateVerificationCodeRequest) returns (ValidateVerificationCodeReply);
+  rpc ValidateVerificationCode (ValidateVerificationCodeRequest) returns (VoidOperationReply);
 }
 
 message SendVerificationRequest {

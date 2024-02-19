@@ -285,6 +285,12 @@
 	{
 		_verificationMessageStore.Clear();
 
+		if(_verificationPhoneDisabled && _verificationModel.VerificationCode == null)
+		{
+			_verificationMessageStore.Add(() => _verificationModel.Phone!, "کد تاییدی که وارد کردی درست نیست");
+			return;
+		}
+
 		if(!_verificationEditContext.Validate())
 		{
 			return;
@@ -309,11 +315,31 @@
 			return;
 		}
 
-		if(_verificationModel.VerificationCode != "1000")
+		try
 		{
-			_verificationMessageStore.Add(() => _verificationModel.VerificationCode!, "کد تاییدی که وارد کردی درست نیست");
-			return;
+			Logger.LogInformation("Got into the try");
+
+			await SmsService.ValidateVerificationCodeAsync(new()
+			{
+				Phone = _verificationModel.Phone,
+				Code = _verificationModel.VerificationCode
+			});
 		}
+		catch(RpcException exception)
+		{
+			throw;
+			Logger.LogInformation($"Got into the catch, status {exception.Status}");
+
+			if(exception.StatusCode == StatusCode.NotFound)
+			{
+				Logger.LogInformation("Got into the if");
+
+				_verificationMessageStore.Add(() => _verificationModel.VerificationCode!, "کد تاییدی که وارد کردی درست نیست");
+				return;
+			}
+		}
+
+		Logger.LogInformation("Passed the try");
 
 		_loginState = LoginState.SetPassword;
 	}

@@ -9,6 +9,7 @@ namespace Bargeh.Sms.Api.Services;
 
 public class SmsService(SmsDbContext dbContext) : SmsProto.SmsProtoBase
 {
+	// FROMHERE: Fix the error for no reason being thrown in validating verification code
 	public override async Task<VoidOperationReply> SendVerification(SendVerificationRequest request,
 																	ServerCallContext context)
 	{
@@ -28,7 +29,7 @@ public class SmsService(SmsDbContext dbContext) : SmsProto.SmsProtoBase
 		return new();
 	}
 
-	public override async Task<ValidateVerificationCodeReply> ValidateVerificationCode(
+	public override async Task<VoidOperationReply> ValidateVerificationCode(
 		ValidateVerificationCodeRequest request,
 		ServerCallContext context)
 	{
