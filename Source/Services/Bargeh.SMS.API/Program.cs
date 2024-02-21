@@ -28,6 +28,8 @@ WebApplication app = builder.Build ();
 
 app.UseCors ();
 
+app.MapDefaultEndpoints();
+
 app.UseGrpcWeb ();
 
 app.MapGrpcService<SmsService> ().EnableGrpcWeb ();
@@ -38,5 +40,7 @@ if (app.Environment.IsDevelopment ())
 }
 
 await SmsDbInitializer.InitializeDbAsync (app.Services.CreateScope().ServiceProvider.GetRequiredService<SmsDbContext> (), app.Logger);
+
+app.MapGet("/", () => "I got you");
 
 app.Run ();

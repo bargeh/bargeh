@@ -39,7 +39,6 @@ app.MapDefaultEndpoints();
 
 app.UseGrpcWeb();
 
-// Configure the HTTP request pipeline.
 app.MapGrpcService<IdentityService>().EnableGrpcWeb();
 
 await IdentityDbInitializer
