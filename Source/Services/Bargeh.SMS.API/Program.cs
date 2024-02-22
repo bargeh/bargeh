@@ -14,15 +14,17 @@ builder.AddNpgsqlDbContext<SmsDbContext> ("postgres", settings =>
 	settings.MaxRetryCount = 10;
 });
 
-builder.Services.AddCors (options =>
+builder.Services.AddCors(options =>
 {
-	options.AddDefaultPolicy (policyBuilder =>
+	options.AddDefaultPolicy(policyBuilder =>
 	{
-		policyBuilder.AllowAnyOrigin ()
-			.AllowAnyMethod ()
-			.AllowAnyHeader ();
+		policyBuilder.AllowAnyOrigin()
+					 .AllowAnyHeader()
+					 .AllowAnyMethod()
+					 .WithExposedHeaders("grpc-status", "grpc-message");
 	});
 });
+
 
 WebApplication app = builder.Build ();
 

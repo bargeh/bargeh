@@ -21,7 +21,7 @@
 <div class="popup">
 	<span class="no-block-margin pad-bottom horizontal-align center-flex"><img src="/img/User.svg" class="tiny-icon" alt="کاربر"/>ورود / ثبت نام</span>
 
-	@if(_loginState != LoginState.Login)
+	@if(_loginState != LoginState.Login || _loginState != LoginState.SetPassword)
 	{
 		<a @onclick="OnLoginRequested" class="center pad-bottom">برگرد به ورود ←</a>
 	}
