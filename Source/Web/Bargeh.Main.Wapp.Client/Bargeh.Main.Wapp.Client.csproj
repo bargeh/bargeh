@@ -9,11 +9,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="Components\Pages\Login - Copy.razor.old"/>
+        <None Remove="Components/Pages/Login - Copy.razor.old"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="Components\Pages\Login - Copy.razor.old"/>
+        <Content Include="Components/Pages/Login - Copy.razor.old"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -29,14 +29,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="..\..\Services\Bargeh.Sms.Api\Protos\sms.proto" GrpcServices="Client">
-            <Link>Protos\sms.proto</Link>
+        <Protobuf Include="../../Services/Bargeh.Sms.Api/Protos/sms.proto" GrpcServices="Client">
+            <Link>Protos/sms.proto</Link>
         </Protobuf>
-        <Protobuf Include="..\..\Services\Bargeh.Users.Api\Protos\user.proto" GrpcServices="Client">
-            <Link>Protos\user.proto</Link>
+        <Protobuf Include="../../Services/Bargeh.Users.Api/Protos/user.proto" GrpcServices="Client">
+            <Link>Protos/user.proto</Link>
         </Protobuf>
-        <Protobuf Include="..\..\Services\Bargeh.Identity.Api\Protos\identity.proto" GrpcServices="Client">
-            <Link>Protos\identity.proto</Link>
+        <Protobuf Include="../../Services/Bargeh.Identity.Api/Protos/identity.proto" GrpcServices="Client">
+            <Link>Protos/identity.proto</Link>
         </Protobuf>
     </ItemGroup>
 
