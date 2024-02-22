@@ -18,7 +18,7 @@ public class SmsDbContext(DbContextOptions<SmsDbContext> options) : DbContext(op
 	private static readonly Func<SmsDbContext, ushort, string, Task<SmsVerification?>> GetVerificationByCodeQuery =
 		EF.CompileAsyncQuery(
 							 (SmsDbContext context, ushort code, string phone) =>
-								 context.SmsVerifications.LastOrDefault(s => s.Code == code && s.Phone == phone));
+								 context.SmsVerifications.FirstOrDefault(s => s.Code == code && s.Phone == phone));
 
 	#endregion
 

@@ -285,9 +285,9 @@
 	{
 		_verificationMessageStore.Clear();
 
-		if(_verificationPhoneDisabled && _verificationModel.VerificationCode == null)
+		if(_verificationPhoneDisabled && string.IsNullOrWhiteSpace(_verificationModel.VerificationCode))
 		{
-			_verificationMessageStore.Add(() => _verificationModel.Phone!, "کد تاییدی که وارد کردی درست نیست");
+			_verificationMessageStore.Add(() => _verificationModel.Phone!, "کد تایید رو لطفا وارد کن");
 			return;
 		}
 
@@ -327,7 +327,6 @@
 		}
 		catch(RpcException exception)
 		{
-			throw;
 			Logger.LogInformation($"Got into the catch, status {exception.Status}");
 
 			if(exception.StatusCode == StatusCode.NotFound)
@@ -335,6 +334,7 @@
 				Logger.LogInformation("Got into the if");
 
 				_verificationMessageStore.Add(() => _verificationModel.VerificationCode!, "کد تاییدی که وارد کردی درست نیست");
+				_verificationEditContext.NotifyValidationStateChanged();
 				return;
 			}
 		}

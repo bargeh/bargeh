@@ -9,16 +9,19 @@ IResourceBuilder<PostgresContainerResource> postgres = builder
 
 IResourceBuilder<ProjectResource> usersApi =
 	builder.AddProject<Bargeh_Users_Api>("users")
-		   .WithReference(postgres);
+		   .WithReference(postgres)
+		   .AsHttp2Service();
 
 IResourceBuilder<ProjectResource> smsApi =
 	builder.AddProject<Bargeh_Sms_Api>("sms")
-		   .WithReference(postgres);
+		   .WithReference(postgres)
+		   .AsHttp2Service();
 
 IResourceBuilder<ProjectResource> identityApi =
 	builder.AddProject<Bargeh_Identity_Api>("identity")
 		   .WithReference(usersApi)
-		   .WithReference(postgres);
+		   .WithReference(postgres)
+		   .AsHttp2Service();
 
 
 builder.AddProject<Bargeh_Main_Wapp>("wapp")
