@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BargehMigrations.Migrations
 {
-    [DbContext(typeof(UsersContext))]
+    [DbContext(typeof(UsersDbContext))]
     [Migration("20231222125007_Init")]
     partial class Init
     {

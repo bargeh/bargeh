@@ -1,6 +1,5 @@
 ﻿using Bargeh.Users.Api.Infrastructure;
 using Bargeh.Users.Api.Models;
-using Bargeh.Users.Api.Services;
 using Grpc.Core;
 using Grpc.Core.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -12,53 +11,55 @@ namespace Bargeh.Tests.Shared;
 
 public abstract class UsersTestsBase : IAsyncLifetime
 {
-    protected internal const string VALID_USER_ID = "9844fd47-3236-46cb-898d-607b5c5560c1";
-    protected internal readonly TestsDbProvider DbProvider = new ();
-    protected internal UsersContext UsersDbContext = null!;
-    protected internal string ConnectionString = null!;
-    protected internal readonly ServerCallContext CallContext = TestServerCallContext.Create (
-        "testMethod",
-        null,
-        DateTime.UtcNow,
-        [],
-        CancellationToken.None,
-        "127.0.0.1",
-        null,
-        null,
-        _ => Task.CompletedTask,
-        () => new (),
-        _ => { });
+	protected internal const string VALID_USER_ID = "9844fd47-3236-46cb-898d-607b5c5560c1";
 
-    public virtual async Task InitializeAsync ()
-    {
-        ConnectionString = await DbProvider.PreparePostgresDb ();
-        DbContextOptionsBuilder<UsersContext> optionsBuilder = new ();
-        optionsBuilder.UseNpgsql (ConnectionString);
-        UsersDbContext = new (optionsBuilder.Options);
-        await UsersDbInitializer.InitializeDbAsync (UsersDbContext, new Logger<UsersTestsBase> (new NullLoggerFactory ()));
+	protected internal readonly ServerCallContext CallContext = TestServerCallContext.Create(
+		 "testMethod",
+		 null,
+		 DateTime.UtcNow,
+		 [],
+		 CancellationToken.None,
+		 "127.0.0.1",
+		 null,
+		 null,
+		 _ => Task.CompletedTask,
+		 () => new(),
+		 _ =>
+		 {
+		 });
 
-        if (await UsersDbContext.Users.AnyAsync ())
-        {
-            return;
-        }
+	protected internal readonly TestsDbProvider DbProvider = new();
+	protected internal string ConnectionString = null!;
+	protected internal UsersDbContext UsersDbContext = null!;
 
-        User user = new ()
-        {
-            Id = new (VALID_USER_ID),
-            Username = "test",
-            DisplayName = "test display name",
-            Email = "test@gmail.bargeh",
-            VerificationCode = "0",
-            Password = "5".Hash (HashType.SHA256),
-            PhoneNumber = "09123456789"
-        };
+	public virtual async Task InitializeAsync()
+	{
+		ConnectionString = await DbProvider.PreparePostgresDb();
+		DbContextOptionsBuilder<UsersDbContext> optionsBuilder = new();
+		optionsBuilder.UseNpgsql(ConnectionString);
+		UsersDbContext = new(optionsBuilder.Options);
+		await UsersDbInitializer.InitializeDbAsync(UsersDbContext, new Logger<UsersTestsBase>(new NullLoggerFactory()));
 
-        UsersDbContext.Add (user);
-        await UsersDbContext.SaveChangesAsync ();
-    }
+		if(await UsersDbContext.Users.AnyAsync())
+			return;
 
-    public Task DisposeAsync ()
-    {
-        return Task.CompletedTask;
-    }
+		User user = new()
+		{
+			Id = new(VALID_USER_ID),
+			Username = "test",
+			DisplayName = "test display name",
+			Email = "test@gmail.bargeh",
+			VerificationCode = "0",
+			Password = "5".Hash(HashType.SHA256),
+			PhoneNumber = "09123456789"
+		};
+
+		UsersDbContext.Add(user);
+		await UsersDbContext.SaveChangesAsync();
+	}
+
+	public Task DisposeAsync()
+	{
+		return Task.CompletedTask;
+	}
 }

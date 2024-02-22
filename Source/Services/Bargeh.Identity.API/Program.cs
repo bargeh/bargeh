@@ -3,53 +3,53 @@ using Bargeh.Identity.Api.Infrastructure;
 using Bargeh.Identity.Api.Services;
 using Users.Api;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder (args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults ();
+builder.AddServiceDefaults();
 
-// Add services to the container.
-builder.Services.AddGrpc ();
-builder.Services.AddGrpcReflection ();
+builder.Services.AddGrpc();
+builder.Services.AddGrpcReflection();
 
-builder.AddNpgsqlDbContext<IdentityDbContext> ("postgres", settings =>
+builder.AddNpgsqlDbContext<IdentityDbContext>("postgres", settings =>
 {
 	settings.MaxRetryCount = 10;
 });
 
-builder.Services.AddGrpcClient<UsersProto.UsersProtoClient> (options =>
+builder.Services.AddGrpcClient<UsersProto.UsersProtoClient>(options =>
 {
-	options.Address = new (builder.Configuration.GetValue<string> ("services:users:1")!);
+	options.Address = new(builder.Configuration.GetValue<string>("services:users:1")!);
 });
 
-builder.Services.AddCors (options =>
+builder.Services.AddCors(options =>
 {
-	options.AddDefaultPolicy (policyBuilder =>
+	options.AddDefaultPolicy(policyBuilder =>
 	{
-		policyBuilder.AllowAnyOrigin ()
-			.AllowAnyHeader ()
-			.AllowAnyMethod ()
-			.Build ();
+		policyBuilder.AllowAnyOrigin()
+					 .AllowAnyHeader()
+					 .AllowAnyMethod()
+					 .Build();
 	});
 });
 
-WebApplication app = builder.Build ();
+WebApplication app = builder.Build();
 
-app.UseCors ();
+app.UseCors();
 
-app.MapDefaultEndpoints ();
+app.MapDefaultEndpoints();
 
-app.UseGrpcWeb ();
+app.UseGrpcWeb();
 
-// Configure the HTTP request pipeline.
-app.MapGrpcService<IdentityService> ().EnableGrpcWeb ();
+app.MapGrpcService<IdentityService>().EnableGrpcWeb();
 
-await IdentityDbInitializer.InitializeDbAsync (app.Services.CreateScope ().ServiceProvider.GetRequiredService<IdentityDbContext> (), app.Logger);
+await IdentityDbInitializer
+	.InitializeDbAsync(app.Services.CreateScope().ServiceProvider.GetRequiredService<IdentityDbContext>(),
+					   app.Logger);
 
-if (app.Environment.IsDevelopment ())
+if(app.Environment.IsDevelopment())
 {
-	app.MapGrpcReflectionService ();
+	app.MapGrpcReflectionService();
 }
 
-app.MapGet ("/", () => "okay");
+app.MapGet("/", () => "wow");
 
-app.Run ();
+app.Run();

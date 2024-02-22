@@ -3,39 +3,39 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bargeh.Users.Api.Infrastructure;
 
-public class UsersContext (DbContextOptions<UsersContext> options) : DbContext (options)
+public class UsersDbContext (DbContextOptions<UsersDbContext> options) : DbContext (options)
 {
 	#region Database Objects
 
-	public DbSet<User> Users { get; set; }
+	public DbSet<User> Users { get; init; }
 
 	#endregion
 
 	#region Compiled Queries' Functions
 
-	private static Func<UsersContext, string, Task<User?>> _getUserByUsername =
+	private static Func<UsersDbContext, string, Task<User?>> _getUserByUsername =
 		EF.CompileAsyncQuery (
-			(UsersContext context, string username) =>
+			(UsersDbContext context, string username) =>
 				context.Users.FirstOrDefault (u => u.Username == username));
 
-	private static Func<UsersContext, string, Task<User?>> _getUserByPhone =
+	private static Func<UsersDbContext, string, Task<User?>> _getUserByPhone =
 		EF.CompileAsyncQuery (
-			(UsersContext context, string phone) =>
+			(UsersDbContext context, string phone) =>
 				context.Users.FirstOrDefault (u => u.PhoneNumber == phone));
 
-	private static Func<UsersContext, Guid, Task<User?>> _getUserById =
+	private static Func<UsersDbContext, Guid, Task<User?>> _getUserById =
 		EF.CompileAsyncQuery (
-			(UsersContext context, Guid id) =>
+			(UsersDbContext context, Guid id) =>
 				context.Users.FirstOrDefault (u => u.Id == id));
 
-	private static Func<UsersContext, string, string, Task<User?>> _getUserByPhoneAndPassword =
+	private static Func<UsersDbContext, string, string, Task<User?>> _getUserByPhoneAndPassword =
 		EF.CompileAsyncQuery (
-			(UsersContext context, string phone, string password) =>
+			(UsersDbContext context, string phone, string password) =>
 				context.Users.FirstOrDefault (u => u.PhoneNumber == phone && u.Password == password));
 
-	private static Func<UsersContext, string, Task<bool>> _userExistsByPhone =
+	private static Func<UsersDbContext, string, Task<bool>> _userExistsByPhone =
 		EF.CompileAsyncQuery (
-			(UsersContext context, string phone) =>
+			(UsersDbContext context, string phone) =>
 				context.Users.Any (u => u.PhoneNumber == phone));
 
 	#endregion

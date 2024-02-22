@@ -6,10 +6,16 @@ package sms;
 
 service SmsProto {
   rpc SendVerification (SendVerificationRequest) returns (VoidOperationReply);
+  rpc ValidateVerificationCode (ValidateVerificationCodeRequest) returns (VoidOperationReply);
 }
 
 message SendVerificationRequest {
-  string phone = 2;
+  string phone = 1;
+}
+
+message ValidateVerificationCodeRequest {
+  string phone = 1;
+  string code = 2;
 }
 
 message VoidOperationReply {

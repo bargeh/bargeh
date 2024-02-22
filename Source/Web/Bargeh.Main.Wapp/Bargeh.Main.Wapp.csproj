@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-	</PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\Build\Bargeh.Aspire.ServiceDefaults\Bargeh.Aspire.ServiceDefaults.csproj" />
-		<ProjectReference Include="..\Bargeh.Main.Wapp.Client\Bargeh.Main.Wapp.Client.csproj" />
-		<PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
-		<PackageReference Include="Matinm.Cryptography" Version="1.0.0" />
-		<PackageReference Include="MatinDevs.PersianPhoneNumbers" Version="1.2.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.1" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="../../Build/Bargeh.Aspire.ServiceDefaults/Bargeh.Aspire.ServiceDefaults.csproj"/>
+        <ProjectReference Include="../Bargeh.Main.Wapp.Client/Bargeh.Main.Wapp.Client.csproj"/>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.60.0"/>
+        <PackageReference Include="Matinm.Cryptography" Version="1.0.0"/>
+        <PackageReference Include="MatinDevs.PersianPhoneNumbers" Version="1.2.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.1"/>
+    </ItemGroup>
 
 </Project>
