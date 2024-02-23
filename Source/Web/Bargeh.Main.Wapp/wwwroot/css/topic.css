@@ -1,0 +1,160 @@
+.topic-first-post {
+    width: 70vw;
+    max-width: 800px;
+    margin: 16pt auto;
+    padding: 10pt 20pt;
+}
+
+.topic-content {
+    text-align: justify;
+}
+
+.topic-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.splide__arrow {
+    display: flex;
+    position: fixed;
+    background: white;
+    border: none;
+    font-size: xx-large;
+    border-radius: 17pt;
+    z-index: 1000;
+    z-index: 1000;
+    padding: 10pt;
+    top: 50%;
+}
+
+@media screen and (max-width: 800px) {
+    .splide__arrow {
+        display: none !important;
+    }
+
+    .tip {
+        display: flex !important;
+    }
+}
+
+.splide__arrow:disabled {
+    background: lightgray;
+}
+
+.splide__arrow img {
+    height: 24pt;
+    margin: 0 auto;
+}
+
+.splide__arrow--prev {
+    right: 1.5vw;
+}
+
+.splide__arrow--next {
+    left: 1.5vw;
+    transform: scaleX(-100%);
+}
+
+.title-box {
+    display: flex;
+    align-items: center;
+}
+
+.title-box img, .button-bubble img {
+    height: 20pt;
+}
+
+.button-bubble img {
+    height: 18pt;
+}
+
+.send-box .button-bubble {
+    padding: 5pt;
+    margin-left: 5pt;
+}
+
+.title-box img {
+    margin-left: 5pt;
+}
+
+.send-box .button-bubble p {
+    margin-right: 10pt;
+    margin-left: 2pt;
+}
+
+.text-input {
+    margin-right: 10pt;
+    margin-left: 10pt;
+    width: 90%;
+    font-size: medium;
+    width: 90%;
+    font-size: medium;
+    border: none;
+    outline: none;
+    resize: none;
+}
+
+.splide__list .shadow-box {
+    margin-bottom: 10pt;
+}
+
+.send-box {
+    display: flex;
+    align-items: center;
+}
+
+.send-box p {
+    font-size: larger;
+}
+
+.splide__slide {
+    padding: 10pt;
+}
+
+.splide {
+    max-width: 1440px;
+    margin: 10pt auto;
+    padding: 0 5svw;
+}
+
+section#splide01 {
+}
+
+.splide__list .shadow-box, .splide__list .shadow-box-nohover {
+    margin-bottom: 32pt;
+    padding: 10pt;
+}
+
+.send-box {
+    display: flex;
+    align-items: center;
+}
+
+.send-box p {
+    font-size: larger;
+}
+
+.post-text {
+    margin-bottom: 5pt;
+}
+
+.post-image {
+    width: 100%;
+    margin: 10pt 0;
+}
+
+.post-attachment {
+    padding: 5pt 10pt;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background: #f8f7f7;
+    border: solid 1pt #c8ccd5;
+    border-radius: 15pt;
+    margin-bottom: 10pt;
+}
+
+.post-file {
+    height: 32pt;
+}

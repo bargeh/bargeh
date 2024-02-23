@@ -1,0 +1,288 @@
+﻿@page "/LoginOld"
+@using Users.Api
+@using Sms.Api
+@using Grpc.Core
+@using Grpc.Net.Client
+@using Microsoft.AspNetCore.Antiforgery
+@using System.ComponentModel.DataAnnotations
+@inject IAntiforgery Antiforgery
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+@inject IHttpContextAccessor _httpContextAccessor
+@rendermode InteractiveServer
+
+<PageTitle>ورود و ثبت نام - برگه</PageTitle>
+
+<HeadContent>
+    <script src="https://www.google.com/recaptcha/api.js?hl=fa" async defer></script>
+    <script src="/js/recaptcha.js" defer></script>
+    <script src="/js/login.js" defer></script>
+</HeadContent>
+
+<div class="popup">
+	<span class="no-block-margin padding-bottom horizontal-align center-flex"><img src="/img/User.svg" class="tiny-icon" alt="کاربر"/>ورود / ثبت نام</span>
+
+	@if (_loginState == LoginState.Captcha)
+	{
+		<div class="center">
+			<div class="g-recaptcha" data-callback="captchaSuccess" data-sitekey="6Lf7DcAoAAAAACMyc_EGRGBJ_cPIcvJVXy8iX48a"></div>
+
+			<div class="tip">
+				<img src="img/Lamp.svg" alt="چراغ">
+				<p>برای ورود یا ثبت نام، لطفا اول تایید کن که یه 🤖 نیستی 🙂</p>
+			</div>
+		</div>
+	}
+	else if (_loginState == LoginState.Phone)
+	{
+		<EditForm Model="@_loginPhoneModel" OnValidSubmit="OnPhoneSubmit">
+			<DataAnnotationsValidator/>
+			<div class="center-flex form-input">
+				<label>شماره‌ی همراه</label>
+				<InputText autocomplete="username" dir="ltr" pattern="[0][9][0-9]{9}" title="لطفا یک شماره‌ی همراه معتبر (شروع با ۰۹ و با اعداد انگلیسی) وارد کنید" class="button-bubble-static" @bind-Value="@_loginPhoneModel.Phone"/>
+				@* <InputText autocomplete="username" dir="ltr" pattern="[0][9][0-9]{9}" title="لطفا یک شماره‌ی همراه معتبر (شروع با ۰۹ و با اعداد انگلیسی) وارد کنید" class="button-bubble-static" @bind-Value="@_loginPhoneModel.Phone"/> *@
+				<button class="button-bubble-static-inline" type="submit">بعدی</button>
+				<ValidationMessage class="red" For="() => _loginPhoneModel.Phone"/>
+			</div>
+			<div class="tip">
+				<img src="img/Lamp.svg" alt="چراغ">
+				<p>اگه قبلا در برگه حساب درست کردی، شماره‌ی همراه حسابت رو این‌جا وارد کن. اگر هم قبلا حساب نداشتی و می‌خوای ثبت نام کنی، یه شماره‌ی معتبر وارد کن تا کارت رو راه بندازیم 😉</p>
+			</div>
+		</EditForm>
+	}
+	else if (_loginState == LoginState.Password)
+	{
+		<EditForm Model="@_loginPasswordModel" OnValidSubmit="@OnPasswordSubmit">
+			<DataAnnotationsValidator/>
+
+			<label>رمز عبور</label>
+			<InputText autocomplete="current-password" dir="ltr" class="button-bubble-static" type="password" @bind-Value="@_loginPasswordModel.Password"/>
+			<ValidationMessage class="red" For="() => _loginPasswordModel.Password"/>
+			<button class="button-bubble-static-inline" type="submit">بعدی</button>
+		</EditForm>
+	}
+	else if (_loginState == LoginState.Register)
+	{
+		<EditForm Model="@_loginRegisterModel" OnValidSubmit="@OnRegisterSubmit">
+			<DataAnnotationsValidator/>
+
+			<div class="tip">
+				<img src="img/Lamp.svg" alt="چراغ">
+				<p>به برگه خوش اومدی 🖐️! برای تکمیل ثبت نامت، فقط کافیه یه رمز عبور قوی وارد کنی که بعدا هم بتونی وارد حسابت بشی 🔒🙂.</p>
+			</div>
+
+			<div class="form-input center-flex">
+				<label>رمز عبور</label>
+				<InputText dir="ltr" autocomplete="new-password" class="button-bubble-static" type="password" @bind-Value="@_loginRegisterModel.Password"/>
+				<button class="button-bubble-static-inline" type="submit">بعدی</button>
+				<ValidationMessage class="red" For="() => _loginRegisterModel.Password"/>
+			</div>
+
+		</EditForm>
+	}
+	else if (_loginState == LoginState.Verification)
+	{
+		<EditForm Model="_loginVerificationModel" OnValidSubmit="OnVerificationSubmit">
+			<DataAnnotationsValidator/>
+
+			<div class="center-flex form-input">
+				<label>کد فعال‌سازی</label>
+				<InputText dir="ltr" class="button-bubble-static" type="text" @bind-Value="@_loginVerificationModel.VerificationCode"/>
+				<button class="button-bubble-static-inline" type="submit">بعدی</button>
+			</div>
+			<div class="center-flex">
+				<ValidationMessage class="red" For="() => _loginVerificationModel.VerificationCode"/>
+				@if (_verificationCodeNotMatchError != string.Empty)
+				{
+					<p class="red">@_verificationCodeNotMatchError</p>
+				}
+			</div>
+
+		</EditForm>
+	}
+	else if (_loginState == LoginState.Success)
+	{
+		<p class="center">عضویت شما با موفقیت انجام شد! به برگه خوش اومدی 🥳!</p>
+	}
+
+	@if (!string.IsNullOrWhiteSpace (_errorMessage))
+	{
+		<p class="red">@_errorMessage</p>
+	}
+</div>
+
+@code {
+	// TODO: Fix two errors if verification cods is null
+	private LoginPhoneModel _loginPhoneModel = new ();
+	private LoginPasswordModel _loginPasswordModel = new ();
+	private LoginRegisterModel _loginRegisterModel = new ();
+	private LoginVerificationModel _loginVerificationModel = new ();
+	private LoginState _loginState = LoginState.Phone;
+	private string? _errorMessage;
+	private string _captcha = string.Empty;
+	private string? _verificationCode;
+	private string _verificationCodeNotMatchError = string.Empty;
+	private HttpContext _httpContext = default!;
+	readonly UsersProto.UsersProtoClient _userClient = new (GrpcChannel.ForAddress ("http://users"));
+	readonly SmsProto.SmsProtoClient _smsClient = new (GrpcChannel.ForAddress ("http://sms"));
+
+	protected override void OnInitialized ()
+	{
+		_httpContext = _httpContextAccessor.HttpContext!;
+	}
+
+	protected override async Task OnAfterRenderAsync (bool firstRender)
+	{
+		if (_httpContext.User.Identity!.IsAuthenticated)
+		{
+			NavigationManager.NavigateTo ("/", true, true);
+			return;
+		}
+
+		var dotNetReference = DotNetObjectReference.Create (this);
+		await JsRuntime.InvokeVoidAsync ("setDotNetReference", dotNetReference);
+		await JsRuntime.InvokeVoidAsync("onAfterRender");
+	}
+
+	[JSInvokable]
+	public void OnCaptchaSubmit (string token)
+	{
+		_loginState = LoginState.Phone;
+		_captcha = token;
+		StateHasChanged ();
+	}
+
+	private void OnPhoneSubmit ()
+	{
+		// TODO: Fix URL not found
+		try
+		{
+			_userClient.GetUserByPhone (new GetUserByPhoneRequest
+			{
+				Phone = _loginPhoneModel.Phone
+			});
+
+			_loginState = LoginState.Password;
+		}
+		catch (RpcException ex)
+		{
+			switch (ex.StatusCode)
+			{
+				case StatusCode.NotFound:
+					_loginState = LoginState.Verification;
+
+					var response = _smsClient.SendVerification (new SendVerificationRequest
+					{
+						Phone = _loginPhoneModel.Phone
+					});
+
+					_verificationCode = response.Code;
+					break;
+			}
+		}
+	}
+
+	private void OnVerificationSubmit ()
+	{
+	// TODO: Fix fatal local verification code storage
+	// TODO: For god sake make a human like validation for it
+		if (_loginVerificationModel.VerificationCode != _verificationCode && _verificationCode?.Length == 4)
+		{
+			_verificationCodeNotMatchError = "کد فعال‌سازی که وارد کردی درست نیست. یه بار دیگه امتحان کن";
+		}
+		else if (_verificationCode?.Length != 4 && !string.IsNullOrWhiteSpace (_verificationCode))
+		{
+			_verificationCodeNotMatchError = "کد فعال‌سازی باید ۴ رقم باشه";
+		}
+		else
+		{
+			_loginState = LoginState.Register;
+			_verificationCodeNotMatchError = string.Empty;
+		}
+	}
+
+	private async Task OnRegisterSubmit ()
+	{
+		try
+		{
+			await _userClient.AddUserAsync (new AddUserRequest
+			{
+				Phone = _loginPhoneModel.Phone,
+				Captcha = _captcha,
+				Password = _loginRegisterModel.Password
+			});
+
+			_loginState = LoginState.Success;
+		}
+		catch (RpcException ex)
+		{
+			switch (ex.StatusCode)
+			{
+				case StatusCode.NotFound:
+					_loginState = LoginState.Register;
+					break;
+			}
+		}
+	}
+
+	private async Task OnPasswordSubmit ()
+	{
+		var result = await JsRuntime.InvokeAsync<uint> ("login", _loginPhoneModel.Phone, _loginPasswordModel.Password, _captcha);
+
+		switch (result)
+		{
+			case 404:
+				_errorMessage = "رمز ورود صحیح نمی‌باشد";
+				break;
+
+			case 400:
+				_errorMessage = "اعتبارسنجی درخواست شما با خطا رو به رو شد. لطفا ربات نباشید.";
+				break;
+
+			case 403:
+				_errorMessage = "حساب کاربری شما غیر فعال شده است و امکان ورود به آن وجود ندارد";
+				break;
+		}
+	}
+
+
+	private class LoginPhoneModel
+	{
+		[Display (Name = "شماره‌ی همراه")]
+		[Required (ErrorMessage = "لطفا {0} را وارد کنید")]
+		public string? Phone { get; set; }
+	}
+
+	private class LoginVerificationModel
+	{
+		[Display (Name = "کد فعال‌سازی")]
+		[Required (ErrorMessage = "لطفا {0} را وارد کنید")]
+		public string? VerificationCode { get; set; }
+	}
+
+	private class LoginPasswordModel
+	{
+		[Required]
+		public string? Password { get; set; }
+	}
+
+	private class LoginRegisterModel
+	{
+		[Display (Name = "رمز عبور")]
+		[Required (ErrorMessage = "لطفا {0} را وارد کنید")]
+		[MinLength (10, ErrorMessage = "{0} باید حداقل شامل 10 کاراکتر باشد")]
+		[MaxLength (80, ErrorMessage = "{0} حداکثر می‌تواند شامل 80 کاراکتر باشد")]
+		public string? Password { get; set; }
+	}
+
+	private enum LoginState
+	{
+		Captcha,
+		Phone,
+		Password,
+		Verification,
+		Register,
+		Success
+	}
+
+}
