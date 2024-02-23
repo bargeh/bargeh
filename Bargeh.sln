@@ -11,11 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{17
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{DDC17D3A-C411-4CB1-B27F-1E2262CAB209}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bargeh.Sms.Api", "Source/Services/Bargeh.SMS.API/Bargeh.Sms.Api.csproj", "{51BA5F48-BEB7-4FDF-8F75-BDE1DB752676}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bargeh.Sms.Api", "Source/Services/Bargeh.Sms.Api/Bargeh.Sms.Api.csproj", "{51BA5F48-BEB7-4FDF-8F75-BDE1DB752676}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bargeh.Users.Api", "Source/Services/Bargeh.Users.API/Bargeh.Users.Api.csproj", "{C05837D2-F10A-4B5E-895A-D360D05A68C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bargeh.Users.Api", "Source/Services/Bargeh.Users.Api/Bargeh.Users.Api.csproj", "{C05837D2-F10A-4B5E-895A-D360D05A68C0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bargeh.Identity.Api", "Source/Services/Bargeh.Identity.API/Bargeh.Identity.Api.csproj", "{46580017-92B2-4419-BE6F-F5297DB22FE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bargeh.Identity.Api", "Source/Services/Bargeh.Identity.Api/Bargeh.Identity.Api.csproj", "{46580017-92B2-4419-BE6F-F5297DB22FE0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bargeh.Users.Api.Tests", "Source/Services/Bargeh.Users.Api.Tests/Bargeh.Users.Api.Tests.csproj", "{BA424CD5-5118-4C8B-9B5B-A738CEC5935E}"
 EndProject

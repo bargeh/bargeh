@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="../../Services/Bargeh.Users.API/Bargeh.Users.Api.csproj"/>
+        <ProjectReference Include="../../Services/Bargeh.Users.Api/Bargeh.Users.Api.csproj"/>
     </ItemGroup>
 
 </Project>
