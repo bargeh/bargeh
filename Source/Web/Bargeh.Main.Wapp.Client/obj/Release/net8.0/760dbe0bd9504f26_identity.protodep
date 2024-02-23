@@ -1,2 +1,0 @@
-obj\Release\net8.0/Identity.cs \
-obj\Release\net8.0/IdentityGrpc.cs: ../../Services/Bargeh.Identity.Api/Protos/identity.proto

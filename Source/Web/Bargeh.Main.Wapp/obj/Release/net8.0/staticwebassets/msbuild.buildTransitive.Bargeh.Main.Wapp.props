@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\Bargeh.Main.Wapp.props" />
-</Project>
