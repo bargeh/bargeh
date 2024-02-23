@@ -4,11 +4,13 @@
 @using Grpc.Core
 @using Identity.Api
 @using Sms.Api
+@using Users.Api
 @inject IJSRuntime JsRuntime
 @inject ILogger<Login> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityProto.IdentityProtoClient IdentityService
 @inject SmsProto.SmsProtoClient SmsService
+@inject UsersProto.UsersProtoClient UsersService
 @inject LocalStorageService LocalStorageService
 @rendermode InteractiveWebAssembly
 
@@ -299,6 +301,17 @@
 		if(!_verificationModel.PhoneValid)
 		{
 			_verificationMessageStore.Add(() => _verificationModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
+			return;
+		}
+
+		GetUserReply? user = UsersService.GetUserByPhone(new()
+		{
+			Phone = _verificationModel.Phone
+		});
+
+		if(user is null)
+		{
+			_verificationMessageStore.Add(() => _verificationModel.Phone!, "کاربری با این شماره همراه در برگه وجود نداره");
 			return;
 		}
 

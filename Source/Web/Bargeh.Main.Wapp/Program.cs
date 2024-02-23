@@ -48,6 +48,18 @@ builder.Services.AddSingleton(_ =>
 	return new SmsProto.SmsProtoClient(channel);
 });
 
+builder.Services.AddSingleton(_ =>
+{
+	HttpClient httpClient = new(new GrpcWebHandler(GrpcWebMode.GrpcWeb, new HttpClientHandler()))
+	{
+		BaseAddress = new("https://localhost:5501")
+	};
+
+	GrpcChannel channel = GrpcChannel.ForAddress(httpClient.BaseAddress, new() { HttpClient = httpClient });
+
+	return new SmsProto.SmsProtoClient(channel);
+});
+
 //builder.Services.AddSingleton<SmsApiGrpcProvider> ()
 //	.AddGrpcClient<SmsProto.SmsProtoClient> (o =>
 //		o.Address = builder.Configuration.GetValue<Uri> ("services:sms:1"));
