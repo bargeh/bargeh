@@ -12,9 +12,6 @@
 @inject LocalStorageService LocalStorageService
 @rendermode InteractiveWebAssembly
 
-@(// FROMHERE: Recheck login and merge if everything is OK
-)
-
 <PageTitle>ورود و عضویت - برگه</PageTitle>
 
 <HeadContent>
@@ -24,7 +21,7 @@
 <div class="popup">
 	<span class="no-block-margin pad-bottom horizontal-align center-flex"><img src="/img/User.svg" class="tiny-icon" alt="کاربر"/>ورود / ثبت نام</span>
 
-	@if(_loginState != LoginState.Login || _loginState != LoginState.SetPassword)
+	@if(_loginState is not(LoginState.Login or LoginState.SetPassword))
 	{
 		<a @onclick="OnLoginRequested" class="center pad-bottom">برگرد به ورود ←</a>
 	}
@@ -320,8 +317,6 @@
 
 		try
 		{
-			Logger.LogInformation("Got into the try");
-
 			await SmsService.ValidateVerificationCodeAsync(new()
 			{
 				Phone = _verificationModel.Phone,
@@ -330,19 +325,26 @@
 		}
 		catch(RpcException exception)
 		{
-			Logger.LogInformation($"Got into the catch, status {exception.Status}");
-
 			if(exception.StatusCode == StatusCode.NotFound)
 			{
-				Logger.LogInformation("Got into the if");
-
 				_verificationMessageStore.Add(() => _verificationModel.VerificationCode!, "کد تاییدی که وارد کردی درست نیست");
 				_verificationEditContext.NotifyValidationStateChanged();
 				return;
 			}
-		}
 
-		Logger.LogInformation("Passed the try");
+			if(exception.StatusCode == StatusCode.InvalidArgument)
+			{
+				switch(exception.Message)
+				{
+					case"Parameter \"Verification Code\" is expired":
+						_verificationMessageStore.Add(() => _verificationModel.VerificationCode!, "کد تاییدی که وارد کردی منقضی شده، دوباره سعی کن");
+						_verificationEditContext.NotifyValidationStateChanged();
+						return;
+				}
+			}
+
+			throw;
+		}
 
 		_loginState = LoginState.SetPassword;
 	}

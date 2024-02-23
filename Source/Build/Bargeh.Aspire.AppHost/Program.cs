@@ -15,6 +15,7 @@ IResourceBuilder<ProjectResource> usersApi =
 IResourceBuilder<ProjectResource> smsApi =
 	builder.AddProject<Bargeh_Sms_Api>("sms")
 		   .WithReference(postgres)
+		   .WithReference(usersApi)
 		   .AsHttp2Service();
 
 IResourceBuilder<ProjectResource> identityApi =

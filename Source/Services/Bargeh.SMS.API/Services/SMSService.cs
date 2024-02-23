@@ -3,15 +3,34 @@ using Bargeh.Sms.Api.Models;
 using Grpc.Core;
 using MatinDevs.PersianPhoneNumbers;
 using Sms.Api;
+using Users.Api;
 using static System.UInt16;
+using VoidOperationReply = Sms.Api.VoidOperationReply;
 
 namespace Bargeh.Sms.Api.Services;
 
-public class SmsService(SmsDbContext dbContext) : SmsProto.SmsProtoBase
+public class SmsService(SmsDbContext dbContext, UsersProto.UsersProtoClient usersService) : SmsProto.SmsProtoBase
 {
 	public override async Task<VoidOperationReply> SendVerification(SendVerificationRequest request,
 																	ServerCallContext context)
 	{
+		bool phoneValid = request.Phone.IsPersianPhoneValid();
+
+		if(!phoneValid)
+		{
+			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter \"Phone\" is not valid"));
+		}
+
+		GetUserReply? user = usersService.GetUserByPhone(new()
+		{
+			Phone = request.Phone
+		});
+
+		if(user is null)
+		{
+			throw new RpcException(new(StatusCode.InvalidArgument, "User with parameter \"Phone\" was not found"));
+		}
+
 		ushort code = (ushort)Random.Shared.Next(1000, 9999);
 
 		// PRODUCTION: Add a real SMS sending API contract here
@@ -28,9 +47,8 @@ public class SmsService(SmsDbContext dbContext) : SmsProto.SmsProtoBase
 		return new();
 	}
 
-	public override async Task<VoidOperationReply> ValidateVerificationCode(
-		ValidateVerificationCodeRequest request,
-		ServerCallContext context)
+	public override async Task<VoidOperationReply> ValidateVerificationCode(ValidateVerificationCodeRequest request,
+																			ServerCallContext context)
 	{
 		bool codeValid = TryParse(request.Code, out ushort code);
 		bool phoneValid = request.Phone.IsPersianPhoneValid();
@@ -47,7 +65,7 @@ public class SmsService(SmsDbContext dbContext) : SmsProto.SmsProtoBase
 
 		SmsVerification verification = await dbContext.GetVerificationByCode(code, request.Phone) ??
 									   throw new RpcException(new(StatusCode.NotFound,
-																  "Parameter \"Code\" is not valid"));
+																  "Parameter \"Code\" was not found"));
 
 		if(verification.ExpireDate >= DateTime.UtcNow)
 		{
@@ -56,12 +74,6 @@ public class SmsService(SmsDbContext dbContext) : SmsProto.SmsProtoBase
 
 			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter \"Verification Code\" is expired"));
 		}
-
-		if(code != verification.Code)
-		{
-			throw new RpcException(new(StatusCode.InvalidArgument, "The verification code is incorrect"));
-		}
-
 
 		return new();
 	}

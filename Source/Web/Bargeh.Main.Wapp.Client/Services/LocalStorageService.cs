@@ -3,7 +3,7 @@ using Microsoft.JSInterop;
 
 namespace Bargeh.Main.Wapp.Client.Services;
 
-public class LocalStorageService(IJSRuntime jsRuntime, ILogger<LocalStorageService> logger)
+public class LocalStorageService(IJSRuntime jsRuntime)
 {
 	public async Task<T?> GetItemAsync<T>(string key) where T : class
 	{

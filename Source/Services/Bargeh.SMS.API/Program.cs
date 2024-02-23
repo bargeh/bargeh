@@ -1,6 +1,7 @@
 using Bargeh.Aspire.ServiceDefaults;
 using Bargeh.Sms.Api.Infrastructure;
 using Bargeh.Sms.Api.Services;
+using Users.Api;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder (args);
 
@@ -8,6 +9,11 @@ builder.AddServiceDefaults ();
 
 builder.Services.AddGrpc ();
 builder.Services.AddGrpcReflection ();
+
+builder.Services.AddGrpcClient<UsersProto.UsersProtoClient>(options =>
+{
+	options.Address = new(builder.Configuration.GetValue<string>("services:users:1")!);
+});
 
 builder.AddNpgsqlDbContext<SmsDbContext> ("postgres", settings =>
 {
