@@ -1,0 +1,325 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\Forum.html",
+      "PackagePath": "staticwebassets\\Forum.html"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\Home.html",
+      "PackagePath": "staticwebassets\\Home.html"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\Topic.html",
+      "PackagePath": "staticwebassets\\Topic.html"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\User.html",
+      "PackagePath": "staticwebassets\\User.html"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\css\\bargeh.css",
+      "PackagePath": "staticwebassets\\css\\bargeh.css"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\css\\footer.css",
+      "PackagePath": "staticwebassets\\css\\footer.css"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\css\\header.css",
+      "PackagePath": "staticwebassets\\css\\header.css"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\css\\home.css",
+      "PackagePath": "staticwebassets\\css\\home.css"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\css\\splide-core.min.css",
+      "PackagePath": "staticwebassets\\css\\splide-core.min.css"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\css\\tooltip.css",
+      "PackagePath": "staticwebassets\\css\\tooltip.css"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\css\\topic.css",
+      "PackagePath": "staticwebassets\\css\\topic.css"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\css\\userforum.css",
+      "PackagePath": "staticwebassets\\css\\userforum.css"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel-Black.eot",
+      "PackagePath": "staticwebassets\\fonts\\Sahel-Black.eot"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel-Black.ttf",
+      "PackagePath": "staticwebassets\\fonts\\Sahel-Black.ttf"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel-Black.woff",
+      "PackagePath": "staticwebassets\\fonts\\Sahel-Black.woff"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel-Black.woff2",
+      "PackagePath": "staticwebassets\\fonts\\Sahel-Black.woff2"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel-Bold.eot",
+      "PackagePath": "staticwebassets\\fonts\\Sahel-Bold.eot"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel-Bold.ttf",
+      "PackagePath": "staticwebassets\\fonts\\Sahel-Bold.ttf"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel-Bold.woff",
+      "PackagePath": "staticwebassets\\fonts\\Sahel-Bold.woff"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel-Bold.woff2",
+      "PackagePath": "staticwebassets\\fonts\\Sahel-Bold.woff2"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel-Light.eot",
+      "PackagePath": "staticwebassets\\fonts\\Sahel-Light.eot"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel-Light.ttf",
+      "PackagePath": "staticwebassets\\fonts\\Sahel-Light.ttf"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel-Light.woff",
+      "PackagePath": "staticwebassets\\fonts\\Sahel-Light.woff"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel-Light.woff2",
+      "PackagePath": "staticwebassets\\fonts\\Sahel-Light.woff2"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel-SemiBold.eot",
+      "PackagePath": "staticwebassets\\fonts\\Sahel-SemiBold.eot"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel-SemiBold.ttf",
+      "PackagePath": "staticwebassets\\fonts\\Sahel-SemiBold.ttf"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel-SemiBold.woff",
+      "PackagePath": "staticwebassets\\fonts\\Sahel-SemiBold.woff"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel-SemiBold.woff2",
+      "PackagePath": "staticwebassets\\fonts\\Sahel-SemiBold.woff2"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel.eot",
+      "PackagePath": "staticwebassets\\fonts\\Sahel.eot"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel.ttf",
+      "PackagePath": "staticwebassets\\fonts\\Sahel.ttf"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel.woff",
+      "PackagePath": "staticwebassets\\fonts\\Sahel.woff"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\Sahel.woff2",
+      "PackagePath": "staticwebassets\\fonts\\Sahel.woff2"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\fonts\\font.css",
+      "PackagePath": "staticwebassets\\fonts\\font.css"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Attachment.svg",
+      "PackagePath": "staticwebassets\\img\\Attachment.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\ChatSingle.svg",
+      "PackagePath": "staticwebassets\\img\\ChatSingle.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Circle.svg",
+      "PackagePath": "staticwebassets\\img\\Circle.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Cover.jpg",
+      "PackagePath": "staticwebassets\\img\\Cover.jpg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Dislike.svg",
+      "PackagePath": "staticwebassets\\img\\Dislike.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Eclipse.svg",
+      "PackagePath": "staticwebassets\\img\\Eclipse.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\File.svg",
+      "PackagePath": "staticwebassets\\img\\File.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Funny.svg",
+      "PackagePath": "staticwebassets\\img\\Funny.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Image.svg",
+      "PackagePath": "staticwebassets\\img\\Image.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Lamp.svg",
+      "PackagePath": "staticwebassets\\img\\Lamp.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Light.svg",
+      "PackagePath": "staticwebassets\\img\\Light.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Like.svg",
+      "PackagePath": "staticwebassets\\img\\Like.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Logo-Main-12.png",
+      "PackagePath": "staticwebassets\\img\\Logo-Main-12.png"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Logo.svg",
+      "PackagePath": "staticwebassets\\img\\Logo.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Logo11-07-White.svg",
+      "PackagePath": "staticwebassets\\img\\Logo11-07-White.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Logo11-07.svg",
+      "PackagePath": "staticwebassets\\img\\Logo11-07.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Love.svg",
+      "PackagePath": "staticwebassets\\img\\Love.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\More.svg",
+      "PackagePath": "staticwebassets\\img\\More.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\NavArrow.svg",
+      "PackagePath": "staticwebassets\\img\\NavArrow.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Pen.svg",
+      "PackagePath": "staticwebassets\\img\\Pen.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Profile.jpeg",
+      "PackagePath": "staticwebassets\\img\\Profile.jpeg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\RedChatMultiple.svg",
+      "PackagePath": "staticwebassets\\img\\RedChatMultiple.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\RedSupport.svg",
+      "PackagePath": "staticwebassets\\img\\RedSupport.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\RedUser.svg",
+      "PackagePath": "staticwebassets\\img\\RedUser.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Reply.svg",
+      "PackagePath": "staticwebassets\\img\\Reply.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\RightArrow.svg",
+      "PackagePath": "staticwebassets\\img\\RightArrow.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Search.svg",
+      "PackagePath": "staticwebassets\\img\\Search.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Send.svg",
+      "PackagePath": "staticwebassets\\img\\Send.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Support.svg",
+      "PackagePath": "staticwebassets\\img\\Support.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\Test-Image.png",
+      "PackagePath": "staticwebassets\\img\\Test-Image.png"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\User.svg",
+      "PackagePath": "staticwebassets\\img\\User.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\img\\UserPlus.svg",
+      "PackagePath": "staticwebassets\\img\\UserPlus.svg"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\js\\bargeh.js",
+      "PackagePath": "staticwebassets\\js\\bargeh.js"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\js\\header.js",
+      "PackagePath": "staticwebassets\\js\\header.js"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\js\\jquery-3.6.0.min.js",
+      "PackagePath": "staticwebassets\\js\\jquery-3.6.0.min.js"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\js\\login.js",
+      "PackagePath": "staticwebassets\\js\\login.js"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\js\\logout.js",
+      "PackagePath": "staticwebassets\\js\\logout.js"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\js\\post.js",
+      "PackagePath": "staticwebassets\\js\\post.js"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\js\\recaptcha.js",
+      "PackagePath": "staticwebassets\\js\\recaptcha.js"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\js\\splide.min.js",
+      "PackagePath": "staticwebassets\\js\\splide.min.js"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\js\\tooltip.js",
+      "PackagePath": "staticwebassets\\js\\tooltip.js"
+    },
+    {
+      "Id": "C:\\Source\\Bargeh\\Source\\Web\\Bargeh.Main.Wapp\\wwwroot\\js\\topic.js",
+      "PackagePath": "staticwebassets\\js\\topic.js"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Bargeh.Main.Wapp.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.Bargeh.Main.Wapp.props",
+      "PackagePath": "build\\Bargeh.Main.Wapp.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.Bargeh.Main.Wapp.props",
+      "PackagePath": "buildMultiTargeting\\Bargeh.Main.Wapp.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.Bargeh.Main.Wapp.props",
+      "PackagePath": "buildTransitive\\Bargeh.Main.Wapp.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

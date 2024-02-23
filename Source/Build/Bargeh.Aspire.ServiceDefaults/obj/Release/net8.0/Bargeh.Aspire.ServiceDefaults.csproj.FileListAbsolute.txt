@@ -1,0 +1,13 @@
+C:\Source\Bargeh\Source\Build\Bargeh.Aspire.ServiceDefaults\bin\Release\net8.0\Bargeh.Aspire.ServiceDefaults.deps.json
+C:\Source\Bargeh\Source\Build\Bargeh.Aspire.ServiceDefaults\bin\Release\net8.0\Bargeh.Aspire.ServiceDefaults.dll
+C:\Source\Bargeh\Source\Build\Bargeh.Aspire.ServiceDefaults\bin\Release\net8.0\Bargeh.Aspire.ServiceDefaults.pdb
+C:\Source\Bargeh\Source\Build\Bargeh.Aspire.ServiceDefaults\obj\Release\net8.0\Bargeh.Aspire.ServiceDefaults.csproj.AssemblyReference.cache
+C:\Source\Bargeh\Source\Build\Bargeh.Aspire.ServiceDefaults\obj\Release\net8.0\Bargeh.Aspire.ServiceDefaults.GeneratedMSBuildEditorConfig.editorconfig
+C:\Source\Bargeh\Source\Build\Bargeh.Aspire.ServiceDefaults\obj\Release\net8.0\Bargeh.Aspire.ServiceDefaults.AssemblyInfoInputs.cache
+C:\Source\Bargeh\Source\Build\Bargeh.Aspire.ServiceDefaults\obj\Release\net8.0\Bargeh.Aspire.ServiceDefaults.AssemblyInfo.cs
+C:\Source\Bargeh\Source\Build\Bargeh.Aspire.ServiceDefaults\obj\Release\net8.0\Bargeh.Aspire.ServiceDefaults.csproj.CoreCompileInputs.cache
+C:\Source\Bargeh\Source\Build\Bargeh.Aspire.ServiceDefaults\obj\Release\net8.0\Bargeh.Aspire.ServiceDefaults.sourcelink.json
+C:\Source\Bargeh\Source\Build\Bargeh.Aspire.ServiceDefaults\obj\Release\net8.0\Bargeh.Aspire.ServiceDefaults.dll
+C:\Source\Bargeh\Source\Build\Bargeh.Aspire.ServiceDefaults\obj\Release\net8.0\refint\Bargeh.Aspire.ServiceDefaults.dll
+C:\Source\Bargeh\Source\Build\Bargeh.Aspire.ServiceDefaults\obj\Release\net8.0\Bargeh.Aspire.ServiceDefaults.pdb
+C:\Source\Bargeh\Source\Build\Bargeh.Aspire.ServiceDefaults\obj\Release\net8.0\ref\Bargeh.Aspire.ServiceDefaults.dll

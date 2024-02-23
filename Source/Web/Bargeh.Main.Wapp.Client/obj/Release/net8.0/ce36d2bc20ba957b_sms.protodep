@@ -1,0 +1,2 @@
+obj\Release\net8.0/Sms.cs \
+obj\Release\net8.0/SmsGrpc.cs: ../../Services/Bargeh.Sms.Api/Protos/sms.proto

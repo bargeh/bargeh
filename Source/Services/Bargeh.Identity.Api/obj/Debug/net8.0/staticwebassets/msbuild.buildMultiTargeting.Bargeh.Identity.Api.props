@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Bargeh.Identity.Api.props" />
+</Project>

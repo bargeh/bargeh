@@ -1,0 +1,2 @@
+obj\Release\net8.0\Protos/Sms.cs \
+obj\Release\net8.0\Protos/SmsGrpc.cs: Protos/sms.proto
