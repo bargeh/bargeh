@@ -5,6 +5,7 @@ using Grpc.Net.Client;
 using Grpc.Net.Client.Web;
 using Identity.Api;
 using Sms.Api;
+using Users.Api;
 using _Imports = Bargeh.Main.Wapp.Client._Imports;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -45,7 +46,7 @@ builder.Services.AddSingleton(_ =>
 
 	GrpcChannel channel = GrpcChannel.ForAddress(httpClient.BaseAddress, new() { HttpClient = httpClient });
 
-	return new SmsProto.SmsProtoClient(channel);
+	return new UsersProto.UsersProtoClient(channel);
 });
 
 builder.Services.AddSingleton(_ =>
