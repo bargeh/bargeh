@@ -1,0 +1,31 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A15B2CA8-8CBE-45AB-9B4F-E04F7AAE4233}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wapps", "Wapps", "{C5B1A052-18D7-4A5D-9629-D3046F02826C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{19F94995-2BD9-4347-80C7-9EEB728C7474}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Aspire.AppHost", "Source\Build\Bargeh.Aspire.AppHost\Bargeh.Aspire.AppHost.csproj", "{E3E81891-7236-4D69-855D-3D44A4E5ADD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Aspire.ServiceDefaults", "Source\Build\Bargeh.Aspire.ServiceDefaults\Bargeh.Aspire.ServiceDefaults.csproj", "{DC53B1F0-A18A-4757-889D-59CBAC4F148C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E3E81891-7236-4D69-855D-3D44A4E5ADD7} = {19F94995-2BD9-4347-80C7-9EEB728C7474}
+		{DC53B1F0-A18A-4757-889D-59CBAC4F148C} = {19F94995-2BD9-4347-80C7-9EEB728C7474}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E3E81891-7236-4D69-855D-3D44A4E5ADD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3E81891-7236-4D69-855D-3D44A4E5ADD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3E81891-7236-4D69-855D-3D44A4E5ADD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3E81891-7236-4D69-855D-3D44A4E5ADD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC53B1F0-A18A-4757-889D-59CBAC4F148C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC53B1F0-A18A-4757-889D-59CBAC4F148C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC53B1F0-A18A-4757-889D-59CBAC4F148C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC53B1F0-A18A-4757-889D-59CBAC4F148C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
