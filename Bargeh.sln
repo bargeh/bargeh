@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Aspire.ServiceDefaul
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Users.Api", "Source\Services\Bargeh.Users.Api\Bargeh.Users.Api.csproj", "{A0CD0FB2-8844-4C06-8923-71657EC55DF8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Sms.Api", "Source\Services\Bargeh.Sms.Api\Bargeh.Sms.Api.csproj", "{ADE39E5A-2AA0-4601-9175-E1FDB2CD9FDE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,7 @@ Global
 		{E3E81891-7236-4D69-855D-3D44A4E5ADD7} = {19F94995-2BD9-4347-80C7-9EEB728C7474}
 		{DC53B1F0-A18A-4757-889D-59CBAC4F148C} = {19F94995-2BD9-4347-80C7-9EEB728C7474}
 		{A0CD0FB2-8844-4C06-8923-71657EC55DF8} = {A15B2CA8-8CBE-45AB-9B4F-E04F7AAE4233}
+		{ADE39E5A-2AA0-4601-9175-E1FDB2CD9FDE} = {A15B2CA8-8CBE-45AB-9B4F-E04F7AAE4233}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E3E81891-7236-4D69-855D-3D44A4E5ADD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -34,5 +37,9 @@ Global
 		{A0CD0FB2-8844-4C06-8923-71657EC55DF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0CD0FB2-8844-4C06-8923-71657EC55DF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0CD0FB2-8844-4C06-8923-71657EC55DF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADE39E5A-2AA0-4601-9175-E1FDB2CD9FDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADE39E5A-2AA0-4601-9175-E1FDB2CD9FDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADE39E5A-2AA0-4601-9175-E1FDB2CD9FDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADE39E5A-2AA0-4601-9175-E1FDB2CD9FDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
