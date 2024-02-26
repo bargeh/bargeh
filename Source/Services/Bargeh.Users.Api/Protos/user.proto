@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+option csharp_namespace = "Users.Api";
+
+package user;
+
+service UsersProto {
+  rpc GetUserByUsername (GetUserByUsernameRequest) returns (GetUserReply);
+  rpc GetUserByPhone (GetUserByPhoneRequest) returns (GetUserReply);
+  rpc GetUserById (GetUserByIdRequest) returns (GetUserReply);
+  rpc GetUserByPhoneAndPassword (GetUserByPhoneAndPasswordRequest) returns (GetUserReply);
+  rpc SetUserPassword (SetUserPasswordRequest) returns (VoidOperationReply);
+  rpc AddUser (AddUserRequest) returns (VoidOperationReply);
+  rpc DisableUser (DisableUserRequest) returns (VoidOperationReply);
+}
+
+message GetUserByUsernameRequest {
+  string username = 1;
+}
+
+message GetUserByPhoneRequest {
+  string phone = 1;
+}
+
+message GetUserByIdRequest {
+  string id = 1;
+}
+
+message GetUserByPhoneAndPasswordRequest {
+  string phone = 1;
+  string password = 2;
+  string captcha = 3;
+}
+
+message SetUserPasswordRequest {
+  string id = 1;
+  string password = 2;
+}
+
+message AddUserRequest {
+  string phone = 1;
+  string captcha = 2;
+  string password = 3;
+}
+
+message DisableUserRequest {
+	string id = 1;
+}
+
+message VoidOperationReply {}
+
+message OperationReply {
+  uint32 result = 1;
+}
+
+
+message GetUserReply {
+  string id = 1;
+  string username = 2;
+  string display_name = 3;
+  string email = 4;
+  string bio = 5;
+  string profile_image = 6;
+  string cover_image = 7;
+  uint32 premium_days_left = 8;
+  bool enabled = 9;
+  bool can_create_forums = 10;
+  string phone = 11;
+}
