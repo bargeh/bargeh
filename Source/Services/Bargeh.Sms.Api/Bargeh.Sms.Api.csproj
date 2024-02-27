@@ -20,17 +20,17 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="Protos\sms.proto" GrpcServices="Server"/>
+        <Protobuf Include="Protos/sms.proto" GrpcServices="Server"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="..\Bargeh.Users.Api\Protos\user.proto" GrpcServices="Client">
-            <Link>Protos\user.proto</Link>
+        <Protobuf Include="../Bargeh.Users.Api/Protos/user.proto" GrpcServices="Client">
+            <Link>Protos/user.proto</Link>
         </Protobuf>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Build\Bargeh.Aspire.ServiceDefaults\Bargeh.Aspire.ServiceDefaults.csproj"/>
+        <ProjectReference Include="../../Build/Bargeh.Aspire.ServiceDefaults/Bargeh.Aspire.ServiceDefaults.csproj"/>
     </ItemGroup>
 
 </Project>

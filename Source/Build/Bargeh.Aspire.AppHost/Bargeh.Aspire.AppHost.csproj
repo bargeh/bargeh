@@ -13,10 +13,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Services\Bargeh.Identity.Api\Bargeh.Identity.Api.csproj" />
-      <ProjectReference Include="..\..\Services\Bargeh.Sms.Api\Bargeh.Sms.Api.csproj" />
-      <ProjectReference Include="..\..\Services\Bargeh.Users.Api\Bargeh.Users.Api.csproj" />
-      <ProjectReference Include="..\..\Wapps\Bargeh.Main.Wapp\Bargeh.Main.Wapp.csproj" />
+      <ProjectReference Include="../../Services/Bargeh.Identity.Api/Bargeh.Identity.Api.csproj" />
+      <ProjectReference Include="../../Services/Bargeh.Sms.Api/Bargeh.Sms.Api.csproj" />
+      <ProjectReference Include="../../Services/Bargeh.Users.Api/Bargeh.Users.Api.csproj" />
+      <ProjectReference Include="../../Wapps/Bargeh.Main.Wapp/Bargeh.Main.Wapp.csproj" />
     </ItemGroup>
 
 </Project>

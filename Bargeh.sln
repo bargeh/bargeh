@@ -5,19 +5,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wapps", "Wapps", "{C5B1A052
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{19F94995-2BD9-4347-80C7-9EEB728C7474}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Aspire.AppHost", "Source\Build\Bargeh.Aspire.AppHost\Bargeh.Aspire.AppHost.csproj", "{E3E81891-7236-4D69-855D-3D44A4E5ADD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Aspire.AppHost", "Source/Build/Bargeh.Aspire.AppHost/Bargeh.Aspire.AppHost.csproj", "{E3E81891-7236-4D69-855D-3D44A4E5ADD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Aspire.ServiceDefaults", "Source\Build\Bargeh.Aspire.ServiceDefaults\Bargeh.Aspire.ServiceDefaults.csproj", "{DC53B1F0-A18A-4757-889D-59CBAC4F148C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Aspire.ServiceDefaults", "Source/Build/Bargeh.Aspire.ServiceDefaults/Bargeh.Aspire.ServiceDefaults.csproj", "{DC53B1F0-A18A-4757-889D-59CBAC4F148C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Users.Api", "Source\Services\Bargeh.Users.Api\Bargeh.Users.Api.csproj", "{A0CD0FB2-8844-4C06-8923-71657EC55DF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Users.Api", "Source/Services/Bargeh.Users.Api/Bargeh.Users.Api.csproj", "{A0CD0FB2-8844-4C06-8923-71657EC55DF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Sms.Api", "Source\Services\Bargeh.Sms.Api\Bargeh.Sms.Api.csproj", "{ADE39E5A-2AA0-4601-9175-E1FDB2CD9FDE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Sms.Api", "Source/Services/Bargeh.Sms.Api/Bargeh.Sms.Api.csproj", "{ADE39E5A-2AA0-4601-9175-E1FDB2CD9FDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Identity.Api", "Source\Services\Bargeh.Identity.Api\Bargeh.Identity.Api.csproj", "{DA7ADCD3-8222-4BBB-A20C-29221F4DF824}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Identity.Api", "Source/Services/Bargeh.Identity.Api/Bargeh.Identity.Api.csproj", "{DA7ADCD3-8222-4BBB-A20C-29221F4DF824}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Main.Wapp", "Source\Wapps\Bargeh.Main.Wapp\Bargeh.Main.Wapp.csproj", "{1EA292AC-A5D9-45D4-8E70-DB846B796AD8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Main.Wapp", "Source/Wapps/Bargeh.Main.Wapp/Bargeh.Main.Wapp.csproj", "{1EA292AC-A5D9-45D4-8E70-DB846B796AD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Main.Wapp.Client", "Source\Wapps\Bargeh.Main.Wapp.Client\Bargeh.Main.Wapp.Client.csproj", "{837B54FB-0E54-4C32-8E94-9AFE114BD312}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bargeh.Main.Wapp.Client", "Source/Wapps/Bargeh.Main.Wapp.Client/Bargeh.Main.Wapp.Client.csproj", "{837B54FB-0E54-4C32-8E94-9AFE114BD312}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
