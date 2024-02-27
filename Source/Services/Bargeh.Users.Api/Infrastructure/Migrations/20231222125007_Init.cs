@@ -29,9 +29,6 @@ namespace BargehMigrations.Migrations
 					Enabled = table.Column<bool> (type: "boolean", nullable: false),
 					CanCreateForums = table.Column<bool> (type: "boolean", nullable: false),
 					Email = table.Column<string> (type: "text", nullable: true),
-					IsMale = table.Column<bool> (type: "boolean", nullable: true),
-					Province = table.Column<int> (type: "integer", nullable: true),
-					BirthDate = table.Column<DateTime> (type: "timestamp with time zone", nullable: true)
 				},
 				constraints: table =>
 				{

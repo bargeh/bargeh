@@ -32,9 +32,6 @@ namespace BargehMigrations.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("BirthDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<bool>("CanCreateForums")
                         .HasColumnType("boolean");
 
@@ -50,9 +47,6 @@ namespace BargehMigrations.Migrations
                         .HasColumnType("text");
 
                     b.Property<bool>("Enabled")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool?>("IsMale")
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("OnlineDate")
@@ -71,9 +65,6 @@ namespace BargehMigrations.Migrations
                     b.Property<string>("ProfileImage")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int?>("Province")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("timestamp with time zone");

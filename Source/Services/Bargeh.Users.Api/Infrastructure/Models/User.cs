@@ -1,4 +1,5 @@
-﻿namespace Bargeh.Users.Api.Infrastructure.Models;
+﻿// ReSharper disable EntityFramework.ModelValidation.UnlimitedStringLength
+namespace Bargeh.Users.Api.Infrastructure.Models;
 
 public class User
 {
@@ -10,51 +11,12 @@ public class User
 	public string Bio { get; init; } = string.Empty;
 	public string ProfileImage { get; init; } = "Default.webp";
 	public string CoverImage { get; init; } = "Cover.webp";
-	public ushort PremiumDaysLeft { get; init; } = 0;
+	public ushort PremiumDaysLeft { get; init; }
 
 	public DateTime OnlineDate { get; init; } = DateTime.UtcNow;
 	public DateTime RegisterDate { get; init; } = DateTime.UtcNow;
 	public required string VerificationCode { get; init; }
 	public bool Enabled { get; set; } = true;
 	public bool CanCreateForums { get; init; } = true;
-
 	public string? Email { get; init; }
-	public bool? IsMale { get; init; }
-	public Province? Province { get; init; }
-	public DateTime? BirthDate { get; init; }
-}
-
-public enum Province
-{
-	Alborz,
-	Ardabil,
-	Bushehr,
-	ChaharmahalAndBakhtiari,
-	EastAzerbaijan,
-	Fars,
-	Gilan,
-	Golestan,
-	Hamadan,
-	Hormozgan,
-	Ilam,
-	Isfahan,
-	Kerman,
-	Kermanshah,
-	KhorasanRazavi,
-	Khuzestan,
-	KohgiluyehAndBoyerAhmad,
-	Kurdistan,
-	Lorestan,
-	Markazi,
-	Mazandaran,
-	NorthKhorasan,
-	Qazvin,
-	Qom,
-	Semnan,
-	SistanAndBaluchestan,
-	SouthKhorasan,
-	Tehran,
-	WestAzerbaijan,
-	Yazd,
-	Zanjan
 }
