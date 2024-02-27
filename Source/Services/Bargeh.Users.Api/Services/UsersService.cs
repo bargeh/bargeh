@@ -1,5 +1,5 @@
 using Bargeh.Users.Api.Infrastructure;
-using Bargeh.Users.Api.Models;
+using Bargeh.Users.Api.Infrastructure.Models;
 using Grpc.Core;
 using MatinDevs.PersianPhoneNumbers;
 using Microsoft.EntityFrameworkCore;

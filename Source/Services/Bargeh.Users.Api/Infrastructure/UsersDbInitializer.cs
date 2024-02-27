@@ -1,4 +1,4 @@
-﻿using Bargeh.Users.Api.Models;
+﻿using Bargeh.Users.Api.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bargeh.Users.Api.Infrastructure;

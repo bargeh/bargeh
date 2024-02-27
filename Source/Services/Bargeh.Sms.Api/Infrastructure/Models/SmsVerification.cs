@@ -1,4 +1,4 @@
-﻿namespace Bargeh.Sms.Api.Models;
+﻿namespace Bargeh.Sms.Api.Infrastructure.Models;
 
 public class SmsVerification
 {

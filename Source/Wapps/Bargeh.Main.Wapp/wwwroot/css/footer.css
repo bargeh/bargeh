@@ -1,0 +1,48 @@
+footer {
+    background: #002642;
+}
+
+footer * {
+    color: white;
+    margin: 5pt;
+}
+
+.footer-title {
+    font-weight: bolder;
+    font-size: xx-large;
+}
+
+.footer-links {
+    margin-right: auto;
+    display: flex;
+}
+
+.footer-bullet {
+    margin: 0 7pt;
+    width: auto;
+    height: auto;
+}
+
+.footer-content {
+    padding: 10pt 30pt 10pt 30pt;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    align-items: center;
+    margin: 75pt auto 0 auto;
+    max-width: 1440px;
+}
+
+@media screen and (max-width: 1024px) {
+    .footer-content {
+        grid-template-columns: 1fr !important;
+    }
+
+    .footer-content div {
+        margin: 0 auto;
+    }
+}
+
+.footer-info {
+    display: flex;
+    align-items: center;
+}

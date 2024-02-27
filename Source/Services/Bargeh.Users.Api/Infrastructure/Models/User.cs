@@ -1,4 +1,4 @@
-﻿namespace Bargeh.Users.Api.Models;
+﻿namespace Bargeh.Users.Api.Infrastructure.Models;
 
 public class User
 {
