@@ -1,4 +1,12 @@
-﻿namespace Bargeh.Sms.Api.Services;
+﻿using Bargeh.Sms.Api.Infrastructure;
+using Bargeh.Sms.Api.Infrastructure.Models;
+using Grpc.Core;
+using MatinDevs.PersianPhoneNumbers;
+using Sms.Api;
+using Users.Api;
+using VoidOperationReply = Sms.Api.VoidOperationReply;
+
+namespace Bargeh.Sms.Api.Services;
 
 public class SmsService(SmsDbContext dbContext, UsersProto.UsersProtoClient usersService) : SmsProto.SmsProtoBase
 {
@@ -41,7 +49,7 @@ public class SmsService(SmsDbContext dbContext, UsersProto.UsersProtoClient user
 	public override async Task<VoidOperationReply> ValidateVerificationCode(ValidateVerificationCodeRequest request,
 																			ServerCallContext context)
 	{
-		bool codeValid = TryParse(request.Code, out ushort code);
+		bool codeValid = ushort.TryParse(request.Code, out ushort code);
 		bool phoneValid = request.Phone.IsPersianPhoneValid();
 
 		if(!codeValid || request.Code.Length != 4)

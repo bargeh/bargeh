@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
@@ -49,10 +48,9 @@ public static class Extensions
 			   .WithTracing(tracing =>
 			   {
 				   if(builder.Environment.IsDevelopment())
-				   {
+
 					   // We want to view all traces in development
 					   tracing.SetSampler(new AlwaysOnSampler());
-				   }
 
 				   tracing.AddAspNetCoreInstrumentation()
 						  .AddGrpcClientInstrumentation()
@@ -66,7 +64,7 @@ public static class Extensions
 
 	private static IHostApplicationBuilder AddOpenTelemetryExporters(this IHostApplicationBuilder builder)
 	{
-		var useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
+		bool useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
 
 		if(useOtlpExporter)
 		{
@@ -79,7 +77,7 @@ public static class Extensions
 		// builder.Services.AddOpenTelemetry()
 		//    .WithMetrics(metrics => metrics.AddPrometheusExporter());
 
-		// Uncomment the following lines to enable the Azure Monitor exporter (requires the Azure.Monitor.OpenTelemetry.AspNetCore package)
+		// Uncomment the following lines to enable the Azure Monitor exporter (requires the Azure.Monitor.OpenTelemetry.Exporter package)
 		// builder.Services.AddOpenTelemetry()
 		//    .UseAzureMonitor();
 
@@ -105,7 +103,7 @@ public static class Extensions
 		app.MapHealthChecks("/health");
 
 		// Only health checks tagged with the "live" tag must pass for app to be considered alive
-		app.MapHealthChecks("/alive", new HealthCheckOptions
+		app.MapHealthChecks("/alive", new()
 		{
 			Predicate = r => r.Tags.Contains("live")
 		});
@@ -113,9 +111,11 @@ public static class Extensions
 		return app;
 	}
 
-	private static MeterProviderBuilder AddBuiltInMeters(this MeterProviderBuilder meterProviderBuilder) =>
-		meterProviderBuilder.AddMeter(
-									  "Microsoft.AspNetCore.Hosting",
-									  "Microsoft.AspNetCore.Server.Kestrel",
-									  "System.Net.Http");
+	private static MeterProviderBuilder AddBuiltInMeters(this MeterProviderBuilder meterProviderBuilder)
+	{
+		return meterProviderBuilder.AddMeter(
+											 "Microsoft.AspNetCore.Hosting",
+											 "Microsoft.AspNetCore.Server.Kestrel",
+											 "System.Net.Http");
+	}
 }

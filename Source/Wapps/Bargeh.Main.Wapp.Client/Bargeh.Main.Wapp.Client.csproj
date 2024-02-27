@@ -7,26 +7,27 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MatinDevs.PersianPhoneNumbers" Version="1.2.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.2"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.2" PrivateAssets="all"/>
+        <PackageReference Include="Google.Protobuf" Version="3.25.2"/>
+        <PackageReference Include="Grpc.Net.Client.Web" Version="2.60.0"/>
+        <PackageReference Include="Grpc.Net.ClientFactory" Version="2.60.0"/>
+        <PackageReference Include="Grpc.Tools" Version="2.60.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="MatinDevs.PersianPhoneNumbers" Version="1.2.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.1"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Properties\launchSettings.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="wwwroot\css\app.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\favicon.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\icon-192.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\index.html" />
-      <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
-      <_ContentIncludedByDefault Remove="Pages\Counter.razor" />
-      <_ContentIncludedByDefault Remove="Pages\Home.razor" />
-      <_ContentIncludedByDefault Remove="Pages\Weather.razor" />
+        <Protobuf Include="../../Services/Bargeh.Sms.Api/Protos/sms.proto" GrpcServices="Client">
+            <Link>Protos/sms.proto</Link>
+        </Protobuf>
+        <Protobuf Include="../../Services/Bargeh.Users.Api/Protos/user.proto" GrpcServices="Client">
+            <Link>Protos/user.proto</Link>
+        </Protobuf>
+        <Protobuf Include="../../Services/Bargeh.Identity.Api/Protos/identity.proto" GrpcServices="Client">
+            <Link>Protos/identity.proto</Link>
+        </Protobuf>
     </ItemGroup>
 
 </Project>
