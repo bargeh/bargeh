@@ -40,11 +40,13 @@ message SetUserPasswordRequest {
 message AddUserRequest {
   string phone = 1;
   string captcha = 2;
-  string password = 3;
+  string username = 3;
+  string display_name = 4;
+  bool accepted_tos = 5;
 }
 
 message DisableUserRequest {
-	string id = 1;
+  string id = 1;
 }
 
 message VoidOperationReply {}
@@ -52,7 +54,6 @@ message VoidOperationReply {}
 message OperationReply {
   uint32 result = 1;
 }
-
 
 message GetUserReply {
   string id = 1;

@@ -15,7 +15,6 @@ public class User
 
 	public DateTime OnlineDate { get; init; } = DateTime.UtcNow;
 	public DateTime RegisterDate { get; init; } = DateTime.UtcNow;
-	public required string VerificationCode { get; init; }
 	public bool Enabled { get; set; } = true;
 	public bool CanCreateForums { get; init; } = true;
 	public string? Email { get; init; }

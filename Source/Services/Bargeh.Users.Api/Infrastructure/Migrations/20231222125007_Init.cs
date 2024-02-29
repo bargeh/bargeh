@@ -25,7 +25,6 @@ namespace BargehMigrations.Migrations
 					PremiumDaysLeft = table.Column<int> (type: "integer", nullable: false),
 					OnlineDate = table.Column<DateTime> (type: "timestamp with time zone", nullable: false),
 					RegisterDate = table.Column<DateTime> (type: "timestamp with time zone", nullable: false),
-					VerificationCode = table.Column<string> (type: "text", nullable: false),
 					Enabled = table.Column<bool> (type: "boolean", nullable: false),
 					CanCreateForums = table.Column<bool> (type: "boolean", nullable: false),
 					Email = table.Column<string> (type: "text", nullable: true),
