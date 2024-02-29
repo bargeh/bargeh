@@ -272,7 +272,7 @@
 			'_', '.'
 		];
 
-		if(string.IsNullOrWhiteSpace(_registerModel.DisplayName) || string.IsNullOrWhiteSpace(_registerModel.Username) || !_registerModel.Username.All(c => _registerModel.Username.Contains(c)))
+		if(string.IsNullOrWhiteSpace(_registerModel.DisplayName) || string.IsNullOrWhiteSpace(_registerModel.Username) || _registerModel.Username.All(c => allowedCharsForUsername.Contains(c)))
 		{
 			_registerMessageStore.Add(() => _registerModel.DisplayName!, "نام کاربری یا نام نمایشی که انتخاب کردی درست نیست");
 			return;
