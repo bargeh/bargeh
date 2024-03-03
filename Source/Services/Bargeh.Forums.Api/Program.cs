@@ -18,7 +18,9 @@ WebApplication app = builder.Build();
 
 app.MapDefaultEndpoints();
 
-app.MapGrpcService<GreeterService>();
+app.UseGrpcWeb();
+
+app.MapGrpcService<GreeterService>().EnableGrpcWeb();
 app.MapGrpcReflectionService();
 
 await ForumsDbInitializer
