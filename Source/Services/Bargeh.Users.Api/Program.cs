@@ -21,10 +21,9 @@ builder.Services.AddCors (options =>
 {
 	options.AddDefaultPolicy (policyBuilder =>
 	{
-		policyBuilder.AllowAnyOrigin ()
-					 .AllowAnyHeader ()
-					 .AllowAnyMethod ()
-					 .Build ();
+		policyBuilder.AllowAnyOrigin()
+					 .AllowAnyHeader()
+					 .AllowAnyMethod();
 	});
 });
 
@@ -33,6 +32,13 @@ builder.Services.AddGrpcReflection ();
 WebApplication app = builder.Build ();
 
 app.UseCors ();
+
+app.Use((context, next) =>
+{
+	context.Response.Headers.AccessControlAllowOrigin = "*";
+	context.Response.Headers.AccessControlExposeHeaders = "*";
+	return next.Invoke();
+});
 
 app.UseGrpcWeb ();
 

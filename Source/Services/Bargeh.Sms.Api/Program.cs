@@ -35,6 +35,13 @@ WebApplication app = builder.Build ();
 
 app.UseCors ();
 
+app.Use((context, next) =>
+{
+	context.Response.Headers.AccessControlAllowOrigin = "*";
+	context.Response.Headers.AccessControlExposeHeaders = "*";
+	return next.Invoke();
+});
+
 app.MapDefaultEndpoints();
 
 app.UseGrpcWeb ();
