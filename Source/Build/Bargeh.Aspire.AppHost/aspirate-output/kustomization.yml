@@ -1,0 +1,9 @@
+resources:
+- postgres
+- users
+- sms
+- identity
+
+generatorOptions:
+  disableNameSuffixHash: true
+

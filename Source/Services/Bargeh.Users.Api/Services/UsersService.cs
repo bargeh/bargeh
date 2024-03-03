@@ -7,8 +7,16 @@ using Users.Api;
 
 namespace Bargeh.Users.Api.Services;
 
-public class UsersService(UsersDbContext dbContext) : UsersProto.UsersProtoBase
+public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger) : UsersProto.UsersProtoBase
 {
+	private readonly HashSet<char> _allowedCharsForUsername =
+	[
+		'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+		'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+		'_', '.'
+	];
+
 	public override async Task<GetUserReply> GetUserByUsername(GetUserByUsernameRequest request,
 															   ServerCallContext callContext)
 	{
@@ -130,17 +138,10 @@ public class UsersService(UsersDbContext dbContext) : UsersProto.UsersProtoBase
 		return new();
 	}
 
-	private readonly HashSet<char> _allowedCharsForUsername =
-	[
-		'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-		'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-		'_', '.'
-	];
-
 	public override async Task<VoidOperationReply> AddUser(AddUserRequest request, ServerCallContext callContext)
 	{
 		// PRODUCTION: Validate Captcha
+
 
 		if(!request.AcceptedTos)
 		{
@@ -148,12 +149,15 @@ public class UsersService(UsersDbContext dbContext) : UsersProto.UsersProtoBase
 									   "You have to accept Bargeh's Terms of Service in order to create a new account"));
 		}
 
+
 		if(string.IsNullOrWhiteSpace(request.DisplayName))
 		{
 			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter \"Display Name\" is not valid"));
 		}
 
-		if(string.IsNullOrWhiteSpace(request.Username) || !request.Username.All(c => _allowedCharsForUsername.Contains(c)))
+
+		if(string.IsNullOrWhiteSpace(request.Username) || request.Username.Length <= 4 ||
+		   !request.Username.ToLower().All(c => _allowedCharsForUsername.Contains(c)))
 		{
 			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter \"Username\" is not valid"));
 		}
@@ -180,11 +184,11 @@ public class UsersService(UsersDbContext dbContext) : UsersProto.UsersProtoBase
 		{
 			PhoneNumber = request.Phone.ConvertToEnglish(),
 			DisplayName = displayName,
-			Username = username,
+			Username = username
 		};
 
-		dbContext.Add(user);
-		await dbContext.SaveChangesAsync();
+		await dbContext.AddAsync(user, callContext.CancellationToken);
+		await dbContext.SaveChangesAsync(callContext.CancellationToken);
 
 		return new();
 	}

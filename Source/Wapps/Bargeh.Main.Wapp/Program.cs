@@ -24,42 +24,11 @@ builder.Services.AddScoped<LocalStorageService>();
 
 #region gRPC Providers
 
-builder.Services.AddSingleton(_ =>
-{
-	HttpClient httpClient = new(new GrpcWebHandler(GrpcWebMode.GrpcWeb, new HttpClientHandler()))
-	{
-		BaseAddress = new("https://localhost:5201")
-	};
+builder.Services.AddSingleton(_ => new IdentityProto.IdentityProtoClient(GrpcChannel.ForAddress("http://localhost")));
 
-	GrpcChannel channel = GrpcChannel.ForAddress(httpClient.BaseAddress, new() { HttpClient = httpClient });
+builder.Services.AddSingleton(_ => new UsersProto.UsersProtoClient(GrpcChannel.ForAddress("http://localhost")));
 
-	return new IdentityProto.IdentityProtoClient(channel);
-});
-
-
-builder.Services.AddSingleton(_ =>
-{
-	HttpClient httpClient = new(new GrpcWebHandler(GrpcWebMode.GrpcWeb, new HttpClientHandler()))
-	{
-		BaseAddress = new("https://localhost:5244")
-	};
-
-	GrpcChannel channel = GrpcChannel.ForAddress(httpClient.BaseAddress, new() { HttpClient = httpClient });
-
-	return new UsersProto.UsersProtoClient(channel);
-});
-
-builder.Services.AddSingleton(_ =>
-{
-	HttpClient httpClient = new(new GrpcWebHandler(GrpcWebMode.GrpcWeb, new HttpClientHandler()))
-	{
-		BaseAddress = new("https://localhost:5501")
-	};
-
-	GrpcChannel channel = GrpcChannel.ForAddress(httpClient.BaseAddress, new() { HttpClient = httpClient });
-
-	return new SmsProto.SmsProtoClient(channel);
-});
+builder.Services.AddSingleton(_ => new SmsProto.SmsProtoClient(GrpcChannel.ForAddress("http://localhost")));
 
 //builder.Services.AddSingleton<SmsApiGrpcProvider> ()
 //	.AddGrpcClient<SmsProto.SmsProtoClient> (o =>

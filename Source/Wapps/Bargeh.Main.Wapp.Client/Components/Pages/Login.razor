@@ -5,7 +5,6 @@
 @using Identity.Api
 @using Sms.Api
 @using Users.Api
-@using VoidOperationReply = Users.Api.VoidOperationReply
 @inject IJSRuntime JsRuntime
 @inject ILogger<Login> Logger
 @inject NavigationManager NavigationManager
@@ -251,7 +250,7 @@
 	private EditContext _resisterEditContext = null!;
 	private ValidationMessageStore _registerMessageStore = null!;
 
-	private void OnRegisterSubmit()
+	private async Task OnRegisterSubmit()
 	{
 		if(!_resisterEditContext.Validate())
 		{
@@ -272,18 +271,19 @@
 			'_', '.'
 		];
 
-		if(string.IsNullOrWhiteSpace(_registerModel.DisplayName) || string.IsNullOrWhiteSpace(_registerModel.Username) || _registerModel.Username.All(c => allowedCharsForUsername.Contains(c)))
+		if(string.IsNullOrWhiteSpace(_registerModel.DisplayName) || string.IsNullOrWhiteSpace(_registerModel.Username) || !_registerModel.Username.ToLower().All(c => allowedCharsForUsername.Contains(c)))
 		{
-			_registerMessageStore.Add(() => _registerModel.DisplayName!, "نام کاربری یا نام نمایشی که انتخاب کردی درست نیست");
+			_registerMessageStore.Add(() => _registerModel, "نام کاربری یا نام نمایشی که انتخاب کردی درست نیست");
 			return;
 		}
 
 		try
 		{
-			UsersService.AddUser(new()
+			await UsersService.AddUserAsync(new()
 			{
 				Phone = _registerModel.Phone,
 				DisplayName = _registerModel.DisplayName,
+				Username = _registerModel.Username,
 				AcceptedTos = _registerModel.AcceptedTos,
 				Captcha = "5"
 			});
@@ -293,8 +293,18 @@
 			if(exception.StatusCode == StatusCode.AlreadyExists)
 			{
 				_registerMessageStore.Add(() => _registerModel, "قبلا یک کاربر با این شماره تلفن ثبت نام کرده. اگه تو بودی از بخش ورود وارد حسابت شو");
+				_resisterEditContext.NotifyValidationStateChanged();
+				
+				return;
 			}
+
+			throw;
 		}
+
+		await SmsService.SendVerificationAsync(new()
+		{
+			Phone = _registerModel.Phone
+		});
 
 		_loginState = LoginState.Verify;
 		_verificationModel.Phone = _registerModel.Phone;

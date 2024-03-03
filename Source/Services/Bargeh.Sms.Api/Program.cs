@@ -26,8 +26,7 @@ builder.Services.AddCors(options =>
 	{
 		policyBuilder.AllowAnyOrigin()
 					 .AllowAnyHeader()
-					 .AllowAnyMethod()
-					 .WithExposedHeaders("grpc-status", "grpc-message");
+					 .AllowAnyMethod();
 	});
 });
 
