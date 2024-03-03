@@ -18,9 +18,15 @@ WebApplication app = builder.Build();
 
 app.MapDefaultEndpoints();
 
-app.UseGrpcWeb();
+app.Use((context, next) =>
+{
+	context.Response.Headers.AccessControlAllowOrigin = "*";
+	context.Response.Headers.AccessControlExposeHeaders = "*";
+	return next.Invoke();
+});
 
-app.MapGrpcService<GreeterService>().EnableGrpcWeb();
+app.UseGrpcWeb();
+app.MapGrpcService<ForumsService>().EnableGrpcWeb();
 app.MapGrpcReflectionService();
 
 await ForumsDbInitializer

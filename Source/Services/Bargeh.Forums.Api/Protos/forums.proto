@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option csharp_namespace = "Forums.Api";
+
+package forums;
+
+service ForumsProto {
+  rpc AddForum (AddForumRequest) returns (VoidOperationReply);
+  rpc GetForumByPermalink (GetForumByPermalinkRequest) returns (ForumReply);
+}
+
+message AddForumRequest {
+  string name = 1;
+  string description = 2;
+  string permalink = 3;
+  string owner = 4;
+}
+
+message GetForumByPermalinkRequest {
+  string permalink = 1;
+}
+
+message ForumReply {
+  string name = 1;
+  string description = 2;
+  string permalink = 3;
+  string owner = 4;
+  uint32 members = 5;
+  uint32 supporters = 6;
+}
+
+message VoidOperationReply {}
