@@ -1,0 +1,9 @@
+{
+  "TemplatePath": null,
+  "ContainerSettings": {
+    "Registry": null,
+    "RepositoryPrefix": "bargeh",
+    "Tag": null,
+    "Builder": "docker"
+  }
+}
