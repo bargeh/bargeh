@@ -23,10 +23,9 @@ message GetForumByPermalinkRequest {
 message ForumReply {
   string name = 1;
   string description = 2;
-  string permalink = 3;
-  string owner = 4;
-  uint32 members = 5;
-  uint32 supporters = 6;
+  string owner = 3;
+  uint32 members = 4;
+  uint32 supporters = 5;
 }
 
 message VoidOperationReply {}
