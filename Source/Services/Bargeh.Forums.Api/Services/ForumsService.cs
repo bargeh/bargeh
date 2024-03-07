@@ -27,16 +27,25 @@ public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoB
 		}
 
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
+		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
 
 		Forum forum = new()
 		{
 			Name = request.Name,
 			Description = request.Description,
 			Permalink = request.Permalink,
-			OwnerId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value)
+			OwnerId = userId,
+			Members = 1
 		};
 
 		await dbContext.AddAsync(forum);
+		await dbContext.SaveChangesAsync();
+
+		await dbContext.ForumMemberships.AddAsync(new()
+		{
+			UserId = userId,
+			Forum = forum
+		});
 		await dbContext.SaveChangesAsync();
 
 		return new();
@@ -78,6 +87,9 @@ public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoB
 			UserId = userId,
 			Forum = forum
 		});
+		
+		forum.Members++;
+		
 		await dbContext.SaveChangesAsync();
 
 		return new();
