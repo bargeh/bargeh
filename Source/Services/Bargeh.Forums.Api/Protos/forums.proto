@@ -7,17 +7,23 @@ package forums;
 service ForumsProto {
   rpc AddForum (AddForumRequest) returns (VoidOperationReply);
   rpc GetForumByPermalink (GetForumByPermalinkRequest) returns (ForumReply);
+  rpc JoinForum (JoinForumRequest) returns (VoidOperationReply);
 }
 
 message AddForumRequest {
   string name = 1;
   string description = 2;
   string permalink = 3;
-  string owner = 4;
+  string access_token = 4;
 }
 
 message GetForumByPermalinkRequest {
   string permalink = 1;
+}
+
+message JoinForumRequest {
+  string forum = 1;
+  string access_token = 2;
 }
 
 message ForumReply {

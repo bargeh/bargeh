@@ -219,12 +219,12 @@
 				Password = _loginModel.Password
 			});
 
-			Logger.LogInformation($"{loginResult.JwtToken} is jwt and \n{loginResult.RefreshToken} is refresh");
+			Logger.LogInformation($"{loginResult.AccessToken} is access and \n{loginResult.RefreshToken} is refresh");
 
-			await LocalStorageService.RemoveItemAsync("login.jwt");
+			await LocalStorageService.RemoveItemAsync("login.access");
 			await LocalStorageService.RemoveItemAsync("login.refresh_token");
 
-			await LocalStorageService.SetItemAsync("login.jwt", $"{loginResult.JwtToken}@{DateTime.UtcNow.AddMinutes(5)}");
+			await LocalStorageService.SetItemAsync("login.access", $"{loginResult.AccessToken}@{DateTime.UtcNow.AddMinutes(5)}");
 			await LocalStorageService.SetItemAsync("login.refresh_token", loginResult.RefreshToken);
 
 			NavigationManager.NavigateTo("/", true, true);

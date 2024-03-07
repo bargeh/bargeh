@@ -128,6 +128,8 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 	public override async Task<VoidOperationReply> SetUserPassword(SetUserPasswordRequest request,
 																   ServerCallContext callContext)
 	{
+		// PRODUCTION: Rebuild this method
+		
 		User user = await dbContext.GetUserByIdAsync(request.Id) ??
 					throw new RpcException(new(StatusCode.NotFound, "Not Found"));
 

@@ -27,11 +27,11 @@ IResourceBuilder<ProjectResource> identityApi =
 IResourceBuilder<ProjectResource> forumsApi =
 	builder.AddProject<Bargeh_Forums_Api>("forums")
 		   .WithReference(postgres)
+		   .WithReference(identityApi)
 		   .AsHttp2Service();
 
 
 builder.AddProject<Bargeh_Main_Wapp>("wapp")
-
 	   //.WithReference (sqlServer)
 	   .WithReference(usersApi)
 	   .WithReference(smsApi)

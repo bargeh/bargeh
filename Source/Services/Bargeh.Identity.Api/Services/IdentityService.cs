@@ -42,41 +42,41 @@ public class IdentityService(
 			}
 		}
 
-		string jwtToken = GenerateJwt(user);
+		string accessToken = GenerateAccessToken(user);
 		string refreshToken = await GenerateRefreshToken(Guid.Parse(user.Id));
 
 		return new()
 		{
-			JwtToken = jwtToken,
+			AccessToken = accessToken,
 			RefreshToken = refreshToken
 		};
 	}
 
 	public override async Task<TokenResponse> Refresh(RefreshRequest request, ServerCallContext callContext)
 	{
-		RefreshToken oldToken = await dbContext.GetRefreshTokenByOldToken(request.OldRefreshToken)
+		RefreshToken oldRefreshToken = await dbContext.GetRefreshTokenByOldToken(request.OldRefreshToken)
 								?? throw new RpcException(new(StatusCode.NotFound, "The refresh token was not found"));
 
-		if(oldToken.ExpireDate <= timeProvider.GetUtcNow())
+		if(oldRefreshToken.ExpireDate <= timeProvider.GetUtcNow())
 		{
-			dbContext.Remove(oldToken);
+			dbContext.Remove(oldRefreshToken);
 			await dbContext.SaveChangesAsync();
 			throw new RpcException(new(StatusCode.FailedPrecondition, "The token is expired"));
 		}
 
 		GetUserReply? user = usersApiClient.GetUserById(new()
 		{
-			Id = oldToken.UserId.ToString()
+			Id = oldRefreshToken.UserId.ToString()
 		});
 
-		if(oldToken.ExpireDate >= timeProvider.GetUtcNow().AddMinutes(-4))
+		if(oldRefreshToken.ExpireDate >= timeProvider.GetUtcNow().AddMinutes(-4))
 		{
 			await usersApiClient.DisableUserAsync(new()
 			{
 				Id = user.Id
 			});
 
-			dbContext.Remove(oldToken);
+			dbContext.Remove(oldRefreshToken);
 			await dbContext.SaveChangesAsync();
 			throw new RpcException(new(StatusCode.Internal, "Internal Error"));
 		}
@@ -90,7 +90,7 @@ public class IdentityService(
 
 		string newToken = await GenerateRefreshToken(userId);
 
-		dbContext.Remove(oldToken);
+		dbContext.Remove(oldRefreshToken);
 		dbContext.Add(new RefreshToken
 		{
 			Token = newToken,
@@ -99,11 +99,11 @@ public class IdentityService(
 
 		await dbContext.SaveChangesAsync();
 
-		string jwtToken = GenerateJwt(user);
+		string accessToken = GenerateAccessToken(user);
 
 		return new()
 		{
-			JwtToken = jwtToken,
+			AccessToken = accessToken,
 			RefreshToken = newToken
 		};
 	}
@@ -112,16 +112,17 @@ public class IdentityService(
 
 	#region Static Methods
 
-	private static string GenerateJwt(GetUserReply user)
+	private static string GenerateAccessToken(GetUserReply user)
 	{
 		// PRODUCTION: Make a real key
-		RsaSecurityKey securityKey = new(new X509Certificate2("C:/Users/Matin/Desktop/private_key.pfx", "bargeh.dev")
+		RsaSecurityKey securityKey = new(new X509Certificate2("C:/Source/Bargeh/JwtPrivateKey.pfx", "bargeh.dev")
 											 .GetRSAPrivateKey());
 
 		SigningCredentials credentials = new(securityKey, SecurityAlgorithms.RsaSha256);
 
 		List<Claim> claims =
 		[
+			new(JwtRegisteredClaimNames.Sub, user.Id),
 			new(ClaimsIdentity.DefaultNameClaimType, user.Phone),
 			new(JwtRegisteredClaimNames.Email, user.Email),
 			new(JwtRegisteredClaimNames.GivenName, user.DisplayName),
@@ -130,14 +131,14 @@ public class IdentityService(
 			new("avatar", user.ProfileImage)
 		];
 
-		JwtSecurityToken jwtToken = new(
+		JwtSecurityToken accessToken = new(
 										issuer: "https://bargeh.net",
 										audience: "https://bargeh.net",
 										claims,
 										expires: DateTime.UtcNow.AddMinutes(5),
 										signingCredentials: credentials);
 
-		string token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+		string token = new JwtSecurityTokenHandler().WriteToken(accessToken);
 
 		return token;
 	}
@@ -145,7 +146,9 @@ public class IdentityService(
 	private async Task<string> GenerateRefreshToken(Guid userId)
 	{
 		const short length = 128;
+		// ReSharper disable StringLiteralTypo
 		const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		// ReSharper restore StringLiteralTypo
 
 		string token = new(Enumerable.Repeat(chars, length)
 									 .Select(s => s[Random.Shared.Next(s.Length)]).ToArray());

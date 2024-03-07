@@ -16,11 +16,18 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.2.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\Build\Bargeh.Aspire.ServiceDefaults\Bargeh.Aspire.ServiceDefaults.csproj" />
     </ItemGroup>
+
+<!--    <ItemGroup>
+        <Protobuf Include="../Bargeh.Identity.Api/Protos/identity.proto" GrpcServices="Client">
+            <Link>Protos/identity.proto</Link>
+        </Protobuf>
+    </ItemGroup>-->
 
     <ItemGroup>
         <Protobuf Include="Protos/forums.proto" GrpcServices="Server"/>

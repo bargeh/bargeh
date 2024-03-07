@@ -2,7 +2,7 @@ using Bargeh.Aspire.ServiceDefaults;
 using Bargeh.Forums.Api.Infrastructure;
 using Bargeh.Forums.Api.Services;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 

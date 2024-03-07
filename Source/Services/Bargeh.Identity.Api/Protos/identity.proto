@@ -5,21 +5,21 @@ option csharp_namespace = "Identity.Api";
 package identity;
 
 service IdentityProto {
-	rpc Login (LoginRequest) returns (TokenResponse);
-	rpc Refresh (RefreshRequest) returns (TokenResponse);
+  rpc Login (LoginRequest) returns (TokenResponse);
+  rpc Refresh (RefreshRequest) returns (TokenResponse);
 }
 
 message LoginRequest {
-	string phone = 1;
-	string password = 2;
-	string captcha = 3;
+  string phone = 1;
+  string password = 2;
+  string captcha = 3;
 }
 
 message RefreshRequest {
-	string old_refresh_token = 1;
+  string old_refresh_token = 1;
 }
 
 message TokenResponse {
-	string jwt_token = 1;
-	string refresh_token = 2;
+  string access_token = 1;
+  string refresh_token = 2;
 }

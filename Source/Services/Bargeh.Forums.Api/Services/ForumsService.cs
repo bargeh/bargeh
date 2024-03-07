@@ -1,13 +1,68 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Principal;
 using Bargeh.Forums.Api.Infrastructure;
 using Bargeh.Forums.Api.Infrastructure.Models;
 using Forums.Api;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using VoidOperationReply = Forums.Api.VoidOperationReply;
 
 namespace Bargeh.Forums.Api.Services;
 
 public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoBase
 {
+	public override async Task<VoidOperationReply> AddForum(AddForumRequest request, ServerCallContext context)
+	{
+		// PRODUCTION: Permalinks are accepted with spaces
+		if(string.IsNullOrWhiteSpace(request.Name) || string.IsNullOrWhiteSpace(request.Description) ||
+		   string.IsNullOrWhiteSpace(request.Permalink) || string.IsNullOrWhiteSpace(request.AccessToken))
+		{
+			throw new RpcException(new(StatusCode.InvalidArgument, "Whitespace parameters are not allowed"));
+		}
+
+		JwtSecurityTokenHandler tokenHandler = new();
+		SecurityKey key = new X509SecurityKey(new("C:/Source/Bargeh/JwtPublicKey.cer"));
+
+		TokenValidationResult tokenValidationResult =
+			await tokenHandler.ValidateTokenAsync(request.AccessToken, new()
+			{
+				ValidateIssuerSigningKey = true,
+				IssuerSigningKey = key,
+				ValidateIssuer = true,
+				ValidateAudience = true,
+				ValidateLifetime = true,
+				ValidIssuer = "https://bargeh.net",
+				ValidAudience = "https://bargeh.net",
+				ClockSkew = TimeSpan.Zero
+			});
+
+		if(!tokenValidationResult.IsValid)
+		{
+			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter \"AccessToken\" is not valid"));
+		}
+
+		IEnumerable<Claim> accessTokenClaims = tokenHandler.ReadJwtToken(request.AccessToken).Claims!;
+
+		Forum forum = new()
+		{
+			Name = request.Name,
+			Description = request.Description,
+			Permalink = request.Permalink,
+			OwnerId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value)
+		};
+
+		await dbContext.AddAsync(forum);
+		await dbContext.SaveChangesAsync();
+
+		return new();
+		
+		// TODO: Add the owner as a member of the forum too
+	}
+
 	public override async Task<ForumReply> GetForumByPermalink(GetForumByPermalinkRequest request,
 															   ServerCallContext context)
 	{
@@ -22,5 +77,12 @@ public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoB
 			Owner = forum.OwnerId.ToString(),
 			Supporters = forum.Supporters
 		};
+	}
+
+	public override async Task<VoidOperationReply> JoinForum(JoinForumRequest request, ServerCallContext context)
+	{
+		
+		
+		return new();
 	}
 }
