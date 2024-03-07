@@ -7,7 +7,8 @@ package forums;
 service ForumsProto {
   rpc AddForum (AddForumRequest) returns (VoidOperationReply);
   rpc GetForumByPermalink (GetForumByPermalinkRequest) returns (ForumReply);
-  rpc JoinForum (JoinForumRequest) returns (VoidOperationReply);
+  rpc JoinForum (JoinLeaveForumRequest) returns (VoidOperationReply);
+  rpc LeaveForum (JoinLeaveForumRequest) returns (VoidOperationReply);
 }
 
 message AddForumRequest {
@@ -21,11 +22,10 @@ message GetForumByPermalinkRequest {
   string permalink = 1;
 }
 
-message JoinForumRequest {
+message JoinLeaveForumRequest {
   string forum_permalink = 1;
   string access_token = 2;
 }
-
 message ForumReply {
   string name = 1;
   string description = 2;

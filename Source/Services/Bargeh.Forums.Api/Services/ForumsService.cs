@@ -19,7 +19,10 @@ public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoB
 
 	public override async Task<VoidOperationReply> AddForum(AddForumRequest request, ServerCallContext context)
 	{
-		// PRODUCTION: Permalinks are accepted with spaces
+		// TODO: Permalinks are accepted with spaces
+		// TODO: Prevent duplicate forums
+		// TODO: Add suffix to forums permalinks
+
 		if(string.IsNullOrWhiteSpace(request.Name) || string.IsNullOrWhiteSpace(request.Description) ||
 		   string.IsNullOrWhiteSpace(request.Permalink) || string.IsNullOrWhiteSpace(request.AccessToken))
 		{
@@ -69,7 +72,7 @@ public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoB
 		};
 	}
 
-	public override async Task<VoidOperationReply> JoinForum(JoinForumRequest request, ServerCallContext context)
+	public override async Task<VoidOperationReply> JoinForum(JoinLeaveForumRequest request, ServerCallContext context)
 	{
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
 		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
@@ -87,9 +90,39 @@ public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoB
 			UserId = userId,
 			Forum = forum
 		});
-		
+
 		forum.Members++;
-		
+
+		await dbContext.SaveChangesAsync();
+
+		return new();
+	}
+
+	public override async Task<VoidOperationReply> LeaveForum(JoinLeaveForumRequest request, ServerCallContext context)
+	{
+		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
+		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
+
+		Forum forum = await dbContext.Forums.FirstOrDefaultAsync(f => f.Permalink == request.ForumPermalink)
+					  ?? throw new RpcException(new(StatusCode.NotFound, "No forum with this permalink was found"));
+
+		ForumMembership? forumMembership =
+			await dbContext.ForumMemberships.FirstOrDefaultAsync(m => m.UserId == userId && m.Forum == forum);
+
+		if(forumMembership is null)
+		{
+			throw new RpcException(new(StatusCode.AlreadyExists, "This user is not currently a member of this forum"));
+		}
+
+		if(userId == forumMembership.UserId)
+		{
+			throw new RpcException(new(StatusCode.PermissionDenied, "Forum owners can not leave their own forum"));
+		}
+
+		dbContext.Remove(forumMembership);
+
+		forum.Members--;
+
 		await dbContext.SaveChangesAsync();
 
 		return new();
