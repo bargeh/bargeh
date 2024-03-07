@@ -1,7 +1,6 @@
 using Bargeh.Aspire.ServiceDefaults;
 using Bargeh.Users.Api.Infrastructure;
 using Bargeh.Users.Api.Services;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder (args);
 

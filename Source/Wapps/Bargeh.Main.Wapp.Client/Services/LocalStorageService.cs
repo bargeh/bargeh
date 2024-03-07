@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using System.Threading.Tasks;
 using Microsoft.JSInterop;
 
 namespace Bargeh.Main.Wapp.Client.Services;

@@ -2,7 +2,6 @@
 using Bargeh.Main.Wapp.Client.Services;
 using Bargeh.Main.Wapp.Components;
 using Grpc.Net.Client;
-using Grpc.Net.Client.Web;
 using Identity.Api;
 using Sms.Api;
 using Users.Api;
