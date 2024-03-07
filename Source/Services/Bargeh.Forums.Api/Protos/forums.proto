@@ -22,7 +22,7 @@ message GetForumByPermalinkRequest {
 }
 
 message JoinForumRequest {
-  string forum = 1;
+  string forum_permalink = 1;
   string access_token = 2;
 }
 

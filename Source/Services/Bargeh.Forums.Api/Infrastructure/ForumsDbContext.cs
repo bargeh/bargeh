@@ -9,6 +9,7 @@ public class ForumsDbContext(DbContextOptions<ForumsDbContext> options) : DbCont
 	#region Database Objects
 
 	public DbSet<Forum> Forums { get; init; }
+	public DbSet<ForumMembership> ForumMemberships { get; init; }
 	
 	#endregion
 

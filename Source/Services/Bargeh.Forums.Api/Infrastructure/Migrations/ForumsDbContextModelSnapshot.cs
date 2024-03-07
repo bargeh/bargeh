@@ -8,54 +8,85 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Bargeh.Forums.Api.Infrastructure.Migrations;
-
-[DbContext(typeof(ForumsDbContext))]
-partial class ForumsDbContextModelSnapshot : ModelSnapshot
+namespace Bargeh.Forums.Api.Infrastructure.Migrations
 {
-    protected override void BuildModel(ModelBuilder modelBuilder)
+    [DbContext(typeof(ForumsDbContext))]
+    partial class ForumsDbContextModelSnapshot : ModelSnapshot
     {
-        #pragma warning disable 612, 618
-        modelBuilder
-            .HasAnnotation("ProductVersion", "8.0.2")
-            .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
-        NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-        modelBuilder.Entity("Bargeh.Forums.Api.Infrastructure.Models.Forum", b =>
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
-            b.Property<Guid>("Id")
-             .ValueGeneratedOnAdd()
-             .HasColumnType("uuid");
+#pragma warning disable 612, 618
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            b.Property<string>("Description")
-             .IsRequired()
-             .HasMaxLength(350)
-             .HasColumnType("character varying(350)");
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            b.Property<long>("Members")
-             .HasColumnType("bigint");
+            modelBuilder.Entity("Bargeh.Forums.Api.Infrastructure.Models.Forum", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
-            b.Property<string>("Name")
-             .IsRequired()
-             .HasMaxLength(32)
-             .HasColumnType("character varying(32)");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(350)
+                        .HasColumnType("character varying(350)");
 
-            b.Property<Guid>("OwnerId")
-             .HasColumnType("uuid");
+                    b.Property<long>("Members")
+                        .HasColumnType("bigint");
 
-            b.Property<string>("Permalink")
-             .IsRequired()
-             .HasMaxLength(32)
-             .HasColumnType("character varying(32)");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
 
-            b.Property<long>("Supporters")
-             .HasColumnType("bigint");
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
 
-            b.HasKey("Id");
+                    b.Property<string>("Permalink")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
 
-            b.ToTable("Forums");
-        });
-        #pragma warning restore 612, 618
+                    b.Property<long>("Supporters")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Forums");
+                });
+
+            modelBuilder.Entity("Bargeh.Forums.Api.Infrastructure.Models.ForumMembership", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ForumId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ForumId");
+
+                    b.ToTable("ForumMemberships");
+                });
+
+            modelBuilder.Entity("Bargeh.Forums.Api.Infrastructure.Models.ForumMembership", b =>
+                {
+                    b.HasOne("Bargeh.Forums.Api.Infrastructure.Models.Forum", "Forum")
+                        .WithMany()
+                        .HasForeignKey("ForumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Forum");
+                });
+#pragma warning restore 612, 618
+        }
     }
 }
