@@ -36,24 +36,24 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 
 	public override async Task<CreateTopicReply> CreateTopic(CreateTopicRequest request, ServerCallContext context)
 	{
+		// FROMHERE: Debug methods
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
 		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
-		
-		// try
-		// {
-		await forumsService.GetForumByIdAsync(new()
-		{
-			Id = request.Forum
-		});
 
-		// }
-		// catch(RpcException exception)
-		// {
-		// 	if(exception.StatusCode == StatusCode.NotFound)
-		// 	{
-		// 		
-		// 	}
-		// }
+		try
+		{
+			await forumsService.GetForumByIdAsync(new()
+			{
+				Id = request.Forum
+			});
+		}
+		catch(RpcException exception)
+		{
+			if(exception.StatusCode == StatusCode.NotFound)
+			{
+				throw new RpcException(new(exception.StatusCode, exception.Message));
+			}
+		}
 
 		if(string.IsNullOrWhiteSpace(request.Title) || string.IsNullOrWhiteSpace(request.Body))
 		{
@@ -70,7 +70,7 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 
 		await dbContext.AddAsync(topic);
 		await dbContext.SaveChangesAsync();
-		
+
 		return new()
 		{
 			Permalink = topic.Permalink

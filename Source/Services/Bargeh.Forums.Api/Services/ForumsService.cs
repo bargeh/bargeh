@@ -19,6 +19,7 @@ public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoB
 		// TODO: Permalinks are accepted with spaces
 		// TODO: Prevent duplicate forums
 		// TODO: Add suffix to forums permalinks
+		// TODO: Return forum's ID on success
 
 		if(string.IsNullOrWhiteSpace(request.Name) || string.IsNullOrWhiteSpace(request.Description) ||
 		   string.IsNullOrWhiteSpace(request.Permalink) || string.IsNullOrWhiteSpace(request.AccessToken))
