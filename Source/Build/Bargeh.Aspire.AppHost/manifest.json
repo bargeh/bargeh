@@ -96,6 +96,29 @@
         }
       }
     },
+    "forums": {
+      "type": "project.v0",
+      "path": "../../Services/Bargeh.Forums.Api/Bargeh.Forums.Api.csproj",
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "ConnectionStrings__postgres": "{postgres.connectionString}",
+        "services__identity__0": "{identity.bindings.http.url}",
+        "services__identity__1": "{identity.bindings.https.url}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http2"
+        },
+        "https": {
+          "scheme": "https",
+          "protocol": "tcp",
+          "transport": "http2"
+        }
+      }
+    },
     "wapp": {
       "type": "project.v0",
       "path": "../../Wapps/Bargeh.Main.Wapp/Bargeh.Main.Wapp.csproj",
@@ -107,7 +130,9 @@
         "services__sms__0": "{sms.bindings.http.url}",
         "services__sms__1": "{sms.bindings.https.url}",
         "services__identity__0": "{identity.bindings.http.url}",
-        "services__identity__1": "{identity.bindings.https.url}"
+        "services__identity__1": "{identity.bindings.https.url}",
+        "services__forums__0": "{forums.bindings.http.url}",
+        "services__forums__1": "{forums.bindings.https.url}"
       },
       "bindings": {
         "http": {

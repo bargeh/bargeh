@@ -3,6 +3,7 @@ resources:
 - users
 - sms
 - identity
+- forums
 
 generatorOptions:
   disableNameSuffixHash: true
