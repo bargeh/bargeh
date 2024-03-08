@@ -36,6 +36,9 @@ partial class TopicsDbContextModelSnapshot : ModelSnapshot
              .HasMaxLength(4096)
              .HasColumnType("character varying(4096)");
 
+            b.Property<DateTime>("CreateDate")
+             .HasColumnType("timestamp with time zone");
+
             b.Property<long>("Dislikes")
              .HasColumnType("bigint");
 
@@ -47,6 +50,9 @@ partial class TopicsDbContextModelSnapshot : ModelSnapshot
 
             b.Property<long>("Insights")
              .HasColumnType("bigint");
+
+            b.Property<DateTime>("LastUpdateDate")
+             .HasColumnType("timestamp with time zone");
 
             b.Property<long>("Likes")
              .HasColumnType("bigint");

@@ -6,6 +6,7 @@ package topics;
 
 service TopicsProto {
   rpc GetTopicByPermalink (GetTopicByPermalinkRequest) returns (TopicReply);
+  rpc CreateTopic (CreateTopicRequest) returns (CreateTopicReply);
 }
 
 message GetTopicByPermalinkRequest {
@@ -13,7 +14,26 @@ message GetTopicByPermalinkRequest {
 }
 
 message TopicReply {
-  
+  string forum = 1;
+  string author = 2;
+  string title = 3;
+  string body = 4;
+  uint32 likes = 5;
+  uint32 loves = 6;
+  uint32 insights = 7;
+  uint32 funnies = 8;
+  uint32 dislikes = 9;
+}
+
+message CreateTopicRequest {
+  string access_token = 1;
+  string forum = 2;
+  string title = 3;
+  string body = 4;
+}
+
+message CreateTopicReply {
+  string permalink = 1;
 }
 
 message VoidOperationReply {}

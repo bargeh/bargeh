@@ -7,6 +7,8 @@ public class Topic
 	public Guid Id { get; init; }
 	public required Guid ForumId { get; init; }
 	public required Guid AuthorId { get; init; }
+	public DateTime CreateDate { get; set; } = DateTime.UtcNow;
+	public DateTime LastUpdateDate { get; set; } = DateTime.UtcNow;
 
 	[MaxLength(64)]
 	public required string Title { get; init; }
