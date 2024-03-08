@@ -7,6 +7,7 @@ package forums;
 service ForumsProto {
   rpc AddForum (AddForumRequest) returns (VoidOperationReply);
   rpc GetForumByPermalink (GetForumByPermalinkRequest) returns (ForumReply);
+  rpc GetForumById (GetForumByIdRequest) returns (ForumReply);
   rpc JoinForum (JoinLeaveForumRequest) returns (VoidOperationReply);
   rpc LeaveForum (JoinLeaveForumRequest) returns (VoidOperationReply);
 }
@@ -22,16 +23,21 @@ message GetForumByPermalinkRequest {
   string permalink = 1;
 }
 
+message GetForumByIdRequest {
+  string id = 1;
+}
+
 message JoinLeaveForumRequest {
   string forum_permalink = 1;
   string access_token = 2;
 }
 message ForumReply {
-  string name = 1;
-  string description = 2;
-  string owner = 3;
-  uint32 members = 4;
-  uint32 supporters = 5;
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string owner = 4;
+  uint32 members = 5;
+  uint32 supporters = 6;
 }
 
 message VoidOperationReply {}

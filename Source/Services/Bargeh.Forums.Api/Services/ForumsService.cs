@@ -61,6 +61,23 @@ public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoB
 
 		return new()
 		{
+			Id = forum.Id.ToString(),
+			Name = forum.Name,
+			Description = forum.Description,
+			Members = forum.Members,
+			Owner = forum.OwnerId.ToString(),
+			Supporters = forum.Supporters
+		};
+	}
+
+	public override async Task<ForumReply> GetForumById(GetForumByIdRequest request, ServerCallContext context)
+	{
+		Forum forum = await dbContext.Forums.FirstOrDefaultAsync(f => f.Id == Guid.Parse(request.Id))
+					  ?? throw new RpcException(new(StatusCode.NotFound, "No forum was found with this ID"));
+
+		return new()
+		{
+			Id = forum.Id.ToString(),
 			Name = forum.Name,
 			Description = forum.Description,
 			Members = forum.Members,

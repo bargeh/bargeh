@@ -32,6 +32,7 @@ IResourceBuilder<ProjectResource> forumsApi =
 IResourceBuilder<ProjectResource> topicsApi =
 	builder.AddProject<Bargeh_Topics_Api>("topics")
 		   .WithReference(postgres)
+		   .WithReference(forumsApi)
 		   .AsHttp2Service();
 
 
@@ -41,6 +42,7 @@ builder.AddProject<Bargeh_Main_Wapp>("wapp")
 	   .WithReference(smsApi)
 	   .WithReference(identityApi)
 	   .WithReference(forumsApi)
+	   .WithReference(topicsApi)
 	   .WithLaunchProfile("https");
 
 

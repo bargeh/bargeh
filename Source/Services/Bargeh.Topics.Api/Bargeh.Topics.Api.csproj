@@ -28,6 +28,12 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Protobuf Include="../Bargeh.Forums.Api/Protos/forums.proto" GrpcServices="Client">
+            <Link>Protos/forums.proto</Link>
+        </Protobuf>
+    </ItemGroup>
+
+    <ItemGroup>
         <Protobuf Include="Protos/topics.proto" GrpcServices="Server"/>
     </ItemGroup>
 
