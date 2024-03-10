@@ -18,6 +18,7 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 	{
 		Topic topic = await dbContext.Topics.FirstOrDefaultAsync(t => t.Permalink == request.Permalink)
 					  ?? throw new RpcException(new(StatusCode.NotFound, "No topic was found with this permalink"));
+		
 
 
 		return new()
@@ -75,8 +76,6 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 			Permalink = topic.Permalink
 		};
 	}
-	
-	
 
 	#region Static Methods
 

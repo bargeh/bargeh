@@ -8,73 +8,43 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Bargeh.Topics.Api.Infrastructure.Migrations
+namespace Bargeh.Topics.Api.Infrastructure;
+
+[DbContext(typeof(TopicsDbContext))]
+partial class TopicsDbContextModelSnapshot : ModelSnapshot
 {
-    [DbContext(typeof(TopicsDbContext))]
-    partial class TopicsDbContextModelSnapshot : ModelSnapshot
+    protected override void BuildModel(ModelBuilder modelBuilder)
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        #pragma warning disable 612, 618
+        modelBuilder
+            .HasAnnotation("ProductVersion", "8.0.2")
+            .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+        NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+        modelBuilder.Entity("Bargeh.Topics.Api.Infrastructure.Models.Topic", b =>
         {
-#pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+            b.Property<Guid>("Id")
+             .ValueGeneratedOnAdd()
+             .HasColumnType("uuid");
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            b.Property<Guid>("ForumId")
+             .HasColumnType("uuid");
 
-            modelBuilder.Entity("Bargeh.Topics.Api.Infrastructure.Models.Topic", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+            b.Property<string>("Permalink")
+             .IsRequired()
+             .HasMaxLength(64)
+             .HasColumnType("character varying(64)");
 
-                    b.Property<Guid>("AuthorId")
-                        .HasColumnType("uuid");
+            b.Property<string>("Title")
+             .IsRequired()
+             .HasMaxLength(64)
+             .HasColumnType("character varying(64)");
 
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasMaxLength(4096)
-                        .HasColumnType("character varying(4096)");
+            b.HasKey("Id");
 
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("Dislikes")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("ForumId")
-                        .HasColumnType("uuid");
-
-                    b.Property<long>("Funnies")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("Insights")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("LastUpdateDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("Likes")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("Loves")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Permalink")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Topics");
-                });
-#pragma warning restore 612, 618
-        }
+            b.ToTable("Topics");
+        });
+        #pragma warning restore 612, 618
     }
 }

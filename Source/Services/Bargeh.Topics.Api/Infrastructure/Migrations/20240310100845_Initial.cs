@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Bargeh.Topics.Api.Infrastructure.Migrations;
 
 /// <inheritdoc />
-public partial class Init : Migration
+public partial class Initial : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,14 +17,8 @@ public partial class Init : Migration
                                      {
                                          Id = table.Column<Guid>(type: "uuid", nullable: false),
                                          ForumId = table.Column<Guid>(type: "uuid", nullable: false),
-                                         AuthorId = table.Column<Guid>(type: "uuid", nullable: false),
-                                         Title = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                                         Body = table.Column<string>(type: "character varying(4096)", maxLength: 4096, nullable: false),
-                                         Likes = table.Column<long>(type: "bigint", nullable: false),
-                                         Loves = table.Column<long>(type: "bigint", nullable: false),
-                                         Funnies = table.Column<long>(type: "bigint", nullable: false),
-                                         Insights = table.Column<long>(type: "bigint", nullable: false),
-                                         Dislikes = table.Column<long>(type: "bigint", nullable: false)
+                                         Permalink = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                                         Title = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false)
                                      },
                                      constraints: table =>
                                      {

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bargeh.Topics.Api.Infrastructure.Migrations;
 
 [DbContext(typeof(TopicsDbContext))]
-[Migration("20240308083027_AddPermalink")]
-partial class AddPermalink
+[Migration("20240310100845_Initial")]
+partial class Initial
 {
     /// <inheritdoc />
     protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,37 +31,8 @@ partial class AddPermalink
              .ValueGeneratedOnAdd()
              .HasColumnType("uuid");
 
-            b.Property<Guid>("AuthorId")
-             .HasColumnType("uuid");
-
-            b.Property<string>("Body")
-             .IsRequired()
-             .HasMaxLength(4096)
-             .HasColumnType("character varying(4096)");
-
-            b.Property<DateTime>("CreateDate")
-             .HasColumnType("timestamp with time zone");
-
-            b.Property<long>("Dislikes")
-             .HasColumnType("bigint");
-
             b.Property<Guid>("ForumId")
              .HasColumnType("uuid");
-
-            b.Property<long>("Funnies")
-             .HasColumnType("bigint");
-
-            b.Property<long>("Insights")
-             .HasColumnType("bigint");
-
-            b.Property<DateTime>("LastUpdateDate")
-             .HasColumnType("timestamp with time zone");
-
-            b.Property<long>("Likes")
-             .HasColumnType("bigint");
-
-            b.Property<long>("Loves")
-             .HasColumnType("bigint");
 
             b.Property<string>("Permalink")
              .IsRequired()
