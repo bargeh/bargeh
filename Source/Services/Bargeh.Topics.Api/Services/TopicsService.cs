@@ -36,7 +36,6 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 
 	public override async Task<CreateTopicReply> CreateTopic(CreateTopicRequest request, ServerCallContext context)
 	{
-		// FROMHERE: Debug methods
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
 		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
 
@@ -76,6 +75,8 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 			Permalink = topic.Permalink
 		};
 	}
+	
+	
 
 	#region Static Methods
 

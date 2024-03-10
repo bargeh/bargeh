@@ -7,6 +7,8 @@ package topics;
 service TopicsProto {
   rpc GetTopicByPermalink (GetTopicByPermalinkRequest) returns (TopicReply);
   rpc CreateTopic (CreateTopicRequest) returns (CreateTopicReply);
+  rpc AddPost (AddPostRequest) returns (VoidOperationReply);
+  rpc ReactOnPost (ReactOnPostRequest) returns (VoidOperationReply);
 }
 
 message GetTopicByPermalinkRequest {
@@ -34,6 +36,14 @@ message CreateTopicRequest {
 
 message CreateTopicReply {
   string permalink = 1;
+}
+
+message AddPostRequest {
+  
+}
+
+message ReactOnPostRequest {
+  
 }
 
 message VoidOperationReply {}
