@@ -63,12 +63,20 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		Topic topic = new()
 		{
 			Title = request.Title,
-			Body = request.Body,
-			ForumId = Guid.Parse(request.Forum),
-			AuthorId = userId
+			ForumId = Guid.Parse(request.Forum)
 		};
 
 		await dbContext.AddAsync(topic);
+		
+		Post firstPost = new()
+		{
+			Topic = topic,
+			Author = userId,
+			Body = request.Body
+		};
+		
+		await dbContext.AddAsync(firstPost);
+
 		await dbContext.SaveChangesAsync();
 
 		return new()
