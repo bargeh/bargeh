@@ -4,11 +4,16 @@ namespace Bargeh.Topics.Api.Infrastructure.Models;
 
 public class Post
 {
-	public Guid Id { get; set; }
-	public required Topic Topic { get; set; }
-	public string? Attachment { get; set; }
-	public string? Media { get; set; }
-	public required Guid Author { get; set; }
+	public Guid Id { get; init; }
+	public required Topic Topic { get; init; }
+
+	[MaxLength(1024)]
+	public string? Attachment { get; init; }
+
+	[MaxLength(1024)]
+	public string? Media { get; init; }
+
+	public required Guid Author { get; init; }
 	public DateTime LastUpdateDate { get; init; } = DateTime.UtcNow;
 
 	[MaxLength(4096)]

@@ -67,6 +67,7 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		};
 
 		await dbContext.AddAsync(topic);
+		await dbContext.SaveChangesAsync();
 		
 		Post firstPost = new()
 		{
@@ -76,7 +77,6 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		};
 		
 		await dbContext.AddAsync(firstPost);
-
 		await dbContext.SaveChangesAsync();
 
 		return new()
