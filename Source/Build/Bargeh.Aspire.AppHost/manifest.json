@@ -102,9 +102,30 @@
       "env": {
         "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
         "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "ConnectionStrings__postgres": "{postgres.connectionString}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http2"
+        },
+        "https": {
+          "scheme": "https",
+          "protocol": "tcp",
+          "transport": "http2"
+        }
+      }
+    },
+    "topics": {
+      "type": "project.v0",
+      "path": "../../Services/Bargeh.Topics.Api/Bargeh.Topics.Api.csproj",
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
         "ConnectionStrings__postgres": "{postgres.connectionString}",
-        "services__identity__0": "{identity.bindings.http.url}",
-        "services__identity__1": "{identity.bindings.https.url}"
+        "services__forums__0": "{forums.bindings.http.url}",
+        "services__forums__1": "{forums.bindings.https.url}"
       },
       "bindings": {
         "http": {
@@ -132,7 +153,9 @@
         "services__identity__0": "{identity.bindings.http.url}",
         "services__identity__1": "{identity.bindings.https.url}",
         "services__forums__0": "{forums.bindings.http.url}",
-        "services__forums__1": "{forums.bindings.https.url}"
+        "services__forums__1": "{forums.bindings.https.url}",
+        "services__topics__0": "{topics.bindings.http.url}",
+        "services__topics__1": "{topics.bindings.https.url}"
       },
       "bindings": {
         "http": {

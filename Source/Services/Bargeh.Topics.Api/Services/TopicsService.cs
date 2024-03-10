@@ -51,7 +51,7 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		{
 			if(exception.StatusCode == StatusCode.NotFound)
 			{
-				throw new RpcException(new(exception.StatusCode, exception.Message));
+				throw new RpcException(exception.Status);
 			}
 		}
 

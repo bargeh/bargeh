@@ -9,7 +9,7 @@ public class TopicsDbContext(DbContextOptions<TopicsDbContext> options) : DbCont
 {
 	#region Database Objects
 
-	public DbSet<Topic> Topics { get; set; }
+	public DbSet<Topic> Topics { get; init; }
 	
 	#endregion
 }

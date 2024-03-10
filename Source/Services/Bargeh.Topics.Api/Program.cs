@@ -28,4 +28,7 @@ app.MapGrpcReflectionService();
 
 app.MapDefaultEndpoints();
 
+await TopicsDbInitializer.InitializeDbAsync(app.Services.CreateScope().ServiceProvider
+											   .GetRequiredService<TopicsDbContext>(), app.Logger);
+
 app.Run();
