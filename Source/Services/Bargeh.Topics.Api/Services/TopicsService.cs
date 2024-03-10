@@ -18,20 +18,20 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 	{
 		Topic topic = await dbContext.Topics.FirstOrDefaultAsync(t => t.Permalink == request.Permalink)
 					  ?? throw new RpcException(new(StatusCode.NotFound, "No topic was found with this permalink"));
-		
 
+		Post headPost = (await dbContext.Posts.FirstOrDefaultAsync(p => p.Topic == topic))!;
 
 		return new()
 		{
 			Forum = topic.ForumId.ToString(),
-			Author = topic.AuthorId.ToString(),
+			Author = headPost.Author.ToString(),
 			Title = topic.Title,
-			Body = topic.Body,
-			Likes = topic.Likes,
-			Loves = topic.Loves,
-			Funnies = topic.Funnies,
-			Insights = topic.Insights,
-			Dislikes = topic.Dislikes
+			Body = headPost.Body,
+			Likes = headPost.Likes,
+			Loves = headPost.Loves,
+			Funnies = headPost.Funnies,
+			Insights = headPost.Insights,
+			Dislikes = headPost.Dislikes
 		};
 	}
 

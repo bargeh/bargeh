@@ -10,6 +10,8 @@ public class TopicsDbContext(DbContextOptions<TopicsDbContext> options) : DbCont
 	#region Database Objects
 
 	public DbSet<Topic> Topics { get; init; }
+
+	public DbSet<Post> Posts { get; init; }
 	
 	#endregion
 }
