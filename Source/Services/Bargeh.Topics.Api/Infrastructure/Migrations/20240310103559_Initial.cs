@@ -17,7 +17,6 @@ public partial class Initial : Migration
                                      {
                                          Id = table.Column<Guid>(type: "uuid", nullable: false),
                                          ForumId = table.Column<Guid>(type: "uuid", nullable: false),
-                                         Permalink = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                                          Title = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false)
                                      },
                                      constraints: table =>
@@ -31,6 +30,7 @@ public partial class Initial : Migration
                                      {
                                          Id = table.Column<Guid>(type: "uuid", nullable: false),
                                          TopicId = table.Column<Guid>(type: "uuid", nullable: false),
+                                         ParentId = table.Column<Guid>(type: "uuid", nullable: true),
                                          Attachment = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
                                          Media = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
                                          Author = table.Column<Guid>(type: "uuid", nullable: false),
@@ -46,12 +46,22 @@ public partial class Initial : Migration
                                      {
                                          table.PrimaryKey("PK_Posts", x => x.Id);
                                          table.ForeignKey(
+                                                          name: "FK_Posts_Posts_ParentId",
+                                                          column: x => x.ParentId,
+                                                          principalTable: "Posts",
+                                                          principalColumn: "Id");
+                                         table.ForeignKey(
                                                           name: "FK_Posts_Topics_TopicId",
                                                           column: x => x.TopicId,
                                                           principalTable: "Topics",
                                                           principalColumn: "Id",
                                                           onDelete: ReferentialAction.Cascade);
                                      });
+
+        migrationBuilder.CreateIndex(
+                                     name: "IX_Posts_ParentId",
+                                     table: "Posts",
+                                     column: "ParentId");
 
         migrationBuilder.CreateIndex(
                                      name: "IX_Posts_TopicId",

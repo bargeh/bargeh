@@ -8,7 +8,7 @@ public class Topic
 	public required Guid ForumId { get; init; }
 
 	[MaxLength(64)]
-	public string Permalink { get; init; } = "topic";
+	public string Permalink => Id.ToString().Split('-')[0];
 
 	[MaxLength(64)]
 	public required string Title { get; init; }

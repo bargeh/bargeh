@@ -6,6 +6,7 @@ public class Post
 {
 	public Guid Id { get; init; }
 	public required Topic Topic { get; init; }
+	public Post? Parent { get; init; }
 
 	[MaxLength(1024)]
 	public string? Attachment { get; init; }

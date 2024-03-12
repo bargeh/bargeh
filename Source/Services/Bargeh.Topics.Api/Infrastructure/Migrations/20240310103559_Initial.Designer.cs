@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bargeh.Topics.Api.Infrastructure.Migrations;
 
 [DbContext(typeof(TopicsDbContext))]
-[Migration("20240310102414_Initial")]
+[Migration("20240310103559_Initial")]
 partial class Initial
 {
     /// <inheritdoc />
@@ -65,10 +65,15 @@ partial class Initial
              .HasMaxLength(1024)
              .HasColumnType("character varying(1024)");
 
+            b.Property<Guid?>("ParentId")
+             .HasColumnType("uuid");
+
             b.Property<Guid>("TopicId")
              .HasColumnType("uuid");
 
             b.HasKey("Id");
+
+            b.HasIndex("ParentId");
 
             b.HasIndex("TopicId");
 
@@ -84,11 +89,6 @@ partial class Initial
             b.Property<Guid>("ForumId")
              .HasColumnType("uuid");
 
-            b.Property<string>("Permalink")
-             .IsRequired()
-             .HasMaxLength(64)
-             .HasColumnType("character varying(64)");
-
             b.Property<string>("Title")
              .IsRequired()
              .HasMaxLength(64)
@@ -101,11 +101,17 @@ partial class Initial
 
         modelBuilder.Entity("Bargeh.Topics.Api.Infrastructure.Models.Post", b =>
         {
+            b.HasOne("Bargeh.Topics.Api.Infrastructure.Models.Post", "Parent")
+             .WithMany()
+             .HasForeignKey("ParentId");
+
             b.HasOne("Bargeh.Topics.Api.Infrastructure.Models.Topic", "Topic")
              .WithMany()
              .HasForeignKey("TopicId")
              .OnDelete(DeleteBehavior.Cascade)
              .IsRequired();
+
+            b.Navigation("Parent");
 
             b.Navigation("Topic");
         });

@@ -7,6 +7,7 @@ using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Topics.Api;
+using VoidOperationReply = Topics.Api.VoidOperationReply;
 
 namespace Bargeh.Topics.Api.Services;
 
@@ -16,8 +17,11 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 	public override async Task<TopicReply> GetTopicByPermalink(GetTopicByPermalinkRequest request,
 															   ServerCallContext context)
 	{
-		Topic topic = await dbContext.Topics.FirstOrDefaultAsync(t => t.Permalink == request.Permalink)
-					  ?? throw new RpcException(new(StatusCode.NotFound, "No topic was found with this permalink"));
+		Topic topic =
+			await dbContext.Topics.FirstOrDefaultAsync(t => t.ForumId.ToString()
+															 .Substring(0, t.ForumId.ToString().IndexOf('-')) ==
+															request.Forum && t.Permalink == request.Permalink)
+			?? throw new RpcException(new(StatusCode.NotFound, "No topic was found with this permalink"));
 
 		Post headPost = (await dbContext.Posts.FirstOrDefaultAsync(p => p.Topic == topic))!;
 
@@ -68,14 +72,14 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 
 		await dbContext.AddAsync(topic);
 		await dbContext.SaveChangesAsync();
-		
+
 		Post firstPost = new()
 		{
 			Topic = topic,
 			Author = userId,
 			Body = request.Body
 		};
-		
+
 		await dbContext.AddAsync(firstPost);
 		await dbContext.SaveChangesAsync();
 
@@ -83,6 +87,18 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		{
 			Permalink = topic.Permalink
 		};
+	}
+
+	public override async Task<VoidOperationReply> CreatePost(CreatePostRequest request, ServerCallContext context)
+	{
+		// PRODUCTION: Validate image size
+
+		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
+		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
+
+		Topic topic = await dbContext.Topics.FirstOrDefaultAsync(t => t.Id == Guid.Parse(request.Topic))
+					  ?? throw new RpcException(new(StatusCode.NotFound, "No topic was found with this ID"));
+		throw new();
 	}
 
 	#region Static Methods

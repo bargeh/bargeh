@@ -7,12 +7,13 @@ package topics;
 service TopicsProto {
   rpc GetTopicByPermalink (GetTopicByPermalinkRequest) returns (TopicReply);
   rpc CreateTopic (CreateTopicRequest) returns (CreateTopicReply);
-  rpc AddPost (AddPostRequest) returns (VoidOperationReply);
+  rpc CreatePost (CreatePostRequest) returns (VoidOperationReply);
   rpc ReactOnPost (ReactOnPostRequest) returns (VoidOperationReply);
 }
 
 message GetTopicByPermalinkRequest {
-  string permalink = 1;
+  string forum = 1;
+  string permalink = 2;
 }
 
 message TopicReply {
@@ -38,8 +39,12 @@ message CreateTopicReply {
   string permalink = 1;
 }
 
-message AddPostRequest {
-  
+message CreatePostRequest {
+  string access_token = 1;
+  string topic = 2;
+  optional string parent = 3;
+  optional bytes media = 4;
+  string body = 5;
 }
 
 message ReactOnPostRequest {
