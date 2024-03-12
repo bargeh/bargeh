@@ -101,6 +101,11 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		throw new();
 	}
 
+	public override async Task<VoidOperationReply> ReactOnPost(ReactOnPostRequest request, ServerCallContext context)
+	{
+		throw new();
+	}
+
 	#region Static Methods
 
 	private static async Task<IEnumerable<Claim>> ValidateAndGetUserClaims(string accessToken)

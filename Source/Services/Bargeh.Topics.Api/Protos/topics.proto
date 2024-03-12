@@ -48,7 +48,17 @@ message CreatePostRequest {
 }
 
 message ReactOnPostRequest {
-  
+  string post = 1;
+  ReactionUpdateState state = 2;
 }
 
 message VoidOperationReply {}
+
+enum ReactionUpdateState {
+  None = 0;
+  Like = 1;
+  Love = 2;
+  Funny = 3;
+  Insightful = 4;
+  Dislike = 5;
+}

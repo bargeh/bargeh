@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bargeh.Topics.Api.Infrastructure.Migrations;
 
 [DbContext(typeof(TopicsDbContext))]
-[Migration("20240310103559_Initial")]
+[Migration("20240312103226_Initial")]
 partial class Initial
 {
     /// <inheritdoc />
@@ -80,6 +80,25 @@ partial class Initial
             b.ToTable("Posts");
         });
 
+        modelBuilder.Entity("Bargeh.Topics.Api.Infrastructure.Models.Reaction", b =>
+        {
+            b.Property<Guid>("Id")
+             .ValueGeneratedOnAdd()
+             .HasColumnType("uuid");
+
+            b.Property<Guid>("PostId")
+             .HasColumnType("uuid");
+
+            b.Property<int>("ReactionType")
+             .HasColumnType("integer");
+
+            b.HasKey("Id");
+
+            b.HasIndex("PostId");
+
+            b.ToTable("Reactions");
+        });
+
         modelBuilder.Entity("Bargeh.Topics.Api.Infrastructure.Models.Topic", b =>
         {
             b.Property<Guid>("Id")
@@ -114,6 +133,17 @@ partial class Initial
             b.Navigation("Parent");
 
             b.Navigation("Topic");
+        });
+
+        modelBuilder.Entity("Bargeh.Topics.Api.Infrastructure.Models.Reaction", b =>
+        {
+            b.HasOne("Bargeh.Topics.Api.Infrastructure.Models.Post", "Post")
+             .WithMany()
+             .HasForeignKey("PostId")
+             .OnDelete(DeleteBehavior.Cascade)
+             .IsRequired();
+
+            b.Navigation("Post");
         });
         #pragma warning restore 612, 618
     }
