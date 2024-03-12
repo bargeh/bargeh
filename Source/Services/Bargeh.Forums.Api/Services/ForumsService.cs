@@ -14,7 +14,7 @@ public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoB
 {
 	#region gRPC Endpoints
 
-	public override async Task<VoidOperationReply> AddForum(AddForumRequest request, ServerCallContext context)
+	public override async Task<AddForumReply> AddForum(AddForumRequest request, ServerCallContext context)
 	{
 		// TODO: Permalinks are accepted with spaces
 		// TODO: Prevent duplicate forums
@@ -49,7 +49,10 @@ public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoB
 		});
 		await dbContext.SaveChangesAsync();
 
-		return new();
+		return new()
+		{
+			Id = forum.Id.ToString()
+		};
 
 		// TODO: Add the owner as a member of the forum too
 	}
