@@ -91,6 +91,8 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 	public override async Task<VoidOperationReply> CreatePost(CreatePostRequest request, ServerCallContext context)
 	{
 		// PRODUCTION: Validate image size
+		
+		// FROMHERE: Code this method, then test the ReactOnPost method too
 
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
 		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
@@ -105,7 +107,49 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
 		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
 
-		throw new();
+		Post post = await dbContext.Posts.FirstOrDefaultAsync(p => p.Id.ToString() == request.Post)
+					?? throw new RpcException(new(StatusCode.NotFound, "No post was found with this ID"));
+
+		Reaction? reaction =
+			await dbContext.Reactions.FirstOrDefaultAsync(r => r.UserId == userId &&
+															   r.Post.ToString() == request.Post);
+
+		if(request.State is ReactionUpdateState.None && reaction is not null)
+		{
+			dbContext.Remove(reaction);
+			await dbContext.SaveChangesAsync();
+			return new();
+		}
+
+		if(request.State is ReactionUpdateState.None && reaction is null)
+		{
+			return new();
+		}
+
+		// ReSharper disable once ConvertIfStatementToNullCoalescingAssignment
+		if(reaction is null)
+		{
+			reaction = new()
+			{
+				UserId = userId,
+				Post = post,
+				ReactionType = ReactionType.Like
+			};
+		}
+
+		reaction.ReactionType = request.State switch
+		{
+			ReactionUpdateState.Love => ReactionType.Love,
+			ReactionUpdateState.Funny => ReactionType.Funny,
+			ReactionUpdateState.Insightful => ReactionType.Insightful,
+			ReactionUpdateState.Dislike => ReactionType.Dislike,
+			_ => reaction.ReactionType
+		};
+
+		dbContext.Update(reaction);
+		await dbContext.SaveChangesAsync();
+		
+		throw new NotImplementedException();
 	}
 
 	#region Static Methods
