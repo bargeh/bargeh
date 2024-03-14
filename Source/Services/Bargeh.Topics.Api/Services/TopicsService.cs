@@ -18,10 +18,9 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 															   ServerCallContext context)
 	{
 		Topic topic =
-			await dbContext.Topics.FirstOrDefaultAsync(t => t.ForumId.ToString()
-															 .Substring(0, t.ForumId.ToString().IndexOf('-')) ==
-															request.Forum && t.Permalink == request.Permalink)
-			?? throw new RpcException(new(StatusCode.NotFound, "No topic was found with this permalink"));
+			await dbContext.Topics.FirstOrDefaultAsync(t => t.ForumId.ToString() == request.Forum &&
+															t.Permalink == request.Permalink)
+			?? throw new RpcException(new(StatusCode.NotFound, "No topic was found with this permalink in this forum"));
 
 		Post headPost = (await dbContext.Posts.FirstOrDefaultAsync(p => p.Topic == topic))!;
 
@@ -103,6 +102,9 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 
 	public override async Task<VoidOperationReply> ReactOnPost(ReactOnPostRequest request, ServerCallContext context)
 	{
+		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
+		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
+
 		throw new();
 	}
 

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bargeh.Topics.Api.Infrastructure.Migrations;
 
 [DbContext(typeof(TopicsDbContext))]
-[Migration("20240312103226_Initial")]
+[Migration("20240314050853_Initial")]
 partial class Initial
 {
     /// <inheritdoc />
@@ -107,6 +107,11 @@ partial class Initial
 
             b.Property<Guid>("ForumId")
              .HasColumnType("uuid");
+
+            b.Property<string>("Permalink")
+             .IsRequired()
+             .HasMaxLength(16)
+             .HasColumnType("character varying(16)");
 
             b.Property<string>("Title")
              .IsRequired()

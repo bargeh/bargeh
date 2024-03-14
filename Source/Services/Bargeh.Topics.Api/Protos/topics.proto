@@ -48,8 +48,9 @@ message CreatePostRequest {
 }
 
 message ReactOnPostRequest {
-  string post = 1;
-  ReactionUpdateState state = 2;
+  string access_token = 1;
+  string post = 2;
+  ReactionUpdateState state = 3;
 }
 
 message VoidOperationReply {}

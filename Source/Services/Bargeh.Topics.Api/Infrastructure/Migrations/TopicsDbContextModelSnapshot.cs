@@ -105,6 +105,11 @@ partial class TopicsDbContextModelSnapshot : ModelSnapshot
             b.Property<Guid>("ForumId")
              .HasColumnType("uuid");
 
+            b.Property<string>("Permalink")
+             .IsRequired()
+             .HasMaxLength(16)
+             .HasColumnType("character varying(16)");
+
             b.Property<string>("Title")
              .IsRequired()
              .HasMaxLength(64)

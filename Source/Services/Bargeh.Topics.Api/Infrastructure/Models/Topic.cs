@@ -7,9 +7,15 @@ public class Topic
 	public Guid Id { get; init; }
 	public required Guid ForumId { get; init; }
 
-	[MaxLength(64)]
-	public string Permalink => Id.ToString().Split('-')[0];
+	[MaxLength(16)]
+	public string Permalink { get; init; }
 
 	[MaxLength(64)]
 	public required string Title { get; init; }
+
+	public Topic()
+	{
+		Id = Guid.NewGuid();
+		Permalink = Id.ToString().Split('-')[0];
+	}
 }
