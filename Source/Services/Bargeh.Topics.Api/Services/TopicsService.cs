@@ -90,9 +90,9 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 
 	public override async Task<VoidOperationReply> CreatePost(CreatePostRequest request, ServerCallContext context)
 	{
+		// ()
 		// PRODUCTION: Validate image size
-		
-		// FROMHERE: Code this method, then test the ReactOnPost method too
+		// PRODUCTION: It doesn't need topic id since it can get it from the parent post field
 
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
 		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
@@ -112,8 +112,9 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 
 		Reaction? reaction =
 			await dbContext.Reactions.FirstOrDefaultAsync(r => r.UserId == userId &&
-															   r.Post.ToString() == request.Post);
+															   r.Post.Id.ToString() == request.Post);
 
+		// ReSharper disable once ConvertIfStatementToSwitchStatement
 		if(request.State is ReactionUpdateState.None && reaction is not null)
 		{
 			dbContext.Remove(reaction);
@@ -148,8 +149,8 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 
 		dbContext.Update(reaction);
 		await dbContext.SaveChangesAsync();
-		
-		throw new NotImplementedException();
+
+		return new();
 	}
 
 	#region Static Methods
