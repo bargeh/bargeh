@@ -33,7 +33,6 @@ namespace BargehMigrations.Infrastructure.Migrations
                     TopicId = table.Column<Guid>(type: "uuid", nullable: false),
                     ParentId = table.Column<Guid>(type: "uuid", nullable: true),
                     Attachment = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
-                    Media = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
                     Author = table.Column<Guid>(type: "uuid", nullable: false),
                     LastUpdateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Body = table.Column<string>(type: "character varying(4096)", maxLength: 4096, nullable: false),

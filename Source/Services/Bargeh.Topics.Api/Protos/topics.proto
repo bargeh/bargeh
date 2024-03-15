@@ -41,10 +41,9 @@ message CreateTopicReply {
 
 message CreatePostRequest {
   string access_token = 1;
-  string topic = 2;
-  optional string parent = 3;
-  optional bytes media = 4;
-  string body = 5;
+  string parent = 2;
+  optional bytes media = 3;
+  string body = 4;
 }
 
 message ReactOnPostRequest {

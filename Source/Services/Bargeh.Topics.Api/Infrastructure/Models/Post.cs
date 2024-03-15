@@ -11,9 +11,6 @@ public class Post
 	[MaxLength(1024)]
 	public string? Attachment { get; init; }
 
-	[MaxLength(1024)]
-	public string? Media { get; init; }
-
 	public required Guid Author { get; init; }
 	public DateTime LastUpdateDate { get; init; } = DateTime.UtcNow;
 

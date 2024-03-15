@@ -90,16 +90,33 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 
 	public override async Task<VoidOperationReply> CreatePost(CreatePostRequest request, ServerCallContext context)
 	{
-		// ()
-		// PRODUCTION: Validate image size
+		// PRODUCTION: Validate image size and store it
 		// PRODUCTION: It doesn't need topic id since it can get it from the parent post field
 
+		if(string.IsNullOrWhiteSpace(request.Body))
+		{
+			throw new RpcException(new(StatusCode.InvalidArgument, "Whitespace parameters are not allowed"));
+		}
+		
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
 		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
 
-		Topic topic = await dbContext.Topics.FirstOrDefaultAsync(t => t.Id == Guid.Parse(request.Topic))
-					  ?? throw new RpcException(new(StatusCode.NotFound, "No topic was found with this ID"));
-		throw new();
+		Post parent = await dbContext.Posts.Include(p => p.Topic)
+									 .FirstOrDefaultAsync(p => p.Id == Guid.Parse(request.Parent))
+					  ?? throw new RpcException(new(StatusCode.NotFound, "No parent post was found with this ID"));
+
+		Post post = new()
+		{
+			Topic = parent.Topic,
+			Author = userId,
+			Body = request.Body,
+			Parent = parent
+		};
+
+		await dbContext.AddAsync(post);
+		await dbContext.SaveChangesAsync();
+
+		return new();
 	}
 
 	public override async Task<VoidOperationReply> ReactOnPost(ReactOnPostRequest request, ServerCallContext context)

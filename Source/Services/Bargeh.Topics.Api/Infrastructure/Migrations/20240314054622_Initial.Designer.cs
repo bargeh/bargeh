@@ -61,10 +61,6 @@ namespace BargehMigrations.Infrastructure.Migrations
                     b.Property<long>("Loves")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Media")
-                        .HasMaxLength(1024)
-                        .HasColumnType("character varying(1024)");
-
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uuid");
 
