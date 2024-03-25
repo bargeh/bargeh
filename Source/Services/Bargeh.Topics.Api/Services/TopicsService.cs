@@ -17,6 +17,7 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 	public override async Task<TopicReply> GetTopicByPermalink(GetTopicByPermalinkRequest request,
 															   ServerCallContext context)
 	{
+		// TODO: Should return a couple of posts too
 		Topic topic =
 			await dbContext.Topics.FirstOrDefaultAsync(t => t.ForumId.ToString() == request.Forum &&
 															t.Permalink == request.Permalink)
@@ -27,14 +28,17 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		return new()
 		{
 			Forum = topic.ForumId.ToString(),
-			Author = headPost.Author.ToString(),
-			Title = topic.Title,
-			Body = headPost.Body,
+			HeadPost = new()
+			{
+				Author = headPost.Author.ToString(),
+				Body = headPost.Body,
 			Likes = headPost.Likes,
 			Loves = headPost.Loves,
 			Funnies = headPost.Funnies,
 			Insights = headPost.Insights,
 			Dislikes = headPost.Dislikes
+			},
+			Title = topic.Title,
 		};
 	}
 
@@ -114,7 +118,9 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		};
 
 		await dbContext.AddAsync(post);
-		await dbContext.SaveChangesAsync();
+
+		// TODO: Set cancellation token for all like this
+		await dbContext.SaveChangesAsync(context.CancellationToken);
 
 		return new();
 	}
@@ -170,9 +176,16 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		return new();
 	}
 
-	#region Static Methods
+    public override Task<GetMorePostsReply> GetMorePosts(GetMorePostsRequest request, ServerCallContext context)
+	{
+		request.
 
-	private static async Task<IEnumerable<Claim>> ValidateAndGetUserClaims(string accessToken)
+        throw new();
+    }
+
+    #region Static Methods
+
+    private static async Task<IEnumerable<Claim>> ValidateAndGetUserClaims(string accessToken)
 	{
 		JwtSecurityTokenHandler tokenHandler = new();
 		SecurityKey key = new X509SecurityKey(new("C:/Source/Bargeh/JwtPublicKey.cer"));

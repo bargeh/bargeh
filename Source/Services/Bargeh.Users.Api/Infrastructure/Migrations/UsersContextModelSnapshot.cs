@@ -8,85 +8,84 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace BargehMigrations.Migrations
+namespace Bargeh.Users.Api.Infrastructure.Migrations;
+
+[DbContext(typeof(UsersDbContext))]
+partial class UsersContextModelSnapshot : ModelSnapshot
 {
-    [DbContext(typeof(UsersDbContext))]
-    partial class UsersContextModelSnapshot : ModelSnapshot
+    protected override void BuildModel(ModelBuilder modelBuilder)
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
-        {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+        modelBuilder
+            .HasAnnotation("ProductVersion", "8.0.0")
+            .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+        NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Users.Api.Models.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+        modelBuilder.Entity("Users.Api.Models.User", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid");
 
-                    b.Property<string>("Bio")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<string>("Bio")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<DateTime?>("BirthDate")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime?>("BirthDate")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("CanCreateForums")
-                        .HasColumnType("boolean");
+                b.Property<bool>("CanCreateForums")
+                    .HasColumnType("boolean");
 
-                    b.Property<string>("CoverImage")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<string>("CoverImage")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<string>("DisplayName")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
+                b.Property<string>("Email")
+                    .HasColumnType("text");
 
-                    b.Property<bool>("Enabled")
-                        .HasColumnType("boolean");
+                b.Property<bool>("Enabled")
+                    .HasColumnType("boolean");
 
-                    b.Property<bool?>("IsMale")
-                        .HasColumnType("boolean");
+                b.Property<bool?>("IsMale")
+                    .HasColumnType("boolean");
 
-                    b.Property<DateTime>("OnlineDate")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime>("OnlineDate")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Password")
-                        .HasColumnType("text");
+                b.Property<string>("Password")
+                    .HasColumnType("text");
 
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<string>("PhoneNumber")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<int>("PremiumDaysLeft")
-                        .HasColumnType("integer");
+                b.Property<int>("PremiumDaysLeft")
+                    .HasColumnType("integer");
 
-                    b.Property<string>("ProfileImage")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<string>("ProfileImage")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<int?>("Province")
-                        .HasColumnType("integer");
+                b.Property<int?>("Province")
+                    .HasColumnType("integer");
 
-                    b.Property<DateTime>("RegisterDate")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime>("RegisterDate")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<string>("Username")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("Users");
-                });
+                b.ToTable("Users");
+            });
 #pragma warning restore 612, 618
-        }
     }
 }

@@ -21,7 +21,7 @@ public static class IdentityDbInitializer
 
 		try
 		{
-			await identityDbContext.Database.MigrateAsync ();
+			await identityDbContext.Database.MigrateAsync();
 		}
 		catch
 		{

@@ -2,8 +2,8 @@
 
 #nullable disable
 
-namespace BargehMigrations.Migrations
-{
+namespace Bargeh.Users.Api.Infrastructure.Migrations;
+
 	/// <inheritdoc />
 	public partial class Init : Migration
 	{
@@ -42,4 +42,3 @@ namespace BargehMigrations.Migrations
 				name: "Users");
 		}
 	}
-}

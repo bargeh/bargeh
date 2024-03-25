@@ -9,6 +9,7 @@ service TopicsProto {
   rpc CreateTopic (CreateTopicRequest) returns (CreateTopicReply);
   rpc CreatePost (CreatePostRequest) returns (VoidOperationReply);
   rpc ReactOnPost (ReactOnPostRequest) returns (VoidOperationReply);
+  rpc GetMorePosts (GetMorePostsRequest) returns (GetMorePostsReply);
 }
 
 message GetTopicByPermalinkRequest {
@@ -18,14 +19,8 @@ message GetTopicByPermalinkRequest {
 
 message TopicReply {
   string forum = 1;
-  string author = 2;
-  string title = 3;
-  string body = 4;
-  uint32 likes = 5;
-  uint32 loves = 6;
-  uint32 insights = 7;
-  uint32 funnies = 8;
-  uint32 dislikes = 9;
+  string title = 2;
+  ProtoPost head_post = 3;
 }
 
 message CreateTopicRequest {
@@ -52,7 +47,30 @@ message ReactOnPostRequest {
   ReactionUpdateState state = 3;
 }
 
+message GetMorePostsRequest {
+  string access_token = 1;
+  string topic = 2;
+  repeated string seen_posts = 3;
+}
+
+message GetMorePostsReply {
+  repeated ProtoPost posts = 1;
+}
+
 message VoidOperationReply {}
+
+message ProtoPost {
+  string id = 1;
+  string attachment = 2;
+  string author = 3;
+  string body = 4;
+  optional string parent = 5;
+  uint32 likes = 6;
+  uint32 loves = 7;
+  uint32 insights = 8;
+  uint32 funnies = 9;
+  uint32 dislikes = 10;
+}
 
 enum ReactionUpdateState {
   None = 0;
