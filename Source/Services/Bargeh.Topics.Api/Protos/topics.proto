@@ -9,7 +9,7 @@ service TopicsProto {
   rpc CreateTopic (CreateTopicRequest) returns (CreateTopicReply);
   rpc CreatePost (CreatePostRequest) returns (VoidOperationReply);
   rpc ReactOnPost (ReactOnPostRequest) returns (VoidOperationReply);
-  rpc GetMorePosts (GetMorePostsRequest) returns (GetMorePostsReply);
+  rpc GetMorePostChains (GetMorePostChainsRequest) returns (GetMorePostChainsReply);
 }
 
 message GetTopicByPermalinkRequest {
@@ -47,13 +47,13 @@ message ReactOnPostRequest {
   ReactionUpdateState state = 3;
 }
 
-message GetMorePostsRequest {
+message GetMorePostChainsRequest {
   string access_token = 1;
   string topic = 2;
-  repeated string seen_posts = 3;
+  repeated string seen_postchains = 3;
 }
 
-message GetMorePostsReply {
+message GetMorePostChainsReply {
   repeated ProtoPost posts = 1;
 }
 
