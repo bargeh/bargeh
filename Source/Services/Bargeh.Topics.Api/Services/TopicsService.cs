@@ -206,7 +206,7 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		return reply;
 	}
 
-	private async Task AddPostHierarchyAsync(Guid parentId, List<ProtoPost> posts)
+	private async Task AddPostHierarchyAsync(Guid parentId, ICollection<ProtoPost> posts)
 	{
 		Post? child = await dbContext.Posts.Include(p => p.Parent)
 									 .FirstOrDefaultAsync(p => p.Parent != null && p.Parent.Id == parentId);
