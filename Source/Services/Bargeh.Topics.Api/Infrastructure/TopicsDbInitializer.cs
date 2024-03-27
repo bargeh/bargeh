@@ -31,7 +31,7 @@ public static class TopicsDbInitializer
 			// ignored
 		}
 
-		#region Seed Daata
+		#region Seed Data
 
 		Topic topic = new()
 		{
@@ -89,41 +89,6 @@ public static class TopicsDbInitializer
 				currentPostId = childPost.Id;
 			}
 		}
-		#endregion
-
-		#region Log
-
-		await WriteToGraphvizFileAsync(dbContext);
-		
-		static async Task WriteToGraphvizFileAsync(TopicsDbContext dbContext)
-		{
-			StringBuilder sb = new StringBuilder();
-			sb.AppendLine("digraph G {");
-
-			var topics = await dbContext.Topics.ToListAsync();
-			foreach (var topic in topics)
-			{
-				sb.AppendLine($"\"{topic.Id}\" [label=\"{topic.Title}\"];");
-				var posts = await dbContext.Posts.Where(p => p.Topic.Id == topic.Id).ToListAsync();
-				foreach (var post in posts)
-				{
-					sb.AppendLine($"\"{post.Id}\" [label=\"{post.Body}\"];");
-					if (post.Parent != null)
-					{
-						sb.AppendLine($"\"{post.Parent.Id}\" -> \"{post.Id}\";");
-					}
-					else
-					{
-						sb.AppendLine($"\"{topic.Id}\" -> \"{post.Id}\";");
-					}
-				}
-			}
-
-			sb.AppendLine("}");
-
-			await File.WriteAllTextAsync("tree.txt", sb.ToString());
-		}
-
 
 		#endregion
 
