@@ -61,7 +61,7 @@ message VoidOperationReply {}
 
 message ProtoPost {
   string id = 1;
-  string attachment = 2;
+  optional string attachment = 2;
   string author = 3;
   string body = 4;
   optional string parent = 5;

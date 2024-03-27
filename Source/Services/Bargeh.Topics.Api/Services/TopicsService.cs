@@ -181,18 +181,33 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 	public override async Task<GetMorePostChainsReply> GetMorePostChains(GetMorePostChainsRequest request,
 																		 ServerCallContext callContext)
 	{
+		if(!Guid.TryParse(request.Topic, out Guid topicGuid))
+		{
+			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter \"Topic\" is not a valid GUID"));
+		}
+
+		if(request.SeenPostchains.Any(postchainHeadPost => !Guid.TryParse(postchainHeadPost, out _)))
+		{
+			throw new RpcException(new(StatusCode.InvalidArgument, "Guids provided are not valid"));
+		}
+
 		// TODO: Test the method
 		await ValidateAndGetUserClaims(request.AccessToken);
 
+
 		Post topicHeadPost =
-			await dbContext.Posts.FirstOrDefaultAsync(p => p.Parent == null && p.Topic.ToString() == request.Topic) ??
+			await dbContext.Posts.FirstOrDefaultAsync(p => p.Parent == null && p.Topic.Id == topicGuid) ??
 			throw new RpcException(new(StatusCode.NotFound, "The topic with this ID was not found"));
 
+
+		List<Guid> seenPostchainsGuids = request.SeenPostchains.Select(Guid.Parse).ToList();
+
 		List<Post> newPostChains = await dbContext.Posts
-												  .Where(p => !request.SeenPostchains.Contains(p.Id.ToString()) &&
+												  .Where(p => !seenPostchainsGuids.Contains(p.Id) &&
 															  p.Parent == topicHeadPost)
 												  .Take(10)
 												  .ToListAsync();
+
 
 
 		List<ProtoPost> postsToReturn = [];
@@ -212,7 +227,7 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 									 .FirstOrDefaultAsync(p => p.Parent != null && p.Parent.Id == parentId);
 		if(child != null)
 		{
-			posts.Add(new()
+			ProtoPost postToAdd = new()
 			{
 				Id = child.Id.ToString(),
 				Body = child.Body,
@@ -223,8 +238,14 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 				Dislikes = child.Dislikes,
 				Author = child.Author.ToString(),
 				Parent = child.Parent?.ToString(),
-				Attachment = child.Attachment
-			});
+			};
+
+			if(!string.IsNullOrWhiteSpace(child.Attachment))
+			{
+				postToAdd.Attachment = child.Attachment;
+			}
+
+			posts.Add(postToAdd);
 
 			await AddPostHierarchyAsync(child.Id, posts);
 		}
