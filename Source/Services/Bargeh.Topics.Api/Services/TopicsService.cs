@@ -3,7 +3,6 @@ using System.Security.Claims;
 using Bargeh.Topics.Api.Infrastructure;
 using Bargeh.Topics.Api.Infrastructure.Models;
 using Forums.Api;
-using Google.Protobuf.Collections;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

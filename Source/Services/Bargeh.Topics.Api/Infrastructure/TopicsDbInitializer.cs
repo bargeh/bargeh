@@ -1,6 +1,4 @@
-﻿using System.Text;
-using Bargeh.Topics.Api.Infrastructure.Models;
-using Bargeh.Topics.Api.Services;
+﻿using Bargeh.Topics.Api.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bargeh.Topics.Api.Infrastructure;
