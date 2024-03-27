@@ -5,7 +5,7 @@ namespace Bargeh.Topics.Api.Infrastructure.Models;
 public class Topic
 {
 	public Guid Id { get; init; }
-	public required Guid ForumId { get; init; }
+	public required Guid Forum { get; init; }
 
 	[MaxLength(16)]
 	public string Permalink { get; init; }

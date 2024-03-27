@@ -29,7 +29,7 @@ public static class UsersDbInitializer
 			// ignored
 		}
 
-		if(!dbContext.Users.Any())
+		if(!await dbContext.Users.AnyAsync())
 		{
 			User user = new()
 			{
@@ -41,8 +41,8 @@ public static class UsersDbInitializer
 				PhoneNumber = "09123456789"
 			};
 
-			dbContext.Add(user);
-
+			await dbContext.AddAsync(user);
+			
 			await dbContext.SaveChangesAsync();
 		}
 

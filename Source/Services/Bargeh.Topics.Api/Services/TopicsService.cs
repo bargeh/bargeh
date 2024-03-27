@@ -20,7 +20,7 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 	{
 		// TODO: Should return a couple of posts too
 		Topic topic =
-			await dbContext.Topics.FirstOrDefaultAsync(t => t.ForumId.ToString() == request.Forum &&
+			await dbContext.Topics.FirstOrDefaultAsync(t => t.Forum.ToString() == request.Forum &&
 															t.Permalink == request.Permalink)
 			?? throw new RpcException(new(StatusCode.NotFound, "No topic was found with this permalink in this forum"));
 
@@ -28,7 +28,7 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 
 		return new()
 		{
-			Forum = topic.ForumId.ToString(),
+			Forum = topic.Forum.ToString(),
 			HeadPost = new()
 			{
 				Author = headPost.Author.ToString(),
@@ -71,7 +71,7 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		Topic topic = new()
 		{
 			Title = request.Title,
-			ForumId = Guid.Parse(request.Forum)
+			Forum = Guid.Parse(request.Forum)
 		};
 
 		await dbContext.AddAsync(topic);
@@ -185,10 +185,13 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		// TODO: Test the method
 		await ValidateAndGetUserClaims(request.AccessToken);
 
-		// This query works assuming that top posts of postchains have parent set to null and are discovered via their topic property
+		Post topicHeadPost =
+			await dbContext.Posts.FirstOrDefaultAsync(p => p.Parent == null && p.Topic.ToString() == request.Topic) ??
+			throw new RpcException(new(StatusCode.NotFound, "The topic with this ID was not found"));
+
 		List<Post> newPostChains = await dbContext.Posts
-												  .Where(p => !request.SeenPosts.Contains(p.Id.ToString()) &&
-															  p.Parent == null)
+												  .Where(p => !request.SeenPostchains.Contains(p.Id.ToString()) &&
+															  p.Parent == topicHeadPost)
 												  .Take(10)
 												  .ToListAsync();
 

@@ -16,7 +16,7 @@ namespace BargehMigrations.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ForumId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Forum = table.Column<Guid>(type: "uuid", nullable: false),
                     Permalink = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
                     Title = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false)
                 },

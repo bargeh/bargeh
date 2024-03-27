@@ -101,7 +101,7 @@ namespace BargehMigrations.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ForumId")
+                    b.Property<Guid>("Forum")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Permalink")
