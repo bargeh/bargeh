@@ -28,6 +28,9 @@
         <Protobuf Include="../../Services/Bargeh.Identity.Api/Protos/identity.proto" GrpcServices="Client">
             <Link>Protos/identity.proto</Link>
         </Protobuf>
+        <Protobuf Include="../../Services/Bargeh.Topics.Api/Protos/topics.proto" GrpcServices="Client">
+            <Link>Protos/topics.proto</Link>
+        </Protobuf>
     </ItemGroup>
 
 </Project>
