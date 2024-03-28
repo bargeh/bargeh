@@ -1,11 +1,19 @@
-﻿@inherits LayoutComponentBase
+﻿@using Bargeh.Main.Wapp.Client.Infrastructure
+@inherits LayoutComponentBase
+@inject NotFoundListener NotFoundService
 @{ /* PRODUCTION: Configure CSP */ }
 
 <PageTitle>برگه</PageTitle>
 
 <MainHeader/>
 
-@Body
+@if (_notFound)
+{
+	<h1>Could not find the content you are looking for</h1>
+}else
+{
+	@Body
+}
 
 <div class="search-overlay">
 	<div class="search-container">
@@ -20,18 +28,31 @@
 <footer>
 	<div class="footer-content">
 		<div class="footer-info">
-			<img src="img/Logo11-07-White.svg" class="logo-header" alt="لوگوی سفید">
+			<img src="/img/Logo11-07-White.svg" class="logo-header" alt="لوگوی سفید">
 			<span class="footer-title">برگه</span>
-			<img class="footer-bullet desktop-only" src="img/Circle.svg" alt="دایره‌ی جداکننده">
+			<img class="footer-bullet desktop-only" src="/img/Circle.svg" alt="دایره‌ی جداکننده">
 			<p class="desktop-only">در حال توسعه توسط متین محمدی و مشارکت‌کنندگان متن باز</p>
 		</div>
 		<div class="footer-links">
-			<a>اطلاعات</a> <img class="footer-bullet" src="img/Circle.svg" alt="دایره‌ی جداکننده">
+			<a>اطلاعات</a> <img class="footer-bullet" src="/img/Circle.svg" alt="دایره‌ی جداکننده">
 			<a>
 				حریم
 				خصوصی
 			</a>
-			<img class="footer-bullet" src="img/Circle.svg" alt="دایره‌ی جداکننده"> <a>شرایط استفاده</a>
+			<img class="footer-bullet" src="/img/Circle.svg" alt="دایره‌ی جداکننده"> <a>شرایط استفاده</a>
 		</div>
 	</div>
 </footer>
+
+@code{
+	private bool _notFound;
+
+	protected override void OnInitialized() => NotFoundService.OnNotFound += SetNotFound;
+
+	private void SetNotFound()
+	{
+		_notFound = true;
+		StateHasChanged();
+	}
+
+}

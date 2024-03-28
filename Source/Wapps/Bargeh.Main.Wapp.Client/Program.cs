@@ -1,4 +1,6 @@
+using Bargeh.Main.Wapp.Client.Infrastructure;
 using Bargeh.Main.Wapp.Client.Services;
+using Forums.Api;
 using Grpc.Net.Client;
 using Grpc.Net.Client.Web;
 using Identity.Api;
@@ -10,6 +12,7 @@ using Users.Api;
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.Services.AddScoped<LocalStorageService>();
+builder.Services.AddScoped<NotFoundListener>();
 
 builder.Services.AddSingleton(_ =>
 {
@@ -22,7 +25,6 @@ builder.Services.AddSingleton(_ =>
 
 	return new IdentityProto.IdentityProtoClient(channel);
 });
-
 
 builder.Services.AddSingleton(_ =>
 {
@@ -58,6 +60,18 @@ builder.Services.AddSingleton(_ =>
 	GrpcChannel channel = GrpcChannel.ForAddress(httpClient.BaseAddress, new() { HttpClient = httpClient });
 
 	return new TopicsProto.TopicsProtoClient(channel);
+});
+
+builder.Services.AddSingleton(_ =>
+{
+	HttpClient httpClient = new(new GrpcWebHandler(GrpcWebMode.GrpcWeb, new HttpClientHandler()))
+	{
+		BaseAddress = new("https://localhost:5301")
+	};
+
+	GrpcChannel channel = GrpcChannel.ForAddress(httpClient.BaseAddress, new() { HttpClient = httpClient });
+
+	return new ForumsProto.ForumsProtoClient(channel);
 });
 
 await builder.Build().RunAsync();

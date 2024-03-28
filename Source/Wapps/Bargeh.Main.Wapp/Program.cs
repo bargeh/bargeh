@@ -1,9 +1,12 @@
 ﻿using Bargeh.Aspire.ServiceDefaults;
+using Bargeh.Main.Wapp.Client.Infrastructure;
 using Bargeh.Main.Wapp.Client.Services;
 using Bargeh.Main.Wapp.Components;
+using Forums.Api;
 using Grpc.Net.Client;
 using Identity.Api;
 using Sms.Api;
+using Topics.Api;
 using Users.Api;
 using _Imports = Bargeh.Main.Wapp.Client._Imports;
 
@@ -18,6 +21,7 @@ builder.Services.AddRazorComponents()
 	   .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddScoped<LocalStorageService>();
+builder.Services.AddScoped<NotFoundListener>();
 
 #endregion
 
@@ -29,9 +33,13 @@ builder.Services.AddSingleton(_ => new UsersProto.UsersProtoClient(GrpcChannel.F
 
 builder.Services.AddSingleton(_ => new SmsProto.SmsProtoClient(GrpcChannel.ForAddress("http://localhost")));
 
-//builder.Services.AddSingleton<SmsApiGrpcProvider> ()
-//	.AddGrpcClient<SmsProto.SmsProtoClient> (o =>
-//		o.Address = builder.Configuration.GetValue<Uri> ("services:sms:1"));
+builder.Services.AddSingleton(_ => new TopicsProto.TopicsProtoClient(GrpcChannel.ForAddress("http://localhost")));
+
+builder.Services.AddSingleton(_ => new ForumsProto.ForumsProtoClient(GrpcChannel.ForAddress("http://localhost")));
+
+builder.Services.AddGrpcClient<ForumsProto.ForumsProtoClient>(o =>
+															o.Address =
+																builder.Configuration.GetValue<Uri>("services:forums:1"));
 
 #endregion
 

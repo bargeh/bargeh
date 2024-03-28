@@ -1,0 +1,46 @@
+﻿@page "/Forum/{ForumPermalink}"
+@using Forums.Api
+@using Grpc.Core
+@using Bargeh.Main.Wapp.Client.Infrastructure
+@inject NotFoundListener NotFoundService
+@inject ForumsProto.ForumsProtoClient ForumsService;
+
+@* FROMHERE: Fix console errors *@
+
+<h3>Forum @@ @ForumPermalink</h3>
+
+@if(_forum is not null)
+{
+	<p>@_forum.Name</p>
+}
+
+@code {
+
+	[Parameter]
+	public string ForumPermalink { get; init; } = null!;
+
+	private ForumReply? _forum;
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			_forum = await ForumsService.GetForumByPermalinkAsync(new()
+			{
+				Permalink = ForumPermalink
+			});
+		}
+		catch (RpcException exception)
+		{
+			// ReSharper disable once InvertIf
+			if(exception.StatusCode == StatusCode.NotFound)
+			{
+				NotFoundService.NotifyNotFound();
+				return;
+			}
+
+			throw;
+		}
+	}
+
+}
