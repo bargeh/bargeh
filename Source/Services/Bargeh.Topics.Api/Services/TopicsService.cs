@@ -211,47 +211,17 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 
 
 		List<ProtoPost> postsToReturn = [];
-		foreach(Post headPost in newPostChains)
+		postsToReturn.AddRange(MapPostsListToProtoPostsList(newPostChains));
+		foreach(Post postchainHeadPost in newPostChains)
 		{
-			await AddPostHierarchyAsync(headPost.Id, postsToReturn);
+			await AddPostHierarchyAsync(postchainHeadPost.Id, postsToReturn, 5);
 		}
 
 		GetMorePostChainsReply reply = new();
 		reply.Posts.Add(postsToReturn);
 		return reply;
 	}
-
-	private async Task AddPostHierarchyAsync(Guid parentId, ICollection<ProtoPost> posts)
-	{
-		Post? child = await dbContext.Posts.Include(p => p.Parent)
-									 .FirstOrDefaultAsync(p => p.Parent != null && p.Parent.Id == parentId);
-		if(child != null)
-		{
-			ProtoPost postToAdd = new()
-			{
-				Id = child.Id.ToString(),
-				Body = child.Body,
-				Likes = child.Likes,
-				Loves = child.Loves,
-				Insights = child.Insights,
-				Funnies = child.Funnies,
-				Dislikes = child.Dislikes,
-				Author = child.Author.ToString(),
-				Parent = child.Parent?.ToString(),
-			};
-
-			if(!string.IsNullOrWhiteSpace(child.Attachment))
-			{
-				postToAdd.Attachment = child.Attachment;
-			}
-
-			posts.Add(postToAdd);
-
-			await AddPostHierarchyAsync(child.Id, posts);
-		}
-	}
-
-
+	
 	#region Private Methods
 
 	private static async Task<IEnumerable<Claim>> ValidateAndGetUserClaims(string accessToken)
@@ -279,6 +249,55 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 
 		IEnumerable<Claim> accessTokenClaims = tokenHandler.ReadJwtToken(accessToken).Claims!;
 		return accessTokenClaims;
+	}
+	
+	private async Task AddPostHierarchyAsync(Guid parentId, ICollection<ProtoPost> posts, int depth)
+	{
+		if (depth <= 0)
+		{
+			return;
+		}
+
+		Post? child = await dbContext.Posts.Include(p => p.Parent)
+									 .FirstOrDefaultAsync(p => p.Parent != null && p.Parent.Id == parentId);
+		if(child != null)
+		{
+			ProtoPost postToAdd = MapPostToProtoPost(child);
+
+			posts.Add(postToAdd);
+
+			await AddPostHierarchyAsync(child.Id, posts, depth - 1);
+		}
+	}
+
+	private static ProtoPost MapPostToProtoPost(Post post)
+	{
+		ProtoPost protoPost = new()
+		{
+			Id = post.Id.ToString(),
+			Body = post.Body,
+			Likes = post.Likes,
+			Loves = post.Loves,
+			Insights = post.Insights,
+			Funnies = post.Funnies,
+			Dislikes = post.Dislikes,
+			Author = post.Author.ToString(),
+			Parent = post.Parent!.Id.ToString()
+		};
+
+		if(!string.IsNullOrWhiteSpace(post.Attachment))
+		{
+			protoPost.Attachment = post.Attachment;
+		}
+
+		return protoPost;
+	}
+	
+	private static List<ProtoPost> MapPostsListToProtoPostsList(List<Post> posts)
+	{
+		List<ProtoPost> protoPosts = [];
+		protoPosts.AddRange(posts.Select(MapPostToProtoPost));
+		return protoPosts;
 	}
 
 	#endregion
