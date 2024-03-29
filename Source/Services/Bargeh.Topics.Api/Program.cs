@@ -20,7 +20,20 @@ builder.Services.AddGrpcClient<ForumsProto.ForumsProtoClient>(options =>
 	options.Address = new(builder.Configuration.GetValue<string>("services:forums:1")!);
 });
 
-WebApplication app = builder.Build();
+builder.Services.AddCors(options =>
+{
+	options.AddDefaultPolicy(policyBuilder =>
+	{
+		policyBuilder.AllowAnyOrigin()
+					 .AllowAnyHeader()
+					 .AllowAnyMethod();
+	});
+});
+
+
+WebApplication app = builder.Build ();
+
+app.UseCors ();
 
 app.UseGrpcWeb();
 app.MapGrpcService<TopicsService>().EnableGrpcWeb();

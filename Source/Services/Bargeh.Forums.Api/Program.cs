@@ -14,7 +14,20 @@ builder.AddNpgsqlDbContext<ForumsDbContext>("postgres", settings =>
 	settings.MaxRetryCount = 10;
 });
 
-WebApplication app = builder.Build();
+builder.Services.AddCors(options =>
+{
+	options.AddDefaultPolicy(policyBuilder =>
+	{
+		policyBuilder.AllowAnyOrigin()
+					 .AllowAnyHeader()
+					 .AllowAnyMethod();
+	});
+});
+
+
+WebApplication app = builder.Build ();
+
+app.UseCors ();
 
 app.MapDefaultEndpoints();
 
