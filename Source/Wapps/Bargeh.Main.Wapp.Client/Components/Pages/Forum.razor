@@ -6,24 +6,26 @@
 @using Bargeh.Main.Wapp.Client.Infrastructure
 
 <div class="cover"></div>
+
+@* TODO: FORUMS DON'T HAVE AVATAR IN BASE!!! *@
 @if(_forum is not null)
 {
 	<div class="profile">
-		<img src="img/Logo-Main-12.png" alt="تصویر نمایه">
-		<h1 class="center">انجمن برنامه‌نویسان</h1>
+		<img src="img/Logo-Main-12.png" alt="تصویر نمایه @_forum.Name">
+		<h1 class="center">@_forum.Name</h1>
 		<div class="index-buttons">
-			<p>۱۴۰۰۰۰+ عضو</p>
+			<p>@_forum.Members عضو</p>
 			<p>۱۳ حامی</p>
 		</div>
-		<p>مالک انجمن: <a>@@matin</a></p>
+		<p>مالک انجمن: <a>@@@_forum.Owner</a></p>
 		<p>ناظران انجمن: <a>@@user10</a>، <a>@@user02</a>، <a>@@user03</a></p>
-		<p class="center-justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد...</p>
+		<p class="center-justify">@_forum.Description</p>
 		<div class="index-buttons">
 			<button type="button" class="button-filled">
 				<img src="img/UserPlus.svg" alt="دنبال‌کردن">
 				<p>دنبال کردن</p>
 			</button>
-			<button type="button" class="button-gold">
+			<button type="button" class="button-gold" onclick="alert('هه هه، از طرف مالک انجمن ازت تشکر می‌کنم، ولی فعلا باید صبر کنی تا برنامه‌نویسی برگه تکمیل شه 😅')">
 				<img src="img/Support.svg" alt="حمایت">
 				<p>حمایت از انجمن</p>
 			</button>
@@ -31,17 +33,17 @@
 	</div>
 
 	<div class="footer-info">
-		<h2>گفت و گوهای سنجاق شده‌ی انجمن برنامه‌نویسان</h2>
+		<h2>گفت و گوهای سنجاق شده‌ی @_forum.Name</h2>
 		<div class="shadow-box secondary-search-bar footer-links">
 			<img src="img/Search.svg" alt="علامت ذره‌بین" class="search-icon">
-			<input type="text" class="search-input" placeholder="جست و جو در گفت و گوهای انجمن برنامه‌نویسان...">
+			<input type="text" class="search-input" placeholder="جست و جو در گفت و گوهای @_forum.Name...">
 		</div>
 	</div>
 
 	<div class="forums-list">
 		<div class="topic">
 			<div>
-				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در انجمن برنامه‌نویسان
+				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در @_forum.Name
 				<p class="topic-description">
 					۳۲
 					<img src="img/ChatSingle.svg" alt="گفته‌ها"
@@ -53,7 +55,7 @@
 		</div>
 		<div class="topic">
 			<div>
-				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در انجمن برنامه‌نویسان
+				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در @_forum.Name
 				<p class="topic-description">
 					۳۲
 					<img src="img/ChatSingle.svg" alt="گفته‌ها"
@@ -65,7 +67,7 @@
 		</div>
 		<div class="topic">
 			<div>
-				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در انجمن برنامه‌نویسان
+				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در @_forum.Name
 				<p class="topic-description">
 					۳۲
 					<img src="img/ChatSingle.svg" alt="گفته‌ها"
@@ -77,7 +79,7 @@
 		</div>
 		<div class="topic">
 			<div>
-				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در انجمن برنامه‌نویسان
+				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در @_forum.Name
 				<p class="topic-description">
 					۳۲
 					<img src="img/ChatSingle.svg" alt="گفته‌ها"
@@ -90,17 +92,17 @@
 	</div>
 
 	<div class="footer-info">
-		<h2>همه‌ی گفت و گو‌های انجمن برنامه‌نویسان</h2>
+		<h2>همه‌ی گفت و گو‌های @_forum.Name</h2>
 		<div class="shadow-box secondary-search-bar footer-links">
 			<img src="img/Search.svg" alt="علامت ذره‌بین" class="search-icon">
-			<input type="text" class="search-input" placeholder="جست و جو در گفت و گوهای انجمن برنامه‌نویسان...">
+			<input type="text" class="search-input" placeholder="جست و جو در گفت و گوهای @_forum.Name...">
 		</div>
 	</div>
 
 	<div class="forums-list">
 		<div class="topic">
 			<div>
-				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در انجمن برنامه‌نویسان
+				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در @_forum.Name
 				<p class="topic-description">
 					۳۲
 					<img src="img/ChatSingle.svg" alt="گفته‌ها"
@@ -112,7 +114,7 @@
 		</div>
 		<div class="topic">
 			<div>
-				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در انجمن برنامه‌نویسان
+				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در @_forum.Name
 				<p class="topic-description">
 					۳۲
 					<img src="img/ChatSingle.svg" alt="گفته‌ها"
@@ -124,7 +126,7 @@
 		</div>
 		<div class="topic">
 			<div>
-				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در انجمن برنامه‌نویسان
+				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در @_forum.Name
 				<p class="topic-description">
 					۳۲
 					<img src="img/ChatSingle.svg" alt="گفته‌ها"
@@ -136,7 +138,7 @@
 		</div>
 		<div class="topic">
 			<div>
-				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در انجمن برنامه‌نویسان
+				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در @_forum.Name
 				<p class="topic-description">
 					۳۲
 					<img src="img/ChatSingle.svg" alt="گفته‌ها"
@@ -182,7 +184,7 @@ else
 				NotFoundService.NotifyNotFound();
 				return;
 			}
-
+			
 			throw;
 		}
 	}
