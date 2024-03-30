@@ -4,11 +4,11 @@
 @using Bargeh.Main.Wapp.Client.Infrastructure
 @inject NotFoundListener NotFoundService
 @inject ForumsProto.ForumsProtoClient ForumsService;
+@inject IJSRuntime JsRuntime;
 @rendermode InteractiveAuto
 
 <h3>Forum @@ @ForumPermalink</h3>
 
-@* FROMHERE: Fix styles suck when wasm is loaded *@
 @if(_forum is not null)
 {
 	<div class="shadow-box-nohover topic-first-post">
@@ -118,6 +118,11 @@ else
 
 			throw;
 		}
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		await JsRuntime.InvokeVoidAsync("initTopics");
 	}
 
 }

@@ -1,7 +1,7 @@
 const FADE_SPEED = 250
 
 $(document).ready(function () {
-    let tooltip = $('<div class="reactions-tooltip"><div><button class="tooltip-button"><img src="Raw/Images/Like.svg" alt="کاربر" class="forum-icon"><p class="forum-count">...</p></button><button class="tooltip-button"><img src="Raw/Images/Love.svg" alt="حمایت" class="forum-icon"><p class="forum-count">...</p></button><button class="tooltip-button"><img src="Raw/Images/Funny.svg" alt="گفت و گو" class="forum-icon"><p class="forum-count">...</p></button><button class="tooltip-button"><img src="Raw/Images/Light.svg" alt="گفت و گو" class="forum-icon"><p class="forum-count">...</p></button><button class="tooltip-button"><img src="Raw/Images/Dislike.svg" alt="گفت و گو" class="forum-icon"><p class="forum-count">...</p></button></div></div>').appendTo('body')
+    let tooltip = $('<div class="reactions-tooltip"><div><button class="tooltip-button"><img src="/img/Like.svg" alt="کاربر" class="forum-icon"><p class="forum-count">...</p></button><button class="tooltip-button"><img src="img/Love.svg" alt="حمایت" class="forum-icon"><p class="forum-count">...</p></button><button class="tooltip-button"><img src="/img/Funny.svg" alt="گفت و گو" class="forum-icon"><p class="forum-count">...</p></button><button class="tooltip-button"><img src="img/Light.svg" alt="گفت و گو" class="forum-icon"><p class="forum-count">...</p></button><button class="tooltip-button"><img src="img/Dislike.svg" alt="گفت و گو" class="forum-icon"><p class="forum-count">...</p></button></div></div>').appendTo('body')
 
     $(document).on('click', '.reactions', function (event) {
         event.stopPropagation()

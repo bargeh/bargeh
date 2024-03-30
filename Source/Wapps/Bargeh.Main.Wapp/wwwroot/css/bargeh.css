@@ -329,10 +329,9 @@ a:active {
 .tip {
     display: none;
     align-items: center;
-
     background: #d7ffde;
     border: #78c778 solid 2pt;
-    padding: 0 16pt;
+    padding: 8pt 16pt;
     text-align: center;
     border-radius: 10pt;
 

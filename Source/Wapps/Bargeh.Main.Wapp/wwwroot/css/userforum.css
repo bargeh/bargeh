@@ -1,7 +1,7 @@
 div.cover {
     max-width: 100vw;
     height: 45vh;
-    background-image: url(/Recode/Raw/Images/Cover.jpg);
+    background-image: url(img/Cover.jpg);
     background-position: center;
     background-size: cover;
 }
