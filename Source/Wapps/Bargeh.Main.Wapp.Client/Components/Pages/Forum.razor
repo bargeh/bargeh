@@ -4,19 +4,92 @@
 @using Bargeh.Main.Wapp.Client.Infrastructure
 @inject NotFoundListener NotFoundService
 @inject ForumsProto.ForumsProtoClient ForumsService;
-
-@* FROMHERE: Fix console errors *@
+@rendermode InteractiveAuto
 
 <h3>Forum @@ @ForumPermalink</h3>
 
+@* FROMHERE: Fix styles suck when wasm is loaded *@
 @if(_forum is not null)
 {
-	<p>@_forum.Name</p>
+	<div class="shadow-box-nohover topic-first-post">
+		<strong class="center">گفت و گو در <a>انجمن برنامه‌نویسان ←</a></strong>
+		<h1 class="center title">بهترین رستوران تهران کجاست؟</h1>
+		<div class="topic-content">
+			<p>
+				لورم ایپسوم یک متن آزمایشی و بی‌معنی است که در صنعت چاپ و طراحی گرافیک استفاده می‌شود. این متن به طور
+				معمول برای نمایش چاپی و ترتیب موقعیت حروف و کاراکترها در طراحی‌های گرافیکی به کار می‌رود. هدف اصلی
+				مقاله‌ها و ارائه‌های متنی این است که مخاطب را با محتوای متن آشنا سازد، نه آنکه نظر خاصی را درباره
+				محتوا ارائه دهد.
+			</p>
+
+			<p>
+				این متن به طور کامل بی‌معنی است و برای نمایش قلم‌ها و استایل‌های مختلف طراحی شده است. در هر صورت،
+				می‌توانید از لورم ایپسوم در طراحی‌های خود استفاده کنید تا ببینید چگونه متن شما پس از طراحی نمایش
+				داده می‌شود.
+			</p>
+		</div>
+		<div class="topic-info">
+			<p>توسط <a>@@matin</a></p>
+			<div class="footer-links button-bubble reactions">
+				<span class="reactions-count">۲۹</span>
+				<img alt="پسند" class="reaction-icon" src="img/Like.svg">
+				<img alt="قلب" class="reaction-icon" src="img/Love.svg">
+				<img alt="چراغ" class="reaction-icon" src="img/Light.svg">
+			</div>
+		</div>
+	</div>
+	<div class="tip">
+		<img alt="چراغ" src="img/Lamp.svg">
+		<p>برای پیمایش برگه‌ها را به سمت چپ و راست بکشید</p>
+	</div>
+
+
+	<section class="splide">
+		<div class="splide__arrows">
+			<button class="splide__arrow splide__arrow--prev">
+				<img alt="پیکان جهت‌یابی"
+					 src="img/NavArrow.svg">
+			</button>
+			<button class="splide__arrow splide__arrow--next">
+				<img alt="پیکان جهت‌یابی"
+					 src="img/NavArrow.svg">
+			</button>
+		</div>
+
+		<div class="splide__track">
+			<ul class="splide__list">
+				<li class="splide__slide">
+					<div class="shadow-box new-postchain">
+						<div class="title-box">
+							<img alt="قلم" src="img/Pen.svg"><strong>رشته‌برگ جدید</strong>
+						</div>
+
+						<textarea class="text-input" placeholder="یه چیزی بنویس..."></textarea>
+
+						<div class="send-box">
+							<button class="button-bubble">
+								<img alt="عکس" src="img/Image.svg">
+							</button>
+							<button class="button-bubble">
+								<img alt="عکس" src="img/Attachment.svg">
+							</button>
+
+							<button class="footer-links button-bubble">
+								<img alt="ارسال" src="img/Send.svg">
+								<p>ارسال</p>
+							</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</section>
 }
 else
 {
 	<Loading/>
 }
+
 
 @code {
 
@@ -34,7 +107,7 @@ else
 				Permalink = ForumPermalink
 			});
 		}
-		catch (RpcException exception)
+		catch(RpcException exception)
 		{
 			// ReSharper disable once InvertIf
 			if(exception.StatusCode == StatusCode.NotFound)

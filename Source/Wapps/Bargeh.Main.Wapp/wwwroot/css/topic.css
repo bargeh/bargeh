@@ -32,7 +32,6 @@
     .splide__arrow {
         display: none !important;
     }
-
     .tip {
         display: flex !important;
     }
@@ -118,8 +117,7 @@
     padding: 0 5svw;
 }
 
-section#splide01 {
-}
+section#splide01 {}
 
 .splide__list .shadow-box, .splide__list .shadow-box-nohover {
     margin-bottom: 32pt;

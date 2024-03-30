@@ -4,3 +4,8 @@ h1.site-title {
     margin-block-start: 0;
     margin-block-end: 5pt;
 }
+
+img.logo {
+    width: 70pt;
+    height: 70pt;
+}

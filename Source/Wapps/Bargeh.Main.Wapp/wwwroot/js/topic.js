@@ -58,7 +58,7 @@ $(document).ready(() => {
         let elements = $('li.splide__slide:not(:has(a.reply-button)):not(:has(textarea))');
 
         elements.each((index, element) => {
-            $('<a class="button-primary reply-button"><img src="img/Reply.svg" alt="پاسخ دادن"><p>پاسخ دادن</p></a>').appendTo(element)
+            $('<a class="button-primary reply-button"><img src="Raw/Images/Reply.svg" alt="پاسخ دادن"><p>پاسخ دادن</p></a>').appendTo(element)
         })
     }
 
@@ -72,10 +72,10 @@ $(document).ready(() => {
         }
 
         if (attachment !== '') {
-            attachElement = '<div class="post-attachment"><div><strong>فایل پیوست‌شده</strong><p class="no-block-margin">' + getFileName(attachment, true) + '</p></div><img src="img/File.svg" class="post-file footer-links" alt="فایل"></div>'
+            attachElement = '<div class="post-attachment"><div><strong>فایل پیوست‌شده</strong><p class="no-block-margin">' + getFileName(attachment, true) + '</p></div><img src="Raw/Images/File.svg" class="post-file footer-links" alt="فایل"></div>'
         }
 
-        let element = '<div class="shadow-box-nohover"><input type="hidden" value="' + id + '"><p class="post-text no-block-margin">' + text + '</p>' + imageElement + attachElement + '<div class="topic-info"><p>توسط <a href="/User/' + author + '">@' + author + '</a></p><div class="footer-links button-bubble reactions"><span class="reactions-count">' + toPersianDigits(reactions) + '</span><img src="img/Like.svg" class="reaction-icon" alt="پسند"> <img src="img/Love.svg" class="reaction-icon" alt="قلب"> <img src="img/Light.svg" class="reaction-icon" alt="چراغ"></div></div></div>'
+        let element = '<div class="shadow-box-nohover"><input type="hidden" value="' + id + '"><p class="post-text no-block-margin">' + text + '</p>' + imageElement + attachElement + '<div class="topic-info"><p>توسط <a href="/User/' + author + '">@' + author + '</a></p><div class="footer-links button-bubble reactions"><span class="reactions-count">' + toPersianDigits(reactions) + '</span><img src="Raw/Images/Like.svg" class="reaction-icon" alt="پسند"> <img src="Raw/Images/Love.svg" class="reaction-icon" alt="قلب"> <img src="Raw/Images/Light.svg" class="reaction-icon" alt="چراغ"></div></div></div>'
 
         if (index == 0) {
             splide.add('<li class="splide__slide">' + element + '</li>')
