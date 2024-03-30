@@ -18,7 +18,8 @@ p {
 }
 
 .shadow-box,
-.shadow-box-nohover {
+.shadow-box-nohover,
+.popup {
     border: #002642 solid 2px;
     padding: 6px;
     background: white;
@@ -29,6 +30,13 @@ p {
 
 .shadow-box:focus-within {
     box-shadow: 0px 4pt 0px #002642;
+}
+
+.popup {
+    margin: 0 auto;
+    max-width: 600px;
+    padding: 20px;
+    width: fit-content;
 }
 
 .center-justify {
@@ -44,13 +52,14 @@ p {
 }
 
 .center {
-    text-align: center !important;
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .container {
     max-width: 1440px !important;
-
     padding-left: 6vw;
     padding-right: 6vw;
     margin: 0 auto !important;
@@ -58,17 +67,22 @@ p {
 
 .button-filled,
 .button-primary,
-.button-gold {
-    display: flex;
+.button-gold,
+.button-primary-inline {
     align-items: center;
-    margin: 25pt auto;
-    max-width: -moz-fit-content;
     padding: 7px 15px 7px 15px;
     border-radius: 100pt;
     box-shadow: 0px 3pt 0px #b4b4b5;
     transition: all 200ms ease;
     border: none;
     width: fit-content;
+}
+
+.button-filled,
+.button-primary,
+.button-gold {
+    display: flex;
+    margin: 25pt auto;
 }
 
 .button-primary p,
@@ -83,6 +97,7 @@ p {
 
 .button-filled:active,
 .button-primary:active,
+.button-primary-inline:active,
 .button-gold:active {
     box-shadow: 0px 0pt 0px #b4b4b5;
     transform: translateY(5pt);
@@ -90,7 +105,6 @@ p {
 
 .button-gold:active {
     border: #facc6b 1.5pt solid;
-
     background: #ffffff;
 }
 
@@ -101,6 +115,7 @@ p {
 
 .button-filled img,
 .button-primary img,
+.button-primary-inline img,
 .button-gold img {
     margin-left: 7pt;
     height: 20pt;
@@ -108,7 +123,8 @@ p {
 
 .button-filled *,
 .button-primary *,
-.button-gold * {
+.button-gold *,
+.button-primary-inline * {
     margin-block-start: 0;
     margin-block-end: 0;
 }
@@ -119,7 +135,6 @@ p {
 
 .button-gold {
     border: black 1.5pt solid;
-
     background-color: #facc6b;
 }
 
@@ -127,12 +142,14 @@ button {
     cursor: pointer;
 }
 
-.button-primary {
+.button-primary,
+.button-primary-inline {
     border: #002642 1.5pt solid;
     background: white;
 }
 
-.button-primary:active {
+.button-primary:active,
+.button-primary-inline:active {
     border: #bb1136 1.5pt solid;
 }
 
@@ -187,7 +204,7 @@ h2.center {
 }
 
 .forum-status {
-    margin: 0px !important;
+    margin: 0 !important;
 }
 
 .forums-list {
@@ -283,28 +300,151 @@ a:active {
     }
 }
 
-.button-bubble {
-    transition: all 200ms ease;
+/* AI Generated*/
+.button-bubble,
+.button-bubble-static,
+.button-bubble-static-inline {
     padding: 5pt 7pt;
-    display: flex;
     align-items: center;
     cursor: pointer;
-    background: #ffffff00;
-    border: solid 1pt #ffffff00;
+    border: var(--bwidth) solid transparent;
+    border-radius: 1000pt;
+    --bwidth: 1.3pt;
+    outline: 0 solid transparent;
+    outline-offset: calc(-1 * var(--bwidth));
+}
+
+.button-bubble.bubble-hovered:not(:hover),
+.button-bubble-static.bubble-hovered:not(:hover),
+.button-bubble-static-inline.bubble-hovered:not(:hover) {
+    animation: border-fade-out 300ms forwards;
+}
+
+
+.button-bubble.bubble-hovered:hover,
+.button-bubble-static.bubble-hovered:hover,
+.button-bubble-static-inline.bubble-hovered:hover {
+    animation: border-fade-in 300ms forwards;
+}
+
+.button-bubble-static {
+    background: #f8f7f7;
+}
+
+.button-bubble-static:disabled,
+.button-bubble-static-inline:disabled {
+    cursor: no-drop;
+    background: #e5e5e5;
+}
+
+.button-bubble-static:disabled:hover,
+.button-bubble-static-inline:disabled:hover {
+    animation: none;
+}
+
+.button-bubble-static:disabled:not(:hover),
+.button-bubble-static-inline:disabled:not(:hover) {
+    animation: none;
+}
+
+@keyframes border-fade-out {
+    0% {
+        border-color: #dcdcdc;
+    }
+
+    100% {
+        /*grow the outline width to cover the border*/
+        outline-width: var(--bwidth);
+        /*Change the border color as well makes the transition looks smoother*/
+        outline-color: white;
+        border-color: transparent;
+    }
+}
+
+@keyframes border-fade-in {
+    0% {
+        outline-color: white;
+        border-color: transparent;
+    }
+
+    100% {
+        outline-color: transparent;
+        border-color: #dcdcdc;
+    }
+}
+
+
+/*.button-bubble-static {
+    background: #f8f7f7;
+}*/
+/* AI Generated End*/
+
+
+/*.button-bubble,
+.button-bubble-static,
+.button-bubble-static-inline {
+    transition: all 2000ms ease;
+    padding: 5pt 7pt;
+    align-items: center;
+    cursor: pointer;
+    border: solid 1pt white;
     border-radius: 1000pt;
 }
 
-.button-bubble:hover {
-    background: #f8f7f7;
-    border: solid 1pt #c8ccd5;
-    border-radius: 1000pt;
+.button-bubble {
+    display: flex;
+    background: white;
 }
 
-.button-bubble.active {
+.button-bubble-static {
+    background: #f8f7f7;
+    background: white;
+}
+
+input.button-bubble-static:focus {
+    outline: none;
+}
+
+.button-bubble:hover,
+.button-bubble-static:hover,
+.button-bubble-static-inline:hover,
+input.button-bubble-static:focus {
+    background: #f8f7f7;*/
+/*border: solid 1pt #c8ccd5;*/
+/*border-radius: 1000pt;
+    animation: bubble-border-hover 250ms ease forwards;
+    animation-delay: 50ms;
+}
+
+.button-bubble-static:not(:hover) {
+    animation: bubble-border-unhover 250ms ease forwards;
+}
+
+@keyframes bubble-border-hover {
+    0% {
+        border-color: white;
+    }
+
+    100% {
+        border-color: #c8ccd5ff;
+    }
+}
+
+@keyframes bubble-border-unhover {
+    0% {
+        border-color: #c8ccd5ff;
+    }
+
+    100% {
+        border-color: white;
+    }
+}*/
+
+/*.button-bubble.active {
     background: #f8f7f7;
     border: solid 1pt #c8ccd5;
     border-radius: 1000pt;
-}
+}*/
 
 .button-bubble * {
     margin-block-start: 0;
@@ -327,15 +467,14 @@ a:active {
 }
 
 .tip {
-    display: none;
+    display: flex;
     align-items: center;
     background: #d7ffde;
     border: #78c778 solid 2pt;
     padding: 8pt 16pt;
     text-align: center;
     border-radius: 10pt;
-
-    width: 70vw;
+    /*width: 70vw;*/
     max-width: 800px;
     margin: 10pt auto;
 }
@@ -343,4 +482,74 @@ a:active {
 .tip img {
     height: 20pt;
     margin-left: 8pt;
+}
+
+
+.red {
+    color: red;
+}
+
+.pad-bottom {
+    padding-bottom: 10pt;
+}
+
+.pad-top {
+    padding-top: 10pt;
+}
+
+.horizontal-align {
+    display: flex;
+    align-items: center;
+}
+
+.tiny-icon {
+    height: 32px;
+    padding-left: 8px;
+}
+
+.center-flex {
+    display: flex;
+    justify-content: center;
+}
+
+.g-recaptcha {
+    margin: 10px;
+}
+
+/*.form-inputs > * {
+    margin: 0 5pt 10pt 5pt;
+
+    width: 100%;
+}
+*/
+/*.form-input {
+    align-items: center;
+}
+
+    .form-input > * {
+        width: 100%;
+        margin: 5pt;
+    }*/
+
+.input-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.input-group label {
+    margin-left: 20px; /* Adjust this value to increase or decrease the space between the label and the input */
+}
+
+
+.hidden {
+    display: none !important;
+}
+
+.form-errors {
+    list-style-type: none;
+    text-align: center;
+    padding-inline-start: 0;
 }

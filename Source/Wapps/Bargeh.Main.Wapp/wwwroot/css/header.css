@@ -12,7 +12,8 @@ header {
     max-width: 1440px;
 }
 
-.logo-name-links {
+.logo-name-links,
+.logo-name-links > a {
     display: flex;
     align-items: center;
     align-content: center;
@@ -21,8 +22,8 @@ header {
 }
 
 .logo-header {
-    width: 50pt;
-    height: 50pt;
+    width: 36pt;
+    height: 36pt;
 }
 
 .header-navlinks {
@@ -52,6 +53,7 @@ header {
     margin-right: 10px;
 }
 
+button.shadow-box-nohover,
 button.shadow-box {
     padding-bottom: 0;
 }

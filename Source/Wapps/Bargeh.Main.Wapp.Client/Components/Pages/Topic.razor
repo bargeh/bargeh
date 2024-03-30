@@ -102,7 +102,7 @@ else
 		{
 			_forum = await ForumsService.GetForumByPermalinkAsync(new()
 			{
-				Permalink = ForumPermalink
+				Permalink = TopicPermalink
 			});
 		}
 		catch(RpcException exception)
@@ -122,5 +122,4 @@ else
 	{
 		await JsRuntime.InvokeVoidAsync("initTopics");
 	}
-
 }
