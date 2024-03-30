@@ -38,6 +38,7 @@ message ForumReply {
   string owner = 4;
   uint32 members = 5;
   uint32 supporters = 6;
+  string permalink = 7;
 }
 
 message AddForumReply {

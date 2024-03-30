@@ -1,4 +1,4 @@
-﻿@page "/Forum/{ForumPermalink}"
+﻿@page "/Topic/{TopicPermalink}"
 @using Forums.Api
 @using Grpc.Core
 @using Bargeh.Main.Wapp.Client.Infrastructure
@@ -7,13 +7,11 @@
 @inject IJSRuntime JsRuntime;
 @rendermode InteractiveAuto
 
-<h3>Forum @@ @ForumPermalink</h3>
-
 @if(_forum is not null)
 {
 	<div class="shadow-box-nohover topic-first-post">
-		<strong class="center">گفت و گو در <a>انجمن برنامه‌نویسان ←</a></strong>
-		<h1 class="center title">بهترین رستوران تهران کجاست؟</h1>
+		<strong class="center">گفت و گو در <a href="/Topic/@_forum.Permalink">انجمن @_forum.Name ←</a></strong>
+		<h1 class="center title">@_forum.</h1>
 		<div class="topic-content">
 			<p>
 				لورم ایپسوم یک متن آزمایشی و بی‌معنی است که در صنعت چاپ و طراحی گرافیک استفاده می‌شود. این متن به طور
@@ -94,7 +92,7 @@ else
 @code {
 
 	[Parameter]
-	public string ForumPermalink { get; init; } = null!;
+	public string TopicPermalink { get; init; } = null!;
 
 	private ForumReply? _forum;
 
