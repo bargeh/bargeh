@@ -21,7 +21,7 @@ public class Forum
 	[MaxLength(128)]
 	public string Cover { get; init; } = "CoverDefault";
 
-	public uint Members { get; set; }
+	public uint Members { get; set; } = 1;
 
 	public uint Supporters { get; init; }
 
