@@ -15,6 +15,12 @@ public class Forum
 	[MaxLength(32)]
 	public required string Permalink { get; init; }
 
+	[MaxLength(128)]
+	public string Avatar { get; set; } = "ForumDefault";
+
+	[MaxLength(128)]
+	public string Cover { get; set; } = "CoverDefault";
+
 	public uint Members { get; set; }
 
 	public uint Supporters { get; init; }

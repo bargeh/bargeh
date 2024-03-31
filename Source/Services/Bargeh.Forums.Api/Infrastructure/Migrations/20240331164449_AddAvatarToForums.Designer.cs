@@ -3,6 +3,7 @@ using System;
 using Bargeh.Forums.Api.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bargeh.Forums.Api.Infrastructure.Migrations;
 
 [DbContext(typeof(ForumsDbContext))]
-partial class ForumsDbContextModelSnapshot : ModelSnapshot
+[Migration("20240331164449_AddAvatarToForums")]
+partial class AddAvatarToForums
 {
-    protected override void BuildModel(ModelBuilder modelBuilder)
+    /// <inheritdoc />
+    protected override void BuildTargetModel(ModelBuilder modelBuilder)
     {
         #pragma warning disable 612, 618
         modelBuilder
