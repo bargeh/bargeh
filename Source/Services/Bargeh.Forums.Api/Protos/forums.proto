@@ -28,7 +28,7 @@ message GetForumByIdRequest {
 }
 
 message JoinLeaveForumRequest {
-  string forum_permalink = 1;
+  string forum = 1;
   string access_token = 2;
 }
 message ForumReply {

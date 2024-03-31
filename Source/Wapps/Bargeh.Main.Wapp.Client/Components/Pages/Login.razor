@@ -16,10 +16,6 @@
 
 <PageTitle>ورود و عضویت - برگه</PageTitle>
 
-<HeadContent>
-	<script src="/js/login.js"></script>
-</HeadContent>
-
 <div class="popup">
 	<span class="no-block-margin pad-bottom horizontal-align center-flex"><img src="/img/User.svg" class="tiny-icon" alt="کاربر"/>ورود / ثبت نام</span>
 
@@ -192,8 +188,6 @@
 
 	private async Task OnLoginSubmit()
 	{
-		Logger.LogInformation("Okay here it goes");
-
 		_loginMessageStore.Clear();
 
 		if(!_loginEditContext.Validate())
@@ -208,9 +202,7 @@
 			_loginMessageStore.Add(() => _loginModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
 			return;
 		}
-
-		Logger.LogInformation("phone valid");
-
+		
 		try
 		{
 			TokenResponse loginResult = await IdentityService.LoginAsync(new()
@@ -221,10 +213,10 @@
 
 			Logger.LogInformation($"{loginResult.AccessToken} is access and \n{loginResult.RefreshToken} is refresh");
 
-			await LocalStorageService.RemoveItemAsync("login.access");
+			await LocalStorageService.RemoveItemAsync("login.access_token");
 			await LocalStorageService.RemoveItemAsync("login.refresh_token");
 
-			await LocalStorageService.SetItemAsync("login.access", $"{loginResult.AccessToken}@{DateTime.UtcNow.AddMinutes(5)}");
+			await LocalStorageService.SetItemAsync("login.access_token", $"{loginResult.AccessToken}@{DateTime.UtcNow.AddMinutes(5)}");
 			await LocalStorageService.SetItemAsync("login.refresh_token", loginResult.RefreshToken);
 
 			NavigationManager.NavigateTo("/", true, true);

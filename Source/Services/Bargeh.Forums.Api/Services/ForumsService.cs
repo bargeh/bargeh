@@ -100,8 +100,9 @@ public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoB
 	{
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
 		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
-
-		Forum forum = await dbContext.Forums.FirstOrDefaultAsync(f => f.Permalink == request.ForumPermalink)
+		
+		Guid forumId = new(request.Forum);
+		Forum forum = await dbContext.Forums.FirstOrDefaultAsync(f => f.Id == forumId)
 					  ?? throw new RpcException(new(StatusCode.NotFound, "No forum with this permalink was found"));
 
 		if(await dbContext.ForumMemberships.AnyAsync(m => m.UserId == userId && m.Forum == forum))
@@ -127,7 +128,8 @@ public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoB
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
 		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
 
-		Forum forum = await dbContext.Forums.FirstOrDefaultAsync(f => f.Permalink == request.ForumPermalink)
+		Guid forumId = new(request.Forum);
+		Forum forum = await dbContext.Forums.FirstOrDefaultAsync(f => f.Id == forumId)
 					  ?? throw new RpcException(new(StatusCode.NotFound, "No forum with this permalink was found"));
 
 		ForumMembership? forumMembership =

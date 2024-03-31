@@ -28,4 +28,21 @@ public class LocalStorageService(IJSRuntime jsRuntime)
 	{
 		await jsRuntime.InvokeVoidAsync("localStorage.removeItem", key);
 	}
+
+	public static string? GetAccessToken(string? rawTokenString)
+	{
+		if(string.IsNullOrWhiteSpace(rawTokenString))
+		{
+			return null;
+		}
+		
+		int atIndex = rawTokenString.IndexOf('@');
+		if (atIndex != -1)
+		{ 
+			rawTokenString = rawTokenString[..atIndex];
+			rawTokenString = rawTokenString.Replace("\"", "");
+		}
+
+		return rawTokenString;
+	}
 }

@@ -2,9 +2,10 @@
 @using Forums.Api
 @inject ForumsProto.ForumsProtoClient ForumsService;
 @inject NotFoundListener NotFoundService;
+@inject LocalStorageService LocalStorageService;
 @using Grpc.Core
 @using Bargeh.Main.Wapp.Client.Infrastructure
-
+@using Bargeh.Main.Wapp.Client.Services
 
 @if(_forum is not null)
 {
@@ -20,9 +21,9 @@
 		<p>ناظران انجمن: <a>@@user10</a>، <a>@@user02</a>، <a>@@user03</a></p>
 		<p class="center-justify">@_forum.Description</p>
 		<div class="index-buttons">
-			<button type="button" class="button-filled">
+			<button @onclick="OnFollowButtonClicked" type="button" class="button-filled">
 				<img src="img/UserPlus.svg" alt="دنبال کردن">
-				<p>دنبال کردن</p>
+				<p>عضویت در انجمن</p>
 			</button>
 			<button type="button" class="button-gold" onclick="alert('هه هه، از طرف مالک انجمن ازت تشکر می‌کنم، ولی فعلا باید صبر کنی تا برنامه‌نویسی برگه تکمیل شه 😅')">
 				<img src="img/Support.svg" alt="حمایت">
@@ -160,7 +161,6 @@ else
 }
 
 @code {
-
 	[Parameter]
 	public string ForumPermalink { get; init; } = null!;
 
@@ -188,4 +188,16 @@ else
 		}
 	}
 
+	private async Task OnFollowButtonClicked()
+	{
+		// TODO: Check if the user is logged in
+		// TODO: Also check if the use is already a member or not
+		await ForumsService.JoinForumAsync(new()
+		{
+			Forum = _forum!.Id,
+			AccessToken = LocalStorageService.GetAccessToken(await LocalStorageService.GetItemAsync<string>("login.access_token"))
+		});
+
+		_forum.Members++;
+	}
 }
