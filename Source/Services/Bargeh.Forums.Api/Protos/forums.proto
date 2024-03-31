@@ -40,6 +40,7 @@ message ForumReply {
   uint32 supporters = 6;
   string permalink = 7;
   string avatar = 8;
+  string cover = 9;
 }
 
 message AddForumReply {

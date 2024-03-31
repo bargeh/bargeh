@@ -16,10 +16,10 @@ public class Forum
 	public required string Permalink { get; init; }
 
 	[MaxLength(128)]
-	public string Avatar { get; set; } = "ForumDefault";
+	public string Avatar { get; init; } = "ForumDefault";
 
 	[MaxLength(128)]
-	public string Cover { get; set; } = "CoverDefault";
+	public string Cover { get; init; } = "CoverDefault";
 
 	public uint Members { get; set; }
 

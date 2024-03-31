@@ -5,13 +5,12 @@
 @using Grpc.Core
 @using Bargeh.Main.Wapp.Client.Infrastructure
 
-<div class="cover"></div>
 
-@* TODO: FORUMS DON'T HAVE AVATAR IN BASE!!! *@
 @if(_forum is not null)
 {
+	<div class="cover" style="background-image: url('/img/@(_forum.Cover).webp');"></div>
 	<div class="profile">
-		<img src="img/Logo-Main-12.png" alt="تصویر نمایه @_forum.Name">
+		<img src="img/@(_forum.Avatar).webp" alt="تصویر نمایه @_forum.Name">
 		<h1 class="center">@_forum.Name</h1>
 		<div class="index-buttons">
 			<p>@_forum.Members عضو</p>
@@ -184,7 +183,7 @@ else
 				NotFoundService.NotifyNotFound();
 				return;
 			}
-			
+
 			throw;
 		}
 	}

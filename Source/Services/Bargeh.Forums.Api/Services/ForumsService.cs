@@ -72,7 +72,8 @@ public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoB
 			Owner = forum.OwnerId.ToString(),
 			Supporters = forum.Supporters,
 			Permalink = forum.Permalink,
-			Avatar = forum.Avatar
+			Avatar = forum.Avatar,
+			Cover = forum.Cover
 		};
 	}
 
@@ -90,7 +91,8 @@ public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoB
 			Owner = forum.OwnerId.ToString(),
 			Supporters = forum.Supporters,
 			Permalink = forum.Permalink,
-			Avatar = forum.Avatar
+			Avatar = forum.Avatar,
+			Cover = forum.Cover
 		};
 	}
 
