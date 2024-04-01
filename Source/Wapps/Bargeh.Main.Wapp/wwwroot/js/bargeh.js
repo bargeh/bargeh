@@ -14,20 +14,24 @@ function updateLocalStorage() {
     const timeString = token.substring(timeIndex + 1);
     const expiryTime = new Date(timeString);
 
-    const currentTime = new Date();
+    const localCurrentTime = new Date()
+    const utcCurrentTime= new Date(
+        localCurrentTime.getUTCFullYear(),
+        localCurrentTime.getUTCMonth(),
+        localCurrentTime.getUTCDate(),
+        localCurrentTime.getUTCHours(),
+        localCurrentTime.getUTCMinutes(),
+        localCurrentTime.getUTCSeconds()
+    );
     const thirtySecondsBeforeExpiry = new Date(expiryTime - 30 * 1000);
 
-    if (currentTime >= thirtySecondsBeforeExpiry) {
+    if (utcCurrentTime >= thirtySecondsBeforeExpiry) {
         mainLayoutDotnetHelper.invokeMethodAsync('UpdateLoginTokens');
     }
 }
 
-function onAfterRender() {
-    formatMentions();
-    $(".button-bubble, .button-bubble-static, .button-bubble-static-inline").hover(function () {
-        $(this).addClass("bubble-hovered");
-    });
-}
+
+
 function formatMentions() {
     const MENTIONS = $('a').filter(function () {
         return $(this).text().startsWith('@')
