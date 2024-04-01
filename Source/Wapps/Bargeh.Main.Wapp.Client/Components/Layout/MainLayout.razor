@@ -88,7 +88,7 @@ else
 			OldRefreshToken = rawRefreshToken.Replace("\"", "")
 		});
 
-		await LocalStorageService.SetItemAsync("login.access_token", result.AccessToken);
+		await LocalStorageService.SetItemAsync("login.access_token", $"{result.AccessToken}@{DateTime.UtcNow.AddMinutes(5)}");
 		await LocalStorageService.SetItemAsync("login.refresh_token", result.RefreshToken);
 	}
 
