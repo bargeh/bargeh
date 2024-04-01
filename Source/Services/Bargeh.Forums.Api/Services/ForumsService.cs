@@ -6,11 +6,13 @@ using Forums.Api;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Users.Api;
 using VoidOperationReply = Forums.Api.VoidOperationReply;
 
 namespace Bargeh.Forums.Api.Services;
 
-public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoBase
+public class ForumsService(ForumsDbContext dbContext, UsersProto.UsersProtoClient usersService)
+	: ForumsProto.ForumsProtoBase
 {
 	#region gRPC Endpoints
 
@@ -63,13 +65,18 @@ public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoB
 		Forum forum = await dbContext.Forums.FirstOrDefaultAsync(f => f.Permalink == request.Permalink)
 					  ?? throw new RpcException(new(StatusCode.NotFound, "No forum was found with this permalink"));
 
+		string ownerUsername = (await usersService.GetUserByIdAsync(new()
+								   {
+									   Id = forum.OwnerId.ToString()
+								   })).Username;
+		
 		return new()
 		{
 			Id = forum.Id.ToString(),
 			Name = forum.Name,
 			Description = forum.Description,
 			Members = forum.Members,
-			Owner = forum.OwnerId.ToString(),
+			OwnerUsername = ownerUsername,
 			Supporters = forum.Supporters,
 			Permalink = forum.Permalink,
 			Avatar = forum.Avatar,
@@ -82,13 +89,18 @@ public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoB
 		Forum forum = await dbContext.Forums.FirstOrDefaultAsync(f => f.Id == Guid.Parse(request.Id))
 					  ?? throw new RpcException(new(StatusCode.NotFound, "No forum was found with this ID"));
 
+		string ownerUsername = (await usersService.GetUserByIdAsync(new()
+								   {
+									   Id = forum.OwnerId.ToString()
+								   })).Username;
+
 		return new()
 		{
 			Id = forum.Id.ToString(),
 			Name = forum.Name,
 			Description = forum.Description,
 			Members = forum.Members,
-			Owner = forum.OwnerId.ToString(),
+			OwnerUsername = ownerUsername,
 			Supporters = forum.Supporters,
 			Permalink = forum.Permalink,
 			Avatar = forum.Avatar,
@@ -100,7 +112,7 @@ public class ForumsService(ForumsDbContext dbContext) : ForumsProto.ForumsProtoB
 	{
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
 		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
-		
+
 		Guid forumId = new(request.Forum);
 		Forum forum = await dbContext.Forums.FirstOrDefaultAsync(f => f.Id == forumId)
 					  ?? throw new RpcException(new(StatusCode.NotFound, "No forum with this permalink was found"));

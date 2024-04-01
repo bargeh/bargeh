@@ -10,27 +10,35 @@ $(document).ready(() => {
 
 function updateLocalStorage() {
     const token = localStorage.getItem('login.access_token')
-    const timeIndex = token.indexOf('@');
-    const timeString = token.substring(timeIndex + 1);
-    const expiryTime = new Date(timeString);
+    const timeIndex = token.indexOf('@')
+    const timeString = token.substring(timeIndex + 1)
+    const expiryTime = new Date(timeString)
 
     const localCurrentTime = new Date()
-    const utcCurrentTime= new Date(
+    const utcCurrentTime = new Date(
         localCurrentTime.getUTCFullYear(),
         localCurrentTime.getUTCMonth(),
         localCurrentTime.getUTCDate(),
         localCurrentTime.getUTCHours(),
         localCurrentTime.getUTCMinutes(),
         localCurrentTime.getUTCSeconds()
-    );
-    const thirtySecondsBeforeExpiry = new Date(expiryTime - 30 * 1000);
+    )
+    const thirtySecondsBeforeExpiry = new Date(expiryTime - 30 * 1000)
 
     if (utcCurrentTime >= thirtySecondsBeforeExpiry) {
-        mainLayoutDotnetHelper.invokeMethodAsync('UpdateLoginTokens');
+        mainLayoutDotnetHelper.invokeMethodAsync('UpdateLoginTokens')
     }
 }
 
+const observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function () {
+        formatMentions()
+    })
+})
 
+const config = {childList: true, subtree: true, characterData: true};
+
+observer.observe(document.querySelector('body'), config)
 
 function formatMentions() {
     const MENTIONS = $('a').filter(function () {
@@ -38,60 +46,60 @@ function formatMentions() {
     })
 
     MENTIONS.each(function () {
-        $(this).prop('dir', 'ltr');
+        $(this).prop('dir', 'ltr')
     })
 }
 
 function toPersianDigits(number) {
     let chars = number.toString().split('')
-    let out = '';
+    let out = ''
 
     $(chars).each((index, element) => {
         switch (element) {
             case '0':
                 out += '۰'
-                break;
+                break
 
             case '1':
                 out += '۱'
-                break;
+                break
 
             case '2':
                 out += '۲'
-                break;
+                break
 
             case '3':
                 out += '۳'
-                break;
+                break
 
             case '4':
                 out += '۴'
-                break;
+                break
 
             case '5':
                 out += '۵'
-                break;
+                break
 
             case '6':
                 out += '۶'
-                break;
+                break
 
             case '7':
                 out += '۷'
-                break;
+                break
 
             case '8':
                 out += '۸'
-                break;
+                break
 
             case '9':
                 out += '۹'
-                break;
+                break
         }
 
     })
 
-    return out;
+    return out
 }
 
 setInterval(() => {

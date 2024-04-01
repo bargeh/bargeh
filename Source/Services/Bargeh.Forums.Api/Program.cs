@@ -1,6 +1,7 @@
 using Bargeh.Aspire.ServiceDefaults;
 using Bargeh.Forums.Api.Infrastructure;
 using Bargeh.Forums.Api.Services;
+using Users.Api;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,11 @@ builder.Services.AddGrpcReflection();
 builder.AddNpgsqlDbContext<ForumsDbContext>("postgres", settings =>
 {
 	settings.MaxRetryCount = 10;
+});
+
+builder.Services.AddGrpcClient<UsersProto.UsersProtoClient>(options =>
+{
+	options.Address = new(builder.Configuration.GetValue<string>("services:users:1")!);
 });
 
 builder.Services.AddCors(options =>
