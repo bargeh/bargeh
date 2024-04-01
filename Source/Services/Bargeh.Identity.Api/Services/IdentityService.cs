@@ -69,7 +69,7 @@ public class IdentityService(
 			Id = oldRefreshToken.UserId.ToString()
 		});
 
-		if(oldRefreshToken.ExpireDate >= timeProvider.GetUtcNow().AddMinutes(-4))
+		/*if(oldRefreshToken.ExpireDate >= timeProvider.GetUtcNow().AddMinutes(-4))
 		{
 			await usersApiClient.DisableUserAsync(new()
 			{
@@ -79,7 +79,7 @@ public class IdentityService(
 			dbContext.Remove(oldRefreshToken);
 			await dbContext.SaveChangesAsync();
 			throw new RpcException(new(StatusCode.Internal, "Internal Error"));
-		}
+		}*/
 
 		Guid userId = Guid.Parse(user.Id);
 

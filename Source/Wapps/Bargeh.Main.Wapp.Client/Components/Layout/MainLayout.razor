@@ -1,16 +1,24 @@
 ﻿@using Bargeh.Main.Wapp.Client.Infrastructure
+@using Bargeh.Main.Wapp.Client.Services
+@using Identity.Api
 @inherits LayoutComponentBase
 @inject NotFoundListener NotFoundService
+@inject IJSRuntime JsRuntime
+@inject IdentityProto.IdentityProtoClient IdentityService
+@inject LocalStorageService LocalStorageService
+@inject ILogger<MainLayout> Logger
+
 @{ /* PRODUCTION: Configure CSP */ }
 
 <PageTitle>برگه</PageTitle>
 
 <MainHeader/>
 
-@if (_notFound)
+@if(_notFound)
 {
 	<h1>Could not find the content you are looking for</h1>
-}else
+}
+else
 {
 	<div class="container">
 		@Body
@@ -49,12 +57,39 @@
 @code{
 	private bool _notFound;
 
-	protected override void OnInitialized() => NotFoundService.OnNotFound += SetNotFound;
+	protected override void OnInitialized()
+	{
+		NotFoundService.OnNotFound += SetNotFound;
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		await JsRuntime.InvokeVoidAsync("setMainLayoutDotnetHelper", DotNetObjectReference.Create(this));
+	}
 
 	private void SetNotFound()
 	{
 		_notFound = true;
 		StateHasChanged();
+	}
+
+	[JSInvokable]
+	public async Task UpdateLoginTokens()
+	{
+		string? rawRefreshToken = await LocalStorageService.GetItemAsync<string>("login.refresh_token");
+
+		if(string.IsNullOrWhiteSpace(rawRefreshToken))
+		{
+			return;
+		}
+		
+		TokenResponse result = await IdentityService.RefreshAsync(new()
+		{
+			OldRefreshToken = rawRefreshToken.Replace("\"", "")
+		});
+
+		await LocalStorageService.SetItemAsync("login.access_token", result.AccessToken);
+		await LocalStorageService.SetItemAsync("login.refresh_token", result.RefreshToken);
 	}
 
 }

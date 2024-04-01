@@ -1,7 +1,33 @@
+let mainLayoutDotnetHelper
+
+window.setMainLayoutDotnetHelper = (dotnetHelper) => {
+    mainLayoutDotnetHelper = dotnetHelper
+}
+
 $(document).ready(() => {
     formatMentions()
 })
 
+function updateLocalStorage() {
+    const token = localStorage.getItem('login.access_token')
+    const timeIndex = token.indexOf('@');
+    const timeString = token.substring(timeIndex + 1);
+    const expiryTime = new Date(timeString);
+
+    const currentTime = new Date();
+    const thirtySecondsBeforeExpiry = new Date(expiryTime - 30 * 1000);
+
+    if (currentTime >= thirtySecondsBeforeExpiry) {
+        mainLayoutDotnetHelper.invokeMethodAsync('UpdateLoginTokens');
+    }
+}
+
+function onAfterRender() {
+    formatMentions();
+    $(".button-bubble, .button-bubble-static, .button-bubble-static-inline").hover(function () {
+        $(this).addClass("bubble-hovered");
+    });
+}
 function formatMentions() {
     const MENTIONS = $('a').filter(function () {
         return $(this).text().startsWith('@')
@@ -63,3 +89,7 @@ function toPersianDigits(number) {
 
     return out;
 }
+
+setInterval(() => {
+    updateLocalStorage()
+}, 1000)

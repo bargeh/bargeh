@@ -45,4 +45,5 @@ public class LocalStorageService(IJSRuntime jsRuntime)
 
 		return rawTokenString;
 	}
+	
 }
