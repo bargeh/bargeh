@@ -56,14 +56,22 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		GetRecentTopicsByForumRequest request,
 		ServerCallContext callContext)
 	{
-		Guid forumId = new(request.Forum);
-		List<Topic> topics = await dbContext.Topics.Where(t => t.Forum == forumId)
-											.OrderByDescending(o => o.LastUpdateDate).Take(8)
-											.ToListAsync();
+		try
+		{
+			Guid forumId = new(request.Forum);
+			List<Topic> topics = await dbContext.Topics.Where(t => t.Forum == forumId)
+												.OrderByDescending(o => o.LastUpdateDate).Take(8)
+												.ToListAsync();
 
-		GetRecentTopicsByForumReply reply = new();
-		reply.Topics.Add(MapTopicsListToProtoTopicsList(topics, callContext));
-		return reply;
+			GetRecentTopicsByForumReply reply = new();
+			reply.Topics.Add(await MapTopicsListToProtoTopicsList(topics, callContext));
+			return reply;
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e);
+			throw;
+		}
 	}
 
 	public override async Task<CreateTopicReply> CreateTopic(CreateTopicRequest request, ServerCallContext callContext)
@@ -295,25 +303,37 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 
 	private static ProtoPost MapPostToProtoPost(Post post)
 	{
-		ProtoPost protoPost = new()
+		try
 		{
-			Id = post.Id.ToString(),
-			Body = post.Body,
-			Likes = post.Likes,
-			Loves = post.Loves,
-			Insights = post.Insights,
-			Funnies = post.Funnies,
-			Dislikes = post.Dislikes,
-			Author = post.Author.ToString(),
-			Parent = post.Parent!.Id.ToString()
-		};
+			ProtoPost protoPost = new()
+			{
+				Id = post.Id.ToString(),
+				Body = post.Body,
+				Likes = post.Likes,
+				Loves = post.Loves,
+				Insights = post.Insights,
+				Funnies = post.Funnies,
+				Dislikes = post.Dislikes,
+				Author = post.Author.ToString(),
+			};
 
-		if(!string.IsNullOrWhiteSpace(post.Attachment))
-		{
-			protoPost.Attachment = post.Attachment;
+			if(post.Parent is not null)
+			{
+				protoPost.Parent = post.Parent.Id.ToString();
+			}
+
+			if(!string.IsNullOrWhiteSpace(post.Attachment))
+			{
+				protoPost.Attachment = post.Attachment;
+			}
+
+			return protoPost;
 		}
-
-		return protoPost;
+		catch(Exception e)
+		{
+			Console.WriteLine(e);
+			throw;
+		}
 	}
 
 	private static List<ProtoPost> MapPostsListToProtoPostsList(List<Post> posts)
@@ -338,10 +358,17 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		return protoTopic;
 	}
 
-	private List<ProtoTopic> MapTopicsListToProtoTopicsList(List<Topic> topics, ServerCallContext callContext)
+	private async Task<List<ProtoTopic>> MapTopicsListToProtoTopicsList(
+		List<Topic> topics,
+		ServerCallContext callContext)
 	{
 		List<ProtoTopic> protoTopics = [];
-		protoTopics.AddRange(topics.Select(p => MapTopicToProtoTopic(p, callContext).Result));
+
+		foreach(Topic topic in topics)
+		{
+			protoTopics.Add(await MapTopicToProtoTopic(topic, callContext));
+		}
+
 		return protoTopics;
 	}
 
