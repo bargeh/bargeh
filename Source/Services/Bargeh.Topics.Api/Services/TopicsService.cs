@@ -27,6 +27,8 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 
 		return new()
 		{
+			Id = topic.Id.ToString(),
+			Permalink = topic.Permalink,
 			Forum = topic.Forum.ToString(),
 			HeadPost = new()
 			{
@@ -347,6 +349,8 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 	{
 		ProtoTopic protoTopic = new()
 		{
+			Id = topic.Id.ToString(),
+			Permalink = topic.Permalink,
 			Title = topic.Title,
 			Forum = topic.Forum.ToString(),
 			HeadPost = await GetHeadpostByTopic(new()

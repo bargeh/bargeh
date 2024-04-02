@@ -1,7 +1,8 @@
 ﻿@using Forums.Api
 @using Topics.Api
+@inject NavigationManager NavigationManager
 
-<div class="topic">
+<div class="topic" @onclick="NavigateToTopic">
 	<div>
 		<strong>@Topic.Title</strong> در @Forum.Name
 		<p class="topic-description">
@@ -19,4 +20,9 @@
 
 	[Parameter]
 	public ProtoTopic Topic { get; set; } = null!;
+
+	private void NavigateToTopic()
+	{
+		NavigationManager.NavigateTo($"/Topic/{Topic.Permalink}");
+	}
 }
