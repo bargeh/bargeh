@@ -59,7 +59,7 @@ public class ForumsService(ForumsDbContext dbContext, UsersProto.UsersProtoClien
 		// TODO: Add the owner as a member of the forum too
 	}
 
-	public override async Task<ForumReply> GetForumByPermalink(GetForumByPermalinkRequest request,
+	public override async Task<ProtoForum> GetForumByPermalink(GetForumByPermalinkRequest request,
 															   ServerCallContext context)
 	{
 		Forum forum = await dbContext.Forums.FirstOrDefaultAsync(f => f.Permalink == request.Permalink)
@@ -84,7 +84,7 @@ public class ForumsService(ForumsDbContext dbContext, UsersProto.UsersProtoClien
 		};
 	}
 
-	public override async Task<ForumReply> GetForumById(GetForumByIdRequest request, ServerCallContext context)
+	public override async Task<ProtoForum> GetForumById(GetForumByIdRequest request, ServerCallContext context)
 	{
 		Forum forum = await dbContext.Forums.FirstOrDefaultAsync(f => f.Id == Guid.Parse(request.Id))
 					  ?? throw new RpcException(new(StatusCode.NotFound, "No forum was found with this ID"));
@@ -107,7 +107,7 @@ public class ForumsService(ForumsDbContext dbContext, UsersProto.UsersProtoClien
 			Cover = forum.Cover
 		};
 	}
-
+	
 	public override async Task<VoidOperationReply> JoinForum(JoinLeaveForumRequest request, ServerCallContext context)
 	{
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);

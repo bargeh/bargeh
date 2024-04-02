@@ -8,6 +8,13 @@ $(document).ready(() => {
     formatMentions()
 })
 
+function onAfterRender() {
+    formatMentions();
+    $(".button-bubble, .button-bubble-static, .button-bubble-static-inline").hover(function () {
+        $(this).addClass("bubble-hovered");
+    });
+}
+
 function updateLocalStorage() {
     const token = localStorage.getItem('login.access_token')
     const timeIndex = token.indexOf('@')

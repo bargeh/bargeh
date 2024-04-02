@@ -5,11 +5,13 @@ option csharp_namespace = "Topics.Api";
 package topics;
 
 service TopicsProto {
-  rpc GetTopicByPermalink (GetTopicByPermalinkRequest) returns (TopicReply);
+  rpc GetTopicByPermalink (GetTopicByPermalinkRequest) returns (ProtoTopic);
   rpc CreateTopic (CreateTopicRequest) returns (CreateTopicReply);
   rpc CreatePost (CreatePostRequest) returns (VoidOperationReply);
   rpc ReactOnPost (ReactOnPostRequest) returns (VoidOperationReply);
   rpc GetMorePostChains (GetMorePostChainsRequest) returns (GetMorePostChainsReply);
+  rpc GetRecentTopicsByForum (GetRecentTopicsByForumRequest) returns (GetRecentTopicsByForumReply);
+  rpc GetHeadpostByTopic (GetHeadpostByTopicRequest) returns (ProtoPost);
 }
 
 message GetTopicByPermalinkRequest {
@@ -17,7 +19,7 @@ message GetTopicByPermalinkRequest {
   string permalink = 2;
 }
 
-message TopicReply {
+message ProtoTopic {
   string forum = 1;
   string title = 2;
   ProtoPost head_post = 3;
@@ -70,6 +72,18 @@ message ProtoPost {
   uint32 insights = 8;
   uint32 funnies = 9;
   uint32 dislikes = 10;
+}
+
+message GetRecentTopicsByForumRequest {
+  string forum = 1;
+}
+
+message GetRecentTopicsByForumReply {
+  repeated ProtoTopic topics = 1;
+}
+
+message GetHeadpostByTopicRequest {
+  string topic = 1;
 }
 
 enum ReactionUpdateState {

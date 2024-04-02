@@ -1,11 +1,15 @@
 ﻿@page "/Forum/{ForumPermalink}"
 @using Forums.Api
-@inject ForumsProto.ForumsProtoClient ForumsService;
-@inject NotFoundListener NotFoundService;
-@inject LocalStorageService LocalStorageService;
+@inject ForumsProto.ForumsProtoClient ForumsService
+@inject TopicsProto.TopicsProtoClient TopicsService
+@inject NotFoundListener NotFoundService
+@inject LocalStorageService LocalStorageService
 @using Grpc.Core
 @using Bargeh.Main.Wapp.Client.Infrastructure
 @using Bargeh.Main.Wapp.Client.Services
+@using Topics.Api
+
+@* FROMHERE: Display topics *@
 
 @if(_forum is not null)
 {
@@ -33,7 +37,7 @@
 	</div>
 
 	<div class="footer-info">
-		<h2>گفت و گوهای سنجاق شده‌ی @_forum.Name</h2>
+		<h2> گفت و گو‌های @_forum.Name</h2>
 		<div class="shadow-box secondary-search-bar footer-links">
 			<img src="img/Search.svg" alt="علامت ذره‌بین" class="search-icon">
 			<input type="text" class="search-input" placeholder="جست و جو در گفت و گوهای @_forum.Name...">
@@ -41,113 +45,10 @@
 	</div>
 
 	<div class="forums-list">
-		<div class="topic">
-			<div>
-				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در @_forum.Name
-				<p class="topic-description">
-					۳۲
-					<img src="img/ChatSingle.svg" alt="گفته‌ها"
-						 class="topic-chat">بچه‌ها
-					واسه
-					شروع برنامه‌نویسی چه سایتی خوبه واقعا؟ خیلی دوره‌ها رو دیدم ولی واقعا آشغال بودن
-				</p>
-			</div>
-		</div>
-		<div class="topic">
-			<div>
-				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در @_forum.Name
-				<p class="topic-description">
-					۳۲
-					<img src="img/ChatSingle.svg" alt="گفته‌ها"
-						 class="topic-chat">بچه‌ها
-					واسه
-					شروع برنامه‌نویسی چه سایتی خوبه واقعا؟ خیلی دوره‌ها رو دیدم ولی واقعا آشغال بودن
-				</p>
-			</div>
-		</div>
-		<div class="topic">
-			<div>
-				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در @_forum.Name
-				<p class="topic-description">
-					۳۲
-					<img src="img/ChatSingle.svg" alt="گفته‌ها"
-						 class="topic-chat">بچه‌ها
-					واسه
-					شروع برنامه‌نویسی چه سایتی خوبه واقعا؟ خیلی دوره‌ها رو دیدم ولی واقعا آشغال بودن
-				</p>
-			</div>
-		</div>
-		<div class="topic">
-			<div>
-				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در @_forum.Name
-				<p class="topic-description">
-					۳۲
-					<img src="img/ChatSingle.svg" alt="گفته‌ها"
-						 class="topic-chat">بچه‌ها
-					واسه
-					شروع برنامه‌نویسی چه سایتی خوبه واقعا؟ خیلی دوره‌ها رو دیدم ولی واقعا آشغال بودن
-				</p>
-			</div>
-		</div>
-	</div>
-
-	<div class="footer-info">
-		<h2>همه‌ی گفت و گو‌های @_forum.Name</h2>
-		<div class="shadow-box secondary-search-bar footer-links">
-			<img src="img/Search.svg" alt="علامت ذره‌بین" class="search-icon">
-			<input type="text" class="search-input" placeholder="جست و جو در گفت و گوهای @_forum.Name...">
-		</div>
-	</div>
-
-	<div class="forums-list">
-		<div class="topic">
-			<div>
-				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در @_forum.Name
-				<p class="topic-description">
-					۳۲
-					<img src="img/ChatSingle.svg" alt="گفته‌ها"
-						 class="topic-chat">بچه‌ها
-					واسه
-					شروع برنامه‌نویسی چه سایتی خوبه واقعا؟ خیلی دوره‌ها رو دیدم ولی واقعا آشغال بودن
-				</p>
-			</div>
-		</div>
-		<div class="topic">
-			<div>
-				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در @_forum.Name
-				<p class="topic-description">
-					۳۲
-					<img src="img/ChatSingle.svg" alt="گفته‌ها"
-						 class="topic-chat">بچه‌ها
-					واسه
-					شروع برنامه‌نویسی چه سایتی خوبه واقعا؟ خیلی دوره‌ها رو دیدم ولی واقعا آشغال بودن
-				</p>
-			</div>
-		</div>
-		<div class="topic">
-			<div>
-				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در @_forum.Name
-				<p class="topic-description">
-					۳۲
-					<img src="img/ChatSingle.svg" alt="گفته‌ها"
-						 class="topic-chat">بچه‌ها
-					واسه
-					شروع برنامه‌نویسی چه سایتی خوبه واقعا؟ خیلی دوره‌ها رو دیدم ولی واقعا آشغال بودن
-				</p>
-			</div>
-		</div>
-		<div class="topic">
-			<div>
-				<strong>بهترین سایت آموزش برنامه‌نویسی</strong> در @_forum.Name
-				<p class="topic-description">
-					۳۲
-					<img src="img/ChatSingle.svg" alt="گفته‌ها"
-						 class="topic-chat">بچه‌ها
-					واسه
-					شروع برنامه‌نویسی چه سایتی خوبه واقعا؟ خیلی دوره‌ها رو دیدم ولی واقعا آشغال بودن
-				</p>
-			</div>
-		</div>
+		@foreach(ProtoTopic topic in _recentTopics)
+		{
+			<TopicSingle Forum="_forum" Topic="topic"/>
+		}
 	</div>
 
 	<a class="button-primary">
@@ -161,10 +62,12 @@ else
 }
 
 @code {
+
 	[Parameter]
 	public string ForumPermalink { get; init; } = null!;
 
-	private ForumReply? _forum;
+	private ProtoForum? _forum;
+	private List<ProtoTopic> _recentTopics = null!;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -174,6 +77,11 @@ else
 			{
 				Permalink = ForumPermalink
 			});
+
+			_recentTopics = (await TopicsService.GetRecentTopicsByForumAsync(new()
+								{
+									Forum = _forum.Id
+								})).Topics.ToList();
 		}
 		catch(RpcException exception)
 		{
@@ -200,4 +108,5 @@ else
 
 		_forum.Members++;
 	}
+
 }

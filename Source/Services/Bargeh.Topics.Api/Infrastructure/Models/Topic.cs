@@ -12,6 +12,8 @@ public class Topic
 
 	[MaxLength(64)]
 	public required string Title { get; init; }
+	
+	public DateTime LastUpdateDate { get; set; } = DateTime.UtcNow;
 
 	public Topic()
 	{

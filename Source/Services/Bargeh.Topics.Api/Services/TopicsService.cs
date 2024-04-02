@@ -14,7 +14,7 @@ namespace Bargeh.Topics.Api.Services;
 public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoClient forumsService)
 	: TopicsProto.TopicsProtoBase
 {
-	public override async Task<TopicReply> GetTopicByPermalink(GetTopicByPermalinkRequest request,
+	public override async Task<ProtoTopic> GetTopicByPermalink(GetTopicByPermalinkRequest request,
 															   ServerCallContext callContext)
 	{
 		// TODO: Should return a couple of posts too
@@ -40,6 +40,30 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 			},
 			Title = topic.Title,
 		};
+	}
+
+	public override async Task<ProtoPost> GetHeadpostByTopic(GetHeadpostByTopicRequest request,
+															 ServerCallContext context)
+	{
+		Guid topicId = new(request.Topic);
+		Post post = await dbContext.Posts.FirstOrDefaultAsync(p => p.Parent == null && p.Topic.Id == topicId)
+					?? throw new RpcException(new(StatusCode.NotFound, "No headpost was found with this topic ID"));
+
+		return MapPostToProtoPost(post);
+	}
+
+	public override async Task<GetRecentTopicsByForumReply> GetRecentTopicsByForum(
+		GetRecentTopicsByForumRequest request,
+		ServerCallContext callContext)
+	{
+		Guid forumId = new(request.Forum);
+		List<Topic> topics = await dbContext.Topics.Where(t => t.Forum == forumId)
+											.OrderByDescending(o => o.LastUpdateDate).Take(8)
+											.ToListAsync();
+
+		GetRecentTopicsByForumReply reply = new();
+		reply.Topics.Add(MapTopicsListToProtoTopicsList(topics, callContext));
+		return reply;
 	}
 
 	public override async Task<CreateTopicReply> CreateTopic(CreateTopicRequest request, ServerCallContext callContext)
@@ -209,7 +233,6 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 												  .ToListAsync();
 
 
-
 		List<ProtoPost> postsToReturn = [];
 		postsToReturn.AddRange(MapPostsListToProtoPostsList(newPostChains));
 		foreach(Post postchainHeadPost in newPostChains)
@@ -221,7 +244,7 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		reply.Posts.Add(postsToReturn);
 		return reply;
 	}
-	
+
 	#region Private Methods
 
 	private static async Task<IEnumerable<Claim>> ValidateAndGetUserClaims(string accessToken)
@@ -250,10 +273,10 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		IEnumerable<Claim> accessTokenClaims = tokenHandler.ReadJwtToken(accessToken).Claims!;
 		return accessTokenClaims;
 	}
-	
+
 	private async Task AddPostHierarchyAsync(Guid parentId, ICollection<ProtoPost> posts, int depth)
 	{
-		if (depth <= 0)
+		if(depth <= 0)
 		{
 			return;
 		}
@@ -292,12 +315,34 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 
 		return protoPost;
 	}
-	
+
 	private static List<ProtoPost> MapPostsListToProtoPostsList(List<Post> posts)
 	{
 		List<ProtoPost> protoPosts = [];
 		protoPosts.AddRange(posts.Select(MapPostToProtoPost));
 		return protoPosts;
+	}
+
+	private async Task<ProtoTopic> MapTopicToProtoTopic(Topic topic, ServerCallContext callContext)
+	{
+		ProtoTopic protoTopic = new()
+		{
+			Title = topic.Title,
+			Forum = topic.Forum.ToString(),
+			HeadPost = await GetHeadpostByTopic(new()
+			{
+				Topic = topic.Id.ToString()
+			}, callContext)
+		};
+
+		return protoTopic;
+	}
+
+	private List<ProtoTopic> MapTopicsListToProtoTopicsList(List<Topic> topics, ServerCallContext callContext)
+	{
+		List<ProtoTopic> protoTopics = [];
+		protoTopics.AddRange(topics.Select(p => MapTopicToProtoTopic(p, callContext).Result));
+		return protoTopics;
 	}
 
 	#endregion
