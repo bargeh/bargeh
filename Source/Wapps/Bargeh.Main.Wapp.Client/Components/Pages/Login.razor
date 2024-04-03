@@ -174,10 +174,7 @@
 		if(!string.IsNullOrWhiteSpace(await LocalStorageService.GetItemAsync<string>("login.refresh_token")))
 		{
 			NavigationManager.NavigateTo("/", false, true);
-			return;
 		}
-
-		await JsRuntime.InvokeVoidAsync("onAfterRender");
 	}
 
 	#region Login

@@ -40,6 +40,7 @@ function updateLocalStorage() {
 const observer = new MutationObserver(function (mutations) {
     mutations.forEach(function () {
         formatMentions()
+        onAfterRender()
     })
 })
 

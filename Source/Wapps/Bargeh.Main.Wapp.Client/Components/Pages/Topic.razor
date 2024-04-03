@@ -11,27 +11,14 @@
 
 @if(_topic is not null && _forum is not null)
 {
-	<h1>@_topic.Title</h1>
-
 	<div class="shadow-box-nohover topic-first-post">
 		<strong class="center">گفت و گو در <a href="/Topic/@_forum.Permalink">انجمن @_forum.Name ←</a></strong>
-		<h1 class="center title">@_forum.</h1>
+		<h1 class="center title">@_topic.Title</h1>
 		<div class="topic-content">
-			<p>
-				لورم ایپسوم یک متن آزمایشی و بی‌معنی است که در صنعت چاپ و طراحی گرافیک استفاده می‌شود. این متن به طور
-				معمول برای نمایش چاپی و ترتیب موقعیت حروف و کاراکترها در طراحی‌های گرافیکی به کار می‌رود. هدف اصلی
-				مقاله‌ها و ارائه‌های متنی این است که مخاطب را با محتوای متن آشنا سازد، نه آنکه نظر خاصی را درباره
-				محتوا ارائه دهد.
-			</p>
-
-			<p>
-				این متن به طور کامل بی‌معنی است و برای نمایش قلم‌ها و استایل‌های مختلف طراحی شده است. در هر صورت،
-				می‌توانید از لورم ایپسوم در طراحی‌های خود استفاده کنید تا ببینید چگونه متن شما پس از طراحی نمایش
-				داده می‌شود.
-			</p>
+			@_topic.HeadPost.Body
 		</div>
 		<div class="topic-info">
-			<p>توسط <a>@@matin</a></p>
+			<p>توسط <a>@@@_topic.HeadPost.Author</a></p>
 			<div class="footer-links button-bubble reactions">
 				<span class="reactions-count">۲۹</span>
 				<img alt="پسند" class="reaction-icon" src="img/Like.svg">
