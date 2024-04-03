@@ -34,6 +34,7 @@ IResourceBuilder<ProjectResource> topicsApi =
 	builder.AddProject<Bargeh_Topics_Api>("topics")
 		   .WithReference(postgres)
 		   .WithReference(forumsApi)
+		   .WithReference(usersApi)
 		   .AsHttp2Service();
 
 

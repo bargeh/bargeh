@@ -7,11 +7,15 @@ using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Topics.Api;
+using Users.Api;
 using VoidOperationReply = Topics.Api.VoidOperationReply;
 
 namespace Bargeh.Topics.Api.Services;
 
-public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoClient forumsService)
+public class TopicsService(
+	TopicsDbContext dbContext,
+	ForumsProto.ForumsProtoClient forumsService,
+	UsersProto.UsersProtoClient usersService)
 	: TopicsProto.TopicsProtoBase
 {
 	public override async Task<ProtoTopic> GetTopicByPermalink(GetTopicByPermalinkRequest request,
@@ -25,6 +29,11 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 
 		Post headPost = (await dbContext.Posts.FirstOrDefaultAsync(p => p.Topic == topic))!;
 
+		string ownerUsername = (await usersService.GetUserByIdAsync(new()
+								   {
+									   Id = headPost.Author.ToString()
+								   })).Username;
+
 		return new()
 		{
 			Id = topic.Id.ToString(),
@@ -32,7 +41,8 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 			Forum = topic.Forum.ToString(),
 			HeadPost = new()
 			{
-				Author = headPost.Author.ToString(),
+				Id = headPost.Id.ToString(),
+				AuthorUsername = ownerUsername,
 				Body = headPost.Body,
 				Likes = headPost.Likes,
 				Loves = headPost.Loves,
@@ -40,7 +50,7 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 				Insights = headPost.Insights,
 				Dislikes = headPost.Dislikes
 			},
-			Title = topic.Title,
+			Title = topic.Title
 		};
 	}
 
@@ -51,7 +61,7 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		Post post = await dbContext.Posts.FirstOrDefaultAsync(p => p.Parent == null && p.Topic.Id == topicId)
 					?? throw new RpcException(new(StatusCode.NotFound, "No headpost was found with this topic ID"));
 
-		return MapPostToProtoPost(post);
+		return await MapPostToProtoPost(post);
 	}
 
 	public override async Task<GetRecentTopicsByForumReply> GetRecentTopicsByForum(
@@ -69,7 +79,7 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 			reply.Topics.Add(await MapTopicsListToProtoTopicsList(topics, callContext));
 			return reply;
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			Console.WriteLine(e);
 			throw;
@@ -244,7 +254,7 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 
 
 		List<ProtoPost> postsToReturn = [];
-		postsToReturn.AddRange(MapPostsListToProtoPostsList(newPostChains));
+		postsToReturn.AddRange(await MapPostsListToProtoPostsList(newPostChains));
 		foreach(Post postchainHeadPost in newPostChains)
 		{
 			await AddPostHierarchyAsync(postchainHeadPost.Id, postsToReturn, 5);
@@ -295,7 +305,7 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 									 .FirstOrDefaultAsync(p => p.Parent != null && p.Parent.Id == parentId);
 		if(child != null)
 		{
-			ProtoPost postToAdd = MapPostToProtoPost(child);
+			ProtoPost postToAdd = await MapPostToProtoPost(child);
 
 			posts.Add(postToAdd);
 
@@ -303,45 +313,47 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		}
 	}
 
-	private static ProtoPost MapPostToProtoPost(Post post)
+	private async Task<ProtoPost> MapPostToProtoPost(Post post)
 	{
-		try
+		string ownerUsername = (await usersService.GetUserByIdAsync(new()
+								   {
+									   Id = post.Author.ToString()
+								   })).Username;
+
+		ProtoPost protoPost = new()
 		{
-			ProtoPost protoPost = new()
-			{
-				Id = post.Id.ToString(),
-				Body = post.Body,
-				Likes = post.Likes,
-				Loves = post.Loves,
-				Insights = post.Insights,
-				Funnies = post.Funnies,
-				Dislikes = post.Dislikes,
-				Author = post.Author.ToString(),
-			};
+			Id = post.Id.ToString(),
+			Body = post.Body,
+			Likes = post.Likes,
+			Loves = post.Loves,
+			Insights = post.Insights,
+			Funnies = post.Funnies,
+			Dislikes = post.Dislikes,
+			AuthorUsername = ownerUsername
+		};
 
-			if(post.Parent is not null)
-			{
-				protoPost.Parent = post.Parent.Id.ToString();
-			}
-
-			if(!string.IsNullOrWhiteSpace(post.Attachment))
-			{
-				protoPost.Attachment = post.Attachment;
-			}
-
-			return protoPost;
-		}
-		catch(Exception e)
+		if(post.Parent is not null)
 		{
-			Console.WriteLine(e);
-			throw;
+			protoPost.Parent = post.Parent.Id.ToString();
 		}
+
+		if(!string.IsNullOrWhiteSpace(post.Attachment))
+		{
+			protoPost.Attachment = post.Attachment;
+		}
+
+		return protoPost;
 	}
 
-	private static List<ProtoPost> MapPostsListToProtoPostsList(List<Post> posts)
+	private async Task<List<ProtoPost>> MapPostsListToProtoPostsList(List<Post> posts)
 	{
 		List<ProtoPost> protoPosts = [];
-		protoPosts.AddRange(posts.Select(MapPostToProtoPost));
+		
+		foreach(Post post in posts)
+		{
+			protoPosts.Add(await MapPostToProtoPost(post));
+		}
+		
 		return protoPosts;
 	}
 
@@ -362,9 +374,8 @@ public class TopicsService(TopicsDbContext dbContext, ForumsProto.ForumsProtoCli
 		return protoTopic;
 	}
 
-	private async Task<List<ProtoTopic>> MapTopicsListToProtoTopicsList(
-		List<Topic> topics,
-		ServerCallContext callContext)
+	private async Task<List<ProtoTopic>> MapTopicsListToProtoTopicsList(List<Topic> topics,
+																		ServerCallContext callContext)
 	{
 		List<ProtoTopic> protoTopics = [];
 

@@ -2,6 +2,7 @@ using Bargeh.Aspire.ServiceDefaults;
 using Bargeh.Topics.Api.Infrastructure;
 using Bargeh.Topics.Api.Services;
 using Forums.Api;
+using Users.Api;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,11 @@ builder.AddNpgsqlDbContext<TopicsDbContext>("postgres", settings =>
 builder.Services.AddGrpcClient<ForumsProto.ForumsProtoClient>(options =>
 {
 	options.Address = new(builder.Configuration.GetValue<string>("services:forums:1")!);
+});
+
+builder.Services.AddGrpcClient<UsersProto.UsersProtoClient>(options =>
+{
+	options.Address = new(builder.Configuration.GetValue<string>("services:users:1")!);
 });
 
 builder.Services.AddCors(options =>

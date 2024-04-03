@@ -12,20 +12,26 @@
 @if(_topic is not null && _forum is not null)
 {
 	<div class="shadow-box-nohover topic-first-post">
-		<strong class="center">گفت و گو در <a href="/Topic/@_forum.Permalink">انجمن @_forum.Name ←</a></strong>
+		<strong class="center">گفت و گو در <a href="/Forum/@_forum.Permalink">انجمن @_forum.Name ←</a></strong>
 		<h1 class="center title">@_topic.Title</h1>
 		<div class="topic-content">
 			@_topic.HeadPost.Body
 		</div>
 		<div class="topic-info">
-			<p>توسط <a>@@@_topic.HeadPost.Author</a></p>
+			<p>توسط <a>@@@_topic.HeadPost.AuthorUsername</a></p>
 			<div class="footer-links button-bubble reactions">
-				<span class="reactions-count">۲۹</span>
+				<span class="reactions-count">@(_topic.HeadPost.Likes + _topic.HeadPost.Loves + _topic.HeadPost.Funnies + _topic.HeadPost.Insights + _topic.HeadPost.Dislikes)</span>
 				<img alt="پسند" class="reaction-icon" src="img/Like.svg">
 				<img alt="قلب" class="reaction-icon" src="img/Love.svg">
 				<img alt="چراغ" class="reaction-icon" src="img/Light.svg">
 			</div>
 		</div>
+		
+		<input type="hidden" id="@(_topic.HeadPost.Id)_likes" value="@_topic.HeadPost.Likes"/>
+		<input type="hidden" id="@(_topic.HeadPost.Id)_loves" value="@_topic.HeadPost.Loves"/>
+		<input type="hidden" id="@(_topic.HeadPost.Id)_funnies" value="@_topic.HeadPost.Funnies"/>
+		<input type="hidden" id="@(_topic.HeadPost.Id)_insights" value="@_topic.HeadPost.Insights"/>
+		<input type="hidden" id="@(_topic.HeadPost.Id)_dislikes" value="@_topic.HeadPost.Dislikes"/>
 	</div>
 	<div class="tip">
 		<img alt="چراغ" src="img/Lamp.svg">

@@ -34,7 +34,7 @@ function initTopics() {
 
 
     function ajaxCheck() {
-        var lastVisibleSlideIndex = splide.index
+        const lastVisibleSlideIndex = splide.index;
 
         if (lastVisibleSlideIndex + 7 > splide.length) {
             $.ajax({
@@ -82,8 +82,6 @@ function initTopics() {
         } else {
             $('.splide__list li:last-child').append(element)
         }
-
-        formatMentions()
     }
 
     function getFileName(path, keepExtention = false) {
