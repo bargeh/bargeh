@@ -25,6 +25,7 @@ message ProtoTopic {
   string title = 3;
   string permalink = 4;
   ProtoPost head_post = 6;
+  repeated ProtoPost posts = 7;
 }
 
 message CreateTopicRequest {

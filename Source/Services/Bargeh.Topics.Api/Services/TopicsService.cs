@@ -21,7 +21,6 @@ public class TopicsService(
 	public override async Task<ProtoTopic> GetTopicByPermalink(GetTopicByPermalinkRequest request,
 															   ServerCallContext callContext)
 	{
-		// TODO: Should return a couple of posts too
 		Topic topic =
 			await dbContext.Topics.FirstOrDefaultAsync(t => t.Forum.ToString() == request.Forum &&
 															t.Permalink == request.Permalink)
@@ -34,7 +33,21 @@ public class TopicsService(
 									   Id = headPost.Author.ToString()
 								   })).Username;
 
-		return new()
+		List<Post> newPostChains = await dbContext.Posts
+												  .Where(p => p.Parent == headPost)
+												  .OrderByDescending(p => p.LastUpdateDate)
+												  .Take(10)
+												  .ToListAsync();
+
+
+		List<ProtoPost> postsToReturn = [];
+		postsToReturn.AddRange(await MapPostsListToProtoPostsList(newPostChains));
+		foreach(Post postchainHeadPost in newPostChains)
+		{
+			await AddPostHierarchyAsync(postchainHeadPost.Id, postsToReturn, 5);
+		}
+
+		ProtoTopic protoTopic = new()
 		{
 			Id = topic.Id.ToString(),
 			Permalink = topic.Permalink,
@@ -52,6 +65,8 @@ public class TopicsService(
 			},
 			Title = topic.Title
 		};
+		protoTopic.Posts.Add(postsToReturn);
+		return protoTopic;
 	}
 
 	public override async Task<ProtoPost> GetHeadpostByTopic(GetHeadpostByTopicRequest request,
@@ -235,7 +250,6 @@ public class TopicsService(
 			throw new RpcException(new(StatusCode.InvalidArgument, "Guids provided are not valid"));
 		}
 
-		// TODO: Test the method
 		await ValidateAndGetUserClaims(request.AccessToken);
 
 
@@ -348,12 +362,12 @@ public class TopicsService(
 	private async Task<List<ProtoPost>> MapPostsListToProtoPostsList(List<Post> posts)
 	{
 		List<ProtoPost> protoPosts = [];
-		
+
 		foreach(Post post in posts)
 		{
 			protoPosts.Add(await MapPostToProtoPost(post));
 		}
-		
+
 		return protoPosts;
 	}
 
