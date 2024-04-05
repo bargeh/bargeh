@@ -263,7 +263,7 @@ public class TopicsService(
 		List<Post> newPostChains = await dbContext.Posts
 												  .Where(p => !seenPostchainsGuids.Contains(p.Id) &&
 															  p.Parent == topicHeadPost)
-												  .Take(10)
+												  .Take(3)
 												  .ToListAsync();
 
 

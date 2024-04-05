@@ -1,4 +1,11 @@
-function initTopics() {
+let topicsDotnetHelper
+
+window.setTopicsDotnetHelper = (dotnetHelper) => {
+    topicsDotnetHelper = dotnetHelper
+    initTopics()
+}
+
+function initTopics() { 
     let splide = new Splide('.splide', {
         perMove: 1,
         direction: 'rtl',
@@ -22,36 +29,32 @@ function initTopics() {
         }
     })
 
-    splide.on('mounted', function () {
-        ajaxCheck()
+    splide.on('mounted', async function () {
+        await ajaxCheck()
     })
 
     splide.mount()
 
-    splide.on('moved', function () {
-        ajaxCheck()
+    splide.on('moved', async function () {
+        await ajaxCheck()
     })
 
-
-    function ajaxCheck() {
+    async function ajaxCheck() {
         const lastVisibleSlideIndex = splide.index;
 
-        if (lastVisibleSlideIndex + 7 > splide.length) {
-            $.ajax({
-                url: '/topic.json',
-                type: 'GET',
-                success: function (data) {
-                    $(data.postChains).each(function (index, el) {
-                        $(el.posts).each(function (index, e) {
-                            createPost(e.postText, e.author, e.postAttachmentLink, e.postImageLink, e.reactions, e.id, index)
-                        })
-                        addReplyButtons()
-                    })
-
-                }
-            })
-
+        if (lastVisibleSlideIndex + 7 <= splide.length) {
+            return;
         }
+        
+        const rawPostchains = await topicsDotnetHelper.invokeMethodAsync('GetMorePostchains')
+        const jsonPostchains = JSON.parse(rawPostchains)
+        
+        $(jsonPostchains.Posts).each(function (index, e) {
+            const parentId = e.Parent;
+            const parentIndex = jsonPostchains.Posts.some(item => item.Id === parentId) ? 1 : 0;
+            createPost(e.Body, e.AuthorUsername, e.Attachment, '', e.Likes + e.Loves + e.Funnies + e.Insights + e.Dislikes, e.Id, parentIndex)
+        })
+        addReplyButtons()
     }
 
     function addReplyButtons() {
@@ -63,7 +66,6 @@ function initTopics() {
     }
 
     function createPost(text, author, attachment, image, reactions, id, index) {
-
         let imageElement = ''
         let attachElement = ''
 
@@ -140,7 +142,12 @@ function initTopics() {
     })
 }
 
-$(document).ready(() => {
-    initTopics()
-})
+function replaceFirstAndLastChar(str) {
+    if (str.length < 2) {
+        return str;
+    }
 
+    let charToReplace = "'";
+
+    return charToReplace + str.substring(1, str.length - 1) + charToReplace;
+}

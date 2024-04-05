@@ -2,10 +2,16 @@
 @using Forums.Api
 @using Grpc.Core
 @using Bargeh.Main.Wapp.Client.Infrastructure
+@using Bargeh.Main.Wapp.Client.Services
 @using Topics.Api
+@using System.Text.Json
+@using System.Text
+@using System.Text.Encodings.Web
+@using System.Text.Unicode
 @inject NotFoundListener NotFoundService
 @inject ForumsProto.ForumsProtoClient ForumsService
 @inject TopicsProto.TopicsProtoClient TopicsService
+@inject LocalStorageService LocalStorageService
 @inject IJSRuntime JsRuntime
 @rendermode InteractiveAuto
 
@@ -26,7 +32,8 @@
 				<img alt="چراغ" class="reaction-icon" src="img/Light.svg">
 			</div>
 		</div>
-		
+
+		<input type="hidden" id="@(_topic.HeadPost.Id)_id" value="@_topic.HeadPost.Id"/>
 		<input type="hidden" id="@(_topic.HeadPost.Id)_likes" value="@_topic.HeadPost.Likes"/>
 		<input type="hidden" id="@(_topic.HeadPost.Id)_loves" value="@_topic.HeadPost.Loves"/>
 		<input type="hidden" id="@(_topic.HeadPost.Id)_funnies" value="@_topic.HeadPost.Funnies"/>
@@ -87,6 +94,7 @@ else
 
 
 @code {
+
 	[Parameter]
 	public string ForumPermalink { get; init; } = null!;
 
@@ -126,7 +134,35 @@ else
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
+		await JsRuntime.InvokeVoidAsync("setTopicsDotnetHelper", DotNetObjectReference.Create(this));
 		await JsRuntime.InvokeVoidAsync("initTopics");
+	}
+
+	[JSInvokable]
+	public async Task<string> GetMorePostchains()
+	{
+		string? accessToken = LocalStorageService.GetAccessToken(await LocalStorageService.GetItemAsync<string>("login.access_token"));
+
+		if(string.IsNullOrWhiteSpace(accessToken))
+		{
+			return string.Empty;
+		}
+		
+		GetMorePostChainsReply response = await TopicsService.GetMorePostChainsAsync(new()
+		{
+			AccessToken = accessToken,
+			Topic = _topic!.Id,
+			SeenPostchains = {}
+		});
+
+		JsonSerializerOptions jsonSerializerOptions = new()
+		{
+			Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+		};
+
+		string json = JsonSerializer.Serialize(response, jsonSerializerOptions);
+		
+		return json;
 	}
 
 }
