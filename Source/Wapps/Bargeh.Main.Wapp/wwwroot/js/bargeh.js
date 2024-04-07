@@ -5,7 +5,7 @@ window.setMainLayoutDotnetHelper = (dotnetHelper) => {
 }
 
 $(document).ready(() => {
-    formatMentions()
+    onAfterRender()
 })
 
 function onAfterRender() {
@@ -39,14 +39,13 @@ function updateLocalStorage() {
 
 const observer = new MutationObserver(function (mutations) {
     mutations.forEach(function () {
-        formatMentions()
         onAfterRender()
     })
 })
 
 const config = {childList: true, subtree: true, characterData: true};
 
-observer.observe(document.querySelector('body'), config)
+observer.observe(document, config)
 
 function formatMentions() {
     const MENTIONS = $('a').filter(function () {
