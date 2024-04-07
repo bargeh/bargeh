@@ -38,7 +38,7 @@ function initTopics() {
     splide.on('moved', async function () {
         await ajaxCheck()
     })
-
+    
     async function ajaxCheck() {
         const lastVisibleSlideIndex = splide.index;
 
@@ -50,9 +50,7 @@ function initTopics() {
         const jsonPostchains = JSON.parse(rawPostchains)
         
         $(jsonPostchains.Posts).each(function (index, e) {
-            const parentId = e.Parent;
-            const parentIndex = jsonPostchains.Posts.some(item => item.Id === parentId) ? 1 : 0;
-            createPost(e.Body, e.AuthorUsername, e.Attachment, '', e.Likes + e.Loves + e.Funnies + e.Insights + e.Dislikes, e.Id, parentIndex)
+            createPost(e.Body, e.AuthorUsername, e.Attachment, '', e.Likes + e.Loves + e.Funnies + e.Insights + e.Dislikes, e.Id, e.Parent)
         })
         addReplyButtons()
     }
@@ -65,24 +63,26 @@ function initTopics() {
         })
     }
 
-    function createPost(text, author, attachment, image, reactions, id, index) {
+    function createPost(text, author, attachment, image, reactions, id, parentId) {
         let imageElement = ''
         let attachElement = ''
+        
+        const parent = $('.post_' + parentId + ':last')
 
         if (image !== '') {
-            imageElement = '<img class="post-image" src="' + image + '" alt="' + getFileName(image) + '"></img>'
+            imageElement = '<img class="post-image" src="' + image + '" alt="' + getFileName(image) + '">'
         }
 
         if (attachment !== '') {
             attachElement = '<div class="post-attachment"><div><strong>فایل پیوست‌شده</strong><p class="no-block-margin">' + getFileName(attachment, true) + '</p></div><img src="/img/File.svg" class="post-file footer-links" alt="فایل"></div>'
         }
 
-        let element = '<div class="shadow-box-nohover"><input type="hidden" value="' + id + '"><p class="post-text no-block-margin">' + text + '</p>' + imageElement + attachElement + '<div class="topic-info"><p>توسط <a href="/User/' + author + '">@' + author + '</a></p><div class="footer-links button-bubble reactions"><span class="reactions-count">' + toPersianDigits(reactions) + '</span><img src="/img/Like.svg" class="reaction-icon" alt="پسند"> <img src="img/Love.svg" class="reaction-icon" alt="قلب"> <img src="/img/Light.svg" class="reaction-icon" alt="چراغ"></div></div></div>'
+        let element = '<div class="shadow-box-nohover post_' + id + '"><p class="post-text no-block-margin">' + text + '</p>' + imageElement + attachElement + '<div class="topic-info"><p>توسط <a href="/User/' + author + '">@' + author + '</a></p><div class="footer-links button-bubble reactions"><span class="reactions-count">' + toPersianDigits(reactions) + '</span><img src="/img/Like.svg" class="reaction-icon" alt="پسند"> <img src="img/Love.svg" class="reaction-icon" alt="قلب"> <img src="/img/Light.svg" class="reaction-icon" alt="چراغ"></div></div></div>'
 
-        if (index === 0) {
-            splide.add('<li class="splide__slide">' + element + '</li>')
+        if (parent.length) {
+            parent.parent().append(element)
         } else {
-            $('.splide__list li:last-child').append(element)
+            splide.add('<li class="splide__slide">' + element + '</li>')
         }
     }
 
@@ -140,14 +140,4 @@ function initTopics() {
             $(postInput).children('textarea').focus()
         }, 200);
     })
-}
-
-function replaceFirstAndLastChar(str) {
-    if (str.length < 2) {
-        return str;
-    }
-
-    let charToReplace = "'";
-
-    return charToReplace + str.substring(1, str.length - 1) + charToReplace;
 }
