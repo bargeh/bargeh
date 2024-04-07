@@ -17,7 +17,7 @@
 @if(_topic is not null && _forum is not null)
 {
 	<div class="shadow-box-nohover topic-first-post">
-		<strong class="center">گفت و گو در <a href="/Forum/@_forum.Permalink">انجمن @_forum.Name ←</a></strong>
+		<strong class="center">گفت و گو در <a href="/Forum/@_forum.Permalink">@_forum.Name ←</a></strong>
 		<h1 class="center title">@_topic.Title</h1>
 		<div class="topic-content">
 			@_topic.HeadPost.Body
