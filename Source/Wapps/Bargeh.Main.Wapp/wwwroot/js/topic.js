@@ -5,7 +5,7 @@ window.setTopicsDotnetHelper = (dotnetHelper) => {
     initTopics()
 }
 
-function initTopics() { 
+function initTopics() {
     let splide = new Splide('.splide', {
         perMove: 1,
         direction: 'rtl',
@@ -38,19 +38,19 @@ function initTopics() {
     splide.on('moved', async function () {
         await ajaxCheck()
     })
-    
+
     async function ajaxCheck() {
         const lastVisibleSlideIndex = splide.index;
 
         if (lastVisibleSlideIndex + 7 <= splide.length) {
             return;
         }
-        
+
         const rawPostchains = await topicsDotnetHelper.invokeMethodAsync('GetMorePostchains')
         const jsonPostchains = JSON.parse(rawPostchains)
-        
+
         $(jsonPostchains.Posts).each(function (index, e) {
-            createPost(e.Body, e.AuthorUsername, e.Attachment, '', e.Likes + e.Loves + e.Funnies + e.Insights + e.Dislikes, e.Id, e.Parent)
+            createPost(e.Body, e.AuthorUsername, e.Attachment, '', e.Likes + e.Loves + e.Funnies + e.Insights + e.Dislikes, e.Id, e.Parent, e.Likes, e.Loves, e.Funnies, e.Insights, e.Dislikes)
         })
         addReplyButtons()
     }
@@ -63,10 +63,10 @@ function initTopics() {
         })
     }
 
-    function createPost(text, author, attachment, image, reactions, id, parentId) {
+    function createPost(text, author, attachment, image, reactions, id, parentId, likes, loves, funnies, insights, dislikes) {
         let imageElement = ''
         let attachElement = ''
-        
+
         const parent = $('.post_' + parentId + ':last')
 
         if (image !== '') {
@@ -77,7 +77,7 @@ function initTopics() {
             attachElement = '<div class="post-attachment"><div><strong>فایل پیوست‌شده</strong><p class="no-block-margin">' + getFileName(attachment, true) + '</p></div><img src="/img/File.svg" class="post-file footer-links" alt="فایل"></div>'
         }
 
-        let element = '<div class="shadow-box-nohover post_' + id + '"><p class="post-text no-block-margin">' + text + '</p>' + imageElement + attachElement + '<div class="topic-info"><p>توسط <a href="/User/' + author + '">@' + author + '</a></p><div class="footer-links button-bubble reactions"><span class="reactions-count">' + toPersianDigits(reactions) + '</span><img src="/img/Like.svg" class="reaction-icon" alt="پسند"> <img src="img/Love.svg" class="reaction-icon" alt="قلب"> <img src="/img/Light.svg" class="reaction-icon" alt="چراغ"></div></div></div>'
+        let element = '<div class="shadow-box-nohover post_' + id + '"><input type="hidden" id="' + id + '_id" value="' + id + '"/><input type="hidden" id="' + id + '_likes" value="' + likes + '"/><input type="hidden" id="' + id + '_loves" value="' + loves + '"/><input type="hidden" id="' + id + '_funnies" value="'+funnies+'"/><input type="hidden" id="'+id+'_insights" value="'+insights+'"/><input type="hidden" id="'+id+'_dislikes" value="'+dislikes+'"/><p class="post-text no-block-margin">' + text + '</p>' + imageElement + attachElement + '<div class="topic-info"><p>توسط <a href="/User/' + author + '">@' + author + '</a></p><div class="footer-links button-bubble reactions"><span class="reactions-count">' + toPersianDigits(reactions) + '</span><img src="/img/Like.svg" class="reaction-icon" alt="پسند"> <img src="img/Love.svg" class="reaction-icon" alt="قلب"> <img src="/img/Light.svg" class="reaction-icon" alt="چراغ"></div></div></div>'
 
         if (parent.length) {
             parent.parent().append(element)
