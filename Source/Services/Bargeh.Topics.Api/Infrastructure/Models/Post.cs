@@ -17,9 +17,9 @@ public class Post
 	[MaxLength(4096)]
 	public required string Body { get; init; }
 
-	public uint Likes { get; init; }
-	public uint Loves { get; init; }
-	public uint Funnies { get; init; }
-	public uint Insights { get; init; }
-	public uint Dislikes { get; init; }
+	public uint Likes { get; set; }
+	public uint Loves { get; set; }
+	public uint Funnies { get; set; }
+	public uint Insights { get; set; }
+	public uint Dislikes { get; set; }
 }

@@ -199,18 +199,42 @@ public class TopicsService(
 															   r.Post.Id.ToString() == request.Post);
 
 		// ReSharper disable once ConvertIfStatementToSwitchStatement
+		if(request.State is ReactionUpdateState.None && reaction is null)
+		{
+			return new();
+		}
+		
 		if(request.State is ReactionUpdateState.None && reaction is not null)
 		{
 			dbContext.Remove(reaction);
 			await dbContext.SaveChangesAsync();
 			return new();
 		}
-
-		if(request.State is ReactionUpdateState.None && reaction is null)
+		
+		if(reaction is not null)
 		{
-			return new();
+			switch(reaction.ReactionType)
+			{
+				case ReactionType.Like:
+					post.Likes--;
+					break;
+				case ReactionType.Love:
+					post.Loves--;
+					break;
+				case ReactionType.Funny:
+					post.Funnies--;
+					break;
+				case ReactionType.Insightful:
+					post.Insights--;
+					break;
+				case ReactionType.Dislike:
+					post.Dislikes--;
+					break;
+				default:
+					throw new NotImplementedException();
+			}
 		}
-
+		
 		// ReSharper disable once ConvertIfStatementToNullCoalescingAssignment
 		if(reaction is null)
 		{
@@ -230,6 +254,27 @@ public class TopicsService(
 			ReactionUpdateState.Dislike => ReactionType.Dislike,
 			_ => reaction.ReactionType
 		};
+		
+		switch(reaction.ReactionType)
+		{
+			case ReactionType.Like:
+				post.Likes++;
+				break;
+			case ReactionType.Love:
+				post.Loves++;
+				break;
+			case ReactionType.Funny:
+				post.Funnies++;
+				break;
+			case ReactionType.Insightful:
+				post.Insights++;
+				break;
+			case ReactionType.Dislike:
+				post.Dislikes++;
+				break;
+			default:
+				throw new NotImplementedException();
+		}
 
 		dbContext.Update(reaction);
 		await dbContext.SaveChangesAsync();
