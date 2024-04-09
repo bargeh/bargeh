@@ -136,7 +136,7 @@ else
 		await JsRuntime.InvokeVoidAsync("setTopicsDotnetHelper", DotNetObjectReference.Create(this));
 		await JsRuntime.InvokeVoidAsync("initTopics");
 	}
-
+	
 	[JSInvokable]
 	public async Task<string> GetMorePostchains()
 	{
@@ -162,6 +162,18 @@ else
 		string json = JsonSerializer.Serialize(response, jsonSerializerOptions);
 		
 		return json;
+	}
+
+	[JSInvokable]
+	public async Task ReactOnPost(string postId, byte reactionType)
+	{
+		reactionType++;
+		await TopicsService.ReactOnPostAsync(new()
+		{
+			AccessToken = LocalStorageService.GetAccessToken(await LocalStorageService.GetItemAsync<string>("login.access_token")),
+			Post = postId,
+			State = (ReactionUpdateState)reactionType
+		});
 	}
 
 }

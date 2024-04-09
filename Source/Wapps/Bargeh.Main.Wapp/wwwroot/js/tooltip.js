@@ -1,7 +1,8 @@
 const FADE_SPEED = 250
+let postToReactId;
 
 $(document).ready(function () {
-    let tooltip = $('<div class="reactions-tooltip"><div><button class="tooltip-button"><img src="/img/Like.svg" alt="کاربر" class="forum-icon"><p class="forum-count">...</p></button><button class="tooltip-button"><img src="img/Love.svg" alt="حمایت" class="forum-icon"><p class="forum-count">...</p></button><button class="tooltip-button"><img src="/img/Funny.svg" alt="گفت و گو" class="forum-icon"><p class="forum-count">...</p></button><button class="tooltip-button"><img src="img/Light.svg" alt="گفت و گو" class="forum-icon"><p class="forum-count">...</p></button><button class="tooltip-button"><img src="img/Dislike.svg" alt="گفت و گو" class="forum-icon"><p class="forum-count">...</p></button></div></div>').appendTo('body')
+    let tooltip = $('<div class="reactions-tooltip"><div><button class="tooltip-button" onclick="reactOnPost(0)"><img src="/img/Like.svg" alt="کاربر" class="forum-icon"><p class="forum-count">...</p></button><button class="tooltip-button" onclick="reactOnPost(1)"><img src="img/Love.svg" alt="حمایت" class="forum-icon"><p class="forum-count">...</p></button><button class="tooltip-button" onclick="reactOnPost(2)"><img src="/img/Funny.svg" alt="گفت و گو" class="forum-icon"><p class="forum-count">...</p></button><button class="tooltip-button" onclick="reactOnPost(3)"><img src="img/Light.svg" alt="گفت و گو" class="forum-icon"><p class="forum-count">...</p></button><button class="tooltip-button" onclick="reactOnPost(4)"><img src="img/Dislike.svg" alt="گفت و گو" class="forum-icon"><p class="forum-count">...</p></button></div></div>').appendTo('body')
 
     $(document).on('click', '.reactions', function (event) {
         event.stopPropagation()
@@ -21,15 +22,16 @@ $(document).ready(function () {
     })
 
     function showTooltip(reactions) {
-        let likes = $(reactions).parent().parent().find('input[id$="_likes"]').val()
-        let loves = $(reactions).parent().parent().find('input[id$="_loves"]').val()
-        let funnies = $(reactions).parent().parent().find('input[id$="_funnies"]').val()
-        let insights = $(reactions).parent().parent().find('input[id$="_insights"]').val()
-        let dislikes = $(reactions).parent().parent().find('input[id$="_dislikes"]').val()
-
-        debugger
-        let iconPosition = $(reactions).offset()
-        let tooltipWidth = tooltip.outerWidth()
+        const parent = $(reactions).parent().parent()
+        const likes = parent.find('input[id$="_likes"]').val()
+        const loves = parent.find('input[id$="_loves"]').val()
+        const funnies = parent.find('input[id$="_funnies"]').val()
+        const insights = parent.find('input[id$="_insights"]').val()
+        const dislikes = parent.find('input[id$="_dislikes"]').val()
+        const iconPosition = $(reactions).offset()
+        const tooltipWidth = tooltip.outerWidth()
+        
+        postToReactId = parent.find('input[id$="_id"]').val()
 
         if (screen.width < 900) {
             tooltip.css({
@@ -99,3 +101,7 @@ $(document).ready(function () {
         }
     })
 })
+
+async function reactOnPost(type) {
+    await topicsDotnetHelper.invokeMethodAsync('ReactOnPost', postToReactId, type)
+}
