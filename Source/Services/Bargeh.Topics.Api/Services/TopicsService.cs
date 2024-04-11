@@ -36,7 +36,7 @@ public class TopicsService(
 		List<Post> newPostChains = await dbContext.Posts
 												  .Where(p => p.Parent == headPost)
 												  .OrderByDescending(p => p.LastUpdateDate)
-												  .Take(10)
+												  .Take(5)
 												  .ToListAsync();
 
 
