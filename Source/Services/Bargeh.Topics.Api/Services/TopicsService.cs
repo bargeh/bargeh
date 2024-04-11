@@ -26,7 +26,7 @@ public class TopicsService(
 															t.Permalink == request.Permalink)
 			?? throw new RpcException(new(StatusCode.NotFound, "No topic was found with this permalink in this forum"));
 
-		Post headPost = (await dbContext.Posts.FirstOrDefaultAsync(p => p.Topic == topic))!;
+		Post headPost = (await dbContext.Posts.FirstOrDefaultAsync(p => p.Topic == topic && p.Parent == null))!;
 
 		string ownerUsername = (await usersService.GetUserByIdAsync(new()
 								   {
