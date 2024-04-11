@@ -50,7 +50,7 @@ function initTopics() {
         const jsonPostchains = JSON.parse(rawPostchains)
 
         $(jsonPostchains.Posts).each(function (index, e) {
-            createPost(e.Body, e.AuthorUsername, e.Attachment, '', e.Likes + e.Loves + e.Funnies + e.Insights + e.Dislikes, e.Id, e.Parent, e.Likes, e.Loves, e.Funnies, e.Insights, e.Dislikes)
+            createPost(e.Body, e.AuthorUsername, e.Attachment, '', e.Id, e.Parent, e.Likes, e.Loves, e.Funnies, e.Insights, e.Dislikes)
         })
         addReplyButtons()
     }
@@ -63,9 +63,10 @@ function initTopics() {
         })
     }
 
-    function createPost(text, author, attachment, image, reactions, id, parentId, likes, loves, funnies, insights, dislikes) {
+    function createPost(text, author, attachment, image, id, parentId, likes, loves, funnies, insights, dislikes) {
         let imageElement = ''
         let attachElement = ''
+        const reactions = likes + loves + funnies + insights + dislikes
 
         const parent = $('.post_' + parentId + ':last')
 
