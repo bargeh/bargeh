@@ -25,7 +25,7 @@
 		<div class="topic-info">
 			<p>توسط <a>@@@_topic.HeadPost.AuthorUsername</a></p>
 			<div class="footer-links button-bubble reactions">
-				<span class="reactions-count">@(_topic.HeadPost.Likes + _topic.HeadPost.Loves + _topic.HeadPost.Funnies + _topic.HeadPost.Insights + _topic.HeadPost.Dislikes)</span>
+				<span class="reactions-count">@GetPostReactionsNumber(_topic.HeadPost)</span>
 				<img alt="پسند" class="reaction-icon" src="img/Like.svg">
 				<img alt="قلب" class="reaction-icon" src="img/Love.svg">
 				<img alt="چراغ" class="reaction-icon" src="img/Light.svg">
@@ -82,6 +82,13 @@
 						</div>
 					</div>
 				</li>
+
+				@foreach(ProtoPost post in _topic.Posts)
+				{
+					<li class="splide__slide">
+						<PostSingle Post="post"/>
+					</li>
+				}
 			</ul>
 		</div>
 	</section>
@@ -136,7 +143,7 @@ else
 		await JsRuntime.InvokeVoidAsync("setTopicsDotnetHelper", DotNetObjectReference.Create(this));
 		await JsRuntime.InvokeVoidAsync("initTopics");
 	}
-	
+
 	[JSInvokable]
 	public async Task<string> GetMorePostchains()
 	{
@@ -146,12 +153,12 @@ else
 		{
 			return string.Empty;
 		}
-		
+
 		GetMorePostChainsReply response = await TopicsService.GetMorePostChainsAsync(new()
 		{
 			AccessToken = accessToken,
 			Topic = _topic!.Id,
-			SeenPostchains = {}
+			SeenPostchains = { }
 		});
 
 		JsonSerializerOptions jsonSerializerOptions = new()
@@ -160,7 +167,7 @@ else
 		};
 
 		string json = JsonSerializer.Serialize(response, jsonSerializerOptions);
-		
+
 		return json;
 	}
 
@@ -174,6 +181,11 @@ else
 			Post = postId,
 			State = (ReactionUpdateState)reactionType
 		});
+	}
+
+	public static uint GetPostReactionsNumber(ProtoPost post)
+	{
+		return post.Likes + post.Loves + post.Funnies + post.Insights + post.Dislikes;
 	}
 
 }
