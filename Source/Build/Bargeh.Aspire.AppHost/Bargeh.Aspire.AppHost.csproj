@@ -6,20 +6,22 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsAspireHost>true</IsAspireHost>
+        <UserSecretsId>720E4015-544A-4362-B754-15A00083C864</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.Hosting" Version="8.0.0-preview.4.24156.9" />
+        <PackageReference Include="Aspire.Hosting.AppHost" Version="8.0.0-preview.5.24201.12"/>
+        <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="8.0.0-preview.5.24201.12" />
         <PackageReference Include="Grpc.AspNetCore.Web" Version="2.61.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="../../Services/Bargeh.Identity.Api/Bargeh.Identity.Api.csproj" />
-      <ProjectReference Include="../../Services/Bargeh.Sms.Api/Bargeh.Sms.Api.csproj" />
-      <ProjectReference Include="../../Services/Bargeh.Users.Api/Bargeh.Users.Api.csproj" />
-      <ProjectReference Include="../../Wapps/Bargeh.Main.Wapp/Bargeh.Main.Wapp.csproj" />
       <ProjectReference Include="..\..\Services\Bargeh.Forums.Api\Bargeh.Forums.Api.csproj" />
+      <ProjectReference Include="..\..\Services\Bargeh.Identity.Api\Bargeh.Identity.Api.csproj" />
+      <ProjectReference Include="..\..\Services\Bargeh.Sms.Api\Bargeh.Sms.Api.csproj" />
       <ProjectReference Include="..\..\Services\Bargeh.Topics.Api\Bargeh.Topics.Api.csproj" />
+      <ProjectReference Include="..\..\Services\Bargeh.Users.Api\Bargeh.Users.Api.csproj" />
+      <ProjectReference Include="..\..\Wapps\Bargeh.Main.Wapp\Bargeh.Main.Wapp.csproj" />
     </ItemGroup>
 
 </Project>
