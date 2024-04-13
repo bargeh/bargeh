@@ -4,13 +4,8 @@ IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(ar
 
 // PRODUCTION: Use a dedicated Db for each service
 
-// Add a parameter to the builder
-IResourceBuilder<ParameterResource> myParameter = builder.AddParameter("myPaarameterName", secret: false);
-IResourceBuilder<ParameterResource> your = builder.AddParameter("myParameterName", secret: false);
-
 IResourceBuilder<PostgresServerResource> postgres = builder
-	.AddPostgres("postgres", your, myParameter, 5432)
-	.WithDataVolume("bghdb");
+	.AddPostgres("postgres", 5432, "5");
 
 IResourceBuilder<ProjectResource> usersApi =
 	builder.AddProject<Bargeh_Users_Api>("users")
@@ -43,12 +38,14 @@ IResourceBuilder<ProjectResource> topicsApi =
 		   .AsHttp2Service();
 
 
-builder.AddProject<Bargeh_Main_Wapp>("wapp", launchProfileName: "https")
+builder.AddProject<Bargeh_Main_Wapp>("wapp")
 	   //.WithReference (sqlServer)
 	   .WithReference(usersApi)
 	   .WithReference(smsApi)
 	   .WithReference(identityApi)
 	   .WithReference(forumsApi)
-	   .WithReference(topicsApi);
+	   .WithReference(topicsApi)
+	   .WithLaunchProfile("https");
+
 
 builder.Build().Run();
