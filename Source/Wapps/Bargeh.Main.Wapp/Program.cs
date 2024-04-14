@@ -33,13 +33,9 @@ builder.Services.AddSingleton(_ => new UsersProto.UsersProtoClient(GrpcChannel.F
 
 builder.Services.AddSingleton(_ => new SmsProto.SmsProtoClient(GrpcChannel.ForAddress("http://localhost")));
 
-builder.Services.AddGrpcClient<ForumsProto.ForumsProtoClient>(o =>
-															o.Address =
-																builder.Configuration.GetValue<Uri>("services:forums:1"));
+builder.Services.AddGrpcClient<ForumsProto.ForumsProtoClient>(o => o.Address = new("https://localhost:5301"));
 
-builder.Services.AddGrpcClient<TopicsProto.TopicsProtoClient>(o =>
-																  o.Address =
-																	  builder.Configuration.GetValue<Uri>("services:topics:1"));
+																	   builder.Services.AddGrpcClient<TopicsProto.TopicsProtoClient>(o => o.Address = new("https://localhost:7178"));
 
 #endregion
 

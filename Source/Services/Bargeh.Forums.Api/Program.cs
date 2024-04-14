@@ -17,7 +17,7 @@ builder.AddNpgsqlDbContext<ForumsDbContext>("postgres", settings =>
 
 builder.Services.AddGrpcClient<UsersProto.UsersProtoClient>(options =>
 {
-	options.Address = new(builder.Configuration.GetValue<string>("services:users:1")!);
+	options.Address = new("https://localhost:5501");
 });
 
 builder.Services.AddCors(options =>
