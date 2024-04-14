@@ -4,13 +4,8 @@ IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(ar
 
 // PRODUCTION: Use a dedicated Db for each service
 
-// Add a parameter to the builder
-IResourceBuilder<ParameterResource> myParameter = builder.AddParameter("myPaarameterName", secret: false);
-IResourceBuilder<ParameterResource> your = builder.AddParameter("myParameterName", secret: false);
-
 IResourceBuilder<PostgresServerResource> postgres = builder
-	.AddPostgres("postgres", your, myParameter, 5432)
-	.WithDataVolume("bghdb");
+	.AddPostgres("postgres");
 
 IResourceBuilder<ProjectResource> usersApi =
 	builder.AddProject<Bargeh_Users_Api>("users")
