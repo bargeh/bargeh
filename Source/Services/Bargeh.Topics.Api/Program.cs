@@ -11,10 +11,7 @@ builder.AddServiceDefaults();
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 
-builder.AddNpgsqlDbContext<TopicsDbContext>("postgres", settings =>
-{
-	settings.MaxRetryCount = 10;
-});
+builder.AddNpgsqlDbContext<TopicsDbContext>("postgres");
 
 builder.Services.AddGrpcClient<ForumsProto.ForumsProtoClient>(options =>
 {
@@ -37,9 +34,9 @@ builder.Services.AddCors(options =>
 });
 
 
-WebApplication app = builder.Build ();
+WebApplication app = builder.Build();
 
-app.UseCors ();
+app.UseCors();
 
 app.UseGrpcWeb();
 app.MapGrpcService<TopicsService>().EnableGrpcWeb();

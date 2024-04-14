@@ -4,8 +4,7 @@ IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(ar
 
 // PRODUCTION: Use a dedicated Db for each service
 
-IResourceBuilder<PostgresServerResource> postgres = builder
-	.AddPostgres("postgres");
+IResourceBuilder<PostgresServerResource> postgres = builder.AddPostgres("postgres");
 
 IResourceBuilder<ProjectResource> usersApi =
 	builder.AddProject<Bargeh_Users_Api>("users")
