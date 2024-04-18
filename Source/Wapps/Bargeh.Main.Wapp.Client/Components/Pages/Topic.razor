@@ -12,6 +12,7 @@
 @inject TopicsProto.TopicsProtoClient TopicsService
 @inject LocalStorageService LocalStorageService
 @inject IJSRuntime JsRuntime
+@inject ILogger<Topic> Logger
 @rendermode InteractiveAuto
 
 @if(_topic is not null && _forum is not null)
@@ -60,12 +61,12 @@
 		<div class="splide__track">
 			<ul class="splide__list">
 				<li class="splide__slide">
-					<div class="shadow-box new-postchain">
+					<EditForm EditContext="_createPostEditContext" FormName="createPost" OnSubmit="OnNewPostSubmit" class="shadow-box new-postchain">
 						<div class="title-box">
 							<img alt="قلم" src="img/Pen.svg"><strong>رشته‌برگ جدید</strong>
 						</div>
 
-						<textarea class="text-input" placeholder="یه چیزی بنویس..."></textarea>
+						<textarea @bind="_createPostModel.Text" class="text-input" placeholder="یه چیزی بنویس..."></textarea>
 
 						<div class="send-box">
 							<button class="button-bubble">
@@ -75,12 +76,12 @@
 								<img alt="عکس" src="img/Attachment.svg">
 							</button>
 
-							<button class="footer-links button-bubble">
+							<button class="footer-links button-bubble" type="submit">
 								<img alt="ارسال" src="img/Send.svg">
 								<p>ارسال</p>
 							</button>
 						</div>
-					</div>
+					</EditForm>
 				</li>
 			</ul>
 		</div>
@@ -90,7 +91,6 @@ else
 {
 	<Loading/>
 }
-
 
 @code {
 
@@ -103,8 +103,16 @@ else
 	private ProtoForum? _forum;
 	private ProtoTopic? _topic;
 
+	private CreatePostDto _createPostModel = new();
+	private EditContext _createPostEditContext = null!;
+	private ValidationMessageStore _createPostMessageStore = null!;
+
+
 	protected override async Task OnInitializedAsync()
 	{
+		_createPostEditContext = new(_createPostModel);
+		_createPostMessageStore = new(_createPostEditContext);
+		
 		try
 		{
 			_forum = await ForumsService.GetForumByPermalinkAsync(new()
@@ -179,6 +187,17 @@ else
 	public static uint GetPostReactionsNumber(ProtoPost post)
 	{
 		return post.Likes + post.Loves + post.Funnies + post.Insights + post.Dislikes;
+	}
+
+	private void OnNewPostSubmit()
+	{
+		Logger.LogInformation(_createPostModel.Text);
+	}
+
+	public class CreatePostDto
+	{
+		public string Text { get; set; }
+		public string? Parent { get; set; }
 	}
 
 }
