@@ -112,7 +112,7 @@ else
 	{
 		_createPostEditContext = new(_createPostModel);
 		_createPostMessageStore = new(_createPostEditContext);
-		
+
 		try
 		{
 			_forum = await ForumsService.GetForumByPermalinkAsync(new()
@@ -189,14 +189,26 @@ else
 		return post.Likes + post.Loves + post.Funnies + post.Insights + post.Dislikes;
 	}
 
-	private void OnNewPostSubmit()
+	private async Task OnNewPostSubmit()
 	{
-		Logger.LogInformation(_createPostModel.Text);
+		if(string.IsNullOrWhiteSpace(_createPostModel.Text))
+		{
+			_createPostMessageStore.Add(() => _createPostModel.Text!, "متن برگه نباید خالی باشد");
+			return;
+		}
+
+		await TopicsService.CreatePostAsync(new()
+		{
+			AccessToken = LocalStorageService.GetAccessToken(await LocalStorageService.GetItemAsync<string>("login.access_token")),
+			Body = _createPostModel.Text,
+			Parent = _topic!.HeadPost.Id
+			// TODO: Code adding parent and media too
+		});
 	}
 
 	public class CreatePostDto
 	{
-		public string Text { get; set; }
+		public string? Text { get; set; }
 		public string? Parent { get; set; }
 	}
 
