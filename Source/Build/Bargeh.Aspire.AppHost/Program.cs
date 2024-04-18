@@ -2,9 +2,11 @@ using Projects;
 
 IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(args);
 
-// PRODUCTION: Use a dedicated Db for each service
+/*IResourceBuilder<ParameterResource> username = builder.AddParameter("dbUsername");
+IResourceBuilder<ParameterResource> password = builder.AddParameter("dbPassword");*/
 
-IResourceBuilder<PostgresServerResource> postgres = builder.AddPostgres("postgres");
+IResourceBuilder<PostgresServerResource> postgres =
+	builder.AddPostgres("postgres", port: 5432);
 
 IResourceBuilder<ProjectResource> usersApi =
 	builder.AddProject<Bargeh_Users_Api>("users")
@@ -38,6 +40,7 @@ IResourceBuilder<ProjectResource> topicsApi =
 
 
 builder.AddProject<Bargeh_Main_Wapp>("wapp", launchProfileName: "https")
+
 	   //.WithReference (sqlServer)
 	   .WithReference(usersApi)
 	   .WithReference(smsApi)
