@@ -169,6 +169,9 @@ public class TopicsService(
 									 .FirstOrDefaultAsync(p => p.Id == Guid.Parse(request.Parent))
 					  ?? throw new RpcException(new(StatusCode.NotFound, "No parent post was found with this ID"));
 
+		
+		// TODO: This should check if the post is the last child, to prevent having 2 posts having the same parent
+		
 		Post post = new()
 		{
 			Topic = parent.Topic,

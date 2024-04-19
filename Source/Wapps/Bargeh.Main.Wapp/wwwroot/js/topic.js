@@ -40,10 +40,10 @@ function initTopics() {
     })
 
     async function ajaxCheck() {
-        const lastVisibleSlideIndex = splide.index;
+        const lastVisibleSlideIndex = splide.index
 
         if (lastVisibleSlideIndex + 7 <= splide.length) {
-            return;
+            return
         }
 
         const rawPostchains = await topicsDotnetHelper.invokeMethodAsync('GetMorePostchains')
@@ -56,7 +56,7 @@ function initTopics() {
     }
 
     function addReplyButtons() {
-        let elements = $('li.splide__slide:not(:has(a.reply-button)):not(:has(textarea))');
+        let elements = $('li.splide__slide:not(:has(a.reply-button)):not(:has(textarea))')
 
         elements.each((index, element) => {
             $('<a class="button-primary reply-button"><img src="img/Reply.svg" alt="پاسخ دادن"><p>پاسخ دادن</p></a>').appendTo(element)
@@ -124,7 +124,7 @@ function initTopics() {
 
     function configTextareas() {
         $("textarea").each(function () {
-            this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden")
+            this.setAttribute("style", "height:" + (this.scrollHeight) + "pxoverflow-y:hidden")
         }).on("input", function () {
             this.style.height = 0
             this.style.height = (this.scrollHeight) + "px"
@@ -133,12 +133,19 @@ function initTopics() {
 
     $(document).on('click', '.reply-button', function () {
         let chainInput = $('.new-postchain').html().replace('رشته‌برگ', 'برگه‌ی')
-        let postInput = $('<div class="shadow-box for_' + $(this).parent().children().eq(-2).find("[id$='_id']").val() + '">' + chainInput + '</div>').appendTo('body')
+        let postInput = $('<div class="shadow-box">' + chainInput + '</div>').appendTo('body')
 
         setTimeout(() => {
             $(this).replaceWith(postInput)
             configTextareas()
             $(postInput).children('textarea').focus()
-        }, 200);
+        }, 200)
     })
+}
+
+async function submitPost(obj) {
+    debugger
+    obj = $(obj).parent().parent()
+    const id = obj.parent().children().eq(-2).find("[id$='_id']").val()
+    await topicsDotnetHelper.invokeMethodAsync('OnNewPostSubmit', obj.find('.text-input').val(), id)
 }

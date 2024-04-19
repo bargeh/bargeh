@@ -61,12 +61,12 @@
 		<div class="splide__track">
 			<ul class="splide__list">
 				<li class="splide__slide">
-					<EditForm EditContext="_createPostEditContext" FormName="createPost" OnSubmit="OnNewPostSubmit" class="shadow-box new-postchain">
+					<div FormName="createPost" class="shadow-box new-postchain">
 						<div class="title-box">
 							<img alt="قلم" src="img/Pen.svg"><strong>رشته‌برگ جدید</strong>
 						</div>
 
-						<textarea @bind="_createPostModel.Text" class="text-input" placeholder="یه چیزی بنویس..."></textarea>
+						<textarea class="text-input" placeholder="یه چیزی بنویس..."></textarea>
 
 						<div class="send-box">
 							<button class="button-bubble">
@@ -76,12 +76,12 @@
 								<img alt="عکس" src="img/Attachment.svg">
 							</button>
 
-							<button class="footer-links button-bubble" type="submit">
+							<button class="footer-links button-bubble" type="submit" onclick="submitPost(this)">
 								<img alt="ارسال" src="img/Send.svg">
 								<p>ارسال</p>
 							</button>
 						</div>
-					</EditForm>
+					</div>
 				</li>
 			</ul>
 		</div>
@@ -103,16 +103,9 @@ else
 	private ProtoForum? _forum;
 	private ProtoTopic? _topic;
 
-	private CreatePostDto _createPostModel = new();
-	private EditContext _createPostEditContext = null!;
-	private ValidationMessageStore _createPostMessageStore = null!;
-
 
 	protected override async Task OnInitializedAsync()
 	{
-		_createPostEditContext = new(_createPostModel);
-		_createPostMessageStore = new(_createPostEditContext);
-
 		try
 		{
 			_forum = await ForumsService.GetForumByPermalinkAsync(new()
@@ -189,19 +182,14 @@ else
 		return post.Likes + post.Loves + post.Funnies + post.Insights + post.Dislikes;
 	}
 
-	private async Task OnNewPostSubmit()
+	[JSInvokable]
+	public async Task OnNewPostSubmit(string body, string parentId)
 	{
-		if(string.IsNullOrWhiteSpace(_createPostModel.Text))
-		{
-			_createPostMessageStore.Add(() => _createPostModel.Text!, "متن برگه نباید خالی باشد");
-			return;
-		}
-
 		await TopicsService.CreatePostAsync(new()
 		{
 			AccessToken = LocalStorageService.GetAccessToken(await LocalStorageService.GetItemAsync<string>("login.access_token")),
-			Body = _createPostModel.Text,
-			Parent = _topic!.HeadPost.Id
+			Body = body,
+			Parent = parentId
 			// TODO: Code adding parent and media too
 		});
 	}
