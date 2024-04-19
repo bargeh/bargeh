@@ -124,7 +124,7 @@ function initTopics() {
 
     function configTextareas() {
         $("textarea").each(function () {
-            this.setAttribute("style", "height:" + (this.scrollHeight) + "pxoverflow-y:hidden")
+            this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden")
         }).on("input", function () {
             this.style.height = 0
             this.style.height = (this.scrollHeight) + "px"
@@ -133,7 +133,7 @@ function initTopics() {
 
     $(document).on('click', '.reply-button', function () {
         let chainInput = $('.new-postchain').html().replace('رشته‌برگ', 'برگه‌ی')
-        let postInput = $('<div class="shadow-box">' + chainInput + '</div>').appendTo('body')
+        let postInput = $('<div class="shadow-box for_' + $(this).parent().children().eq(-2).find("[id$='_id']").val() + '">' + chainInput + '</div>').appendTo('body')
 
         setTimeout(() => {
             $(this).replaceWith(postInput)
