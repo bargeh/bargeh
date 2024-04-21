@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wapp
+spec:
+  minReadySeconds: 60
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wapp
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wapp
+    spec:
+      containers:
+      - name: wapp
+        image: bargeh/wapp:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        - containerPort: 8443
+        envFrom:
+        - configMapRef:
+            name: wapp-env
+      terminationGracePeriodSeconds: 180

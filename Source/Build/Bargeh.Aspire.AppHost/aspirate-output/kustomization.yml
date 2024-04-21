@@ -1,0 +1,13 @@
+resources:
+- postgres
+- users
+- sms
+- identity
+- forums
+- topics
+- wapp
+- dashboard.yml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
