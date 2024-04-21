@@ -1,0 +1,12 @@
+resources:
+- postgres
+- users
+- sms
+- identity
+- forums
+- topics
+- dashboard.yml
+
+generatorOptions:
+  disableNameSuffixHash: true
+

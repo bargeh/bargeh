@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sms
+spec:
+  minReadySeconds: 60
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sms
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: sms
+    spec:
+      containers:
+      - name: sms
+        image: sms:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        - containerPort: 8443
+        envFrom:
+        - configMapRef:
+            name: sms-env
+        - secretRef:
+            name: sms-secrets
+      terminationGracePeriodSeconds: 180
