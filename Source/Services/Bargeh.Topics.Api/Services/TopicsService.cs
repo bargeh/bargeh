@@ -44,7 +44,7 @@ public class TopicsService(
 		postsToReturn.AddRange(await MapPostsListToProtoPostsList(newPostChains));
 		foreach(Post postchainHeadPost in newPostChains)
 		{
-			await AddPostHierarchyAsync(postchainHeadPost.Id, postsToReturn, 5);
+			await AddPostHierarchyAsync(postchainHeadPost.Id, postsToReturn/*, 5*/);
 		}
 
 		ProtoTopic protoTopic = new()
@@ -319,7 +319,7 @@ public class TopicsService(
 		postsToReturn.AddRange(await MapPostsListToProtoPostsList(newPostChains));
 		foreach(Post postchainHeadPost in newPostChains)
 		{
-			await AddPostHierarchyAsync(postchainHeadPost.Id, postsToReturn, 5);
+			await AddPostHierarchyAsync(postchainHeadPost.Id, postsToReturn/*, 5*/);
 		}
 
 		GetMorePostChainsReply reply = new();
@@ -356,12 +356,12 @@ public class TopicsService(
 		return accessTokenClaims;
 	}
 
-	private async Task AddPostHierarchyAsync(Guid parentId, ICollection<ProtoPost> posts, int depth)
+	private async Task AddPostHierarchyAsync(Guid parentId, ICollection<ProtoPost> posts/*, int depth*/)
 	{
-		if(depth <= 0)
+		/*if(depth <= 0)
 		{
 			return;
-		}
+		}*/
 
 		Post? child = await dbContext.Posts.Include(p => p.Parent)
 									 .FirstOrDefaultAsync(p => p.Parent != null && p.Parent.Id == parentId);
@@ -371,7 +371,7 @@ public class TopicsService(
 
 			posts.Add(postToAdd);
 
-			await AddPostHierarchyAsync(child.Id, posts, depth - 1);
+			await AddPostHierarchyAsync(child.Id, posts/*, depth - 1*/);
 		}
 	}
 
