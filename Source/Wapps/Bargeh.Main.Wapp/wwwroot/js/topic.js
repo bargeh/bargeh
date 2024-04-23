@@ -156,3 +156,18 @@ function getFileName(path, keepExtension = false) {
         return file.split('.')[0]
     }
 }
+
+function getSeenPostchains() {
+    let ids = []
+
+    $('.splide__slide').each(function() {
+        const firstChild = $(this).children().first();
+
+        if (firstChild.find('input[id$="_id"]').length) {
+            const inputValue = firstChild.find('input[id$="_id"]').val()
+            ids.push(inputValue)
+        }
+    })
+    
+    return [...new Set(ids)]
+}

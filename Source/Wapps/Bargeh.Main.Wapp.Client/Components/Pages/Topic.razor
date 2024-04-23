@@ -6,6 +6,7 @@
 @using Topics.Api
 @using System.Text.Json
 @using System.Text.Encodings.Web
+@using Google.Protobuf.Collections
 @using System.Text.Unicode
 @inject NotFoundListener NotFoundService
 @inject ForumsProto.ForumsProtoClient ForumsService
@@ -160,11 +161,13 @@ else
 			return string.Empty;
 		}
 
+		string[] ids = await JsRuntime.InvokeAsync<string[]>("getSeenPostchains");
+
 		GetMorePostChainsReply response = await TopicsService.GetMorePostChainsAsync(new()
 		{
 			AccessToken = accessToken,
 			Topic = _topic!.Id,
-			SeenPostchains = { }
+			SeenPostchains = {ids}
 		});
 
 		JsonSerializerOptions jsonSerializerOptions = new()
