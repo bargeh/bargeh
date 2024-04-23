@@ -93,6 +93,8 @@ else
 }
 
 @code {
+	
+	// PRODUCTION: Render posts at prerendering even if they are not formatted, then format them with js, it kills SEO
 
 	[Parameter]
 	public string ForumPermalink { get; init; } = null!;
@@ -136,6 +138,15 @@ else
 	{
 		await JsRuntime.InvokeVoidAsync("setTopicsDotnetHelper", DotNetObjectReference.Create(this));
 		await JsRuntime.InvokeVoidAsync("initTopics");
+		
+		JsonSerializerOptions jsonSerializerOptions = new()
+		{
+			Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+		};
+
+		string json = JsonSerializer.Serialize(_topic!, jsonSerializerOptions);
+
+		await JsRuntime.InvokeVoidAsync("addPosts", json);
 	}
 
 	[JSInvokable]

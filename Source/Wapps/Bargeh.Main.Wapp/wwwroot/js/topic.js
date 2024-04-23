@@ -5,8 +5,10 @@ window.setTopicsDotnetHelper = (dotnetHelper) => {
     initTopics()
 }
 
+let splide
+
 function initTopics() {
-    let splide = new Splide('.splide', {
+    splide = new Splide('.splide', {
         perMove: 1,
         direction: 'rtl',
         gap: '25pt',
@@ -40,6 +42,7 @@ function initTopics() {
     })
 
     async function ajaxCheck() {
+        return
         const lastVisibleSlideIndex = splide.index
 
         if (lastVisibleSlideIndex + 7 <= splide.length) {
@@ -47,53 +50,7 @@ function initTopics() {
         }
 
         const rawPostchains = await topicsDotnetHelper.invokeMethodAsync('GetMorePostchains')
-        const jsonPostchains = JSON.parse(rawPostchains)
-
-        $(jsonPostchains.Posts).each(function (index, e) {
-            createPost(e.Body, e.AuthorUsername, e.Attachment, '', e.Id, e.Parent, e.Likes, e.Loves, e.Funnies, e.Insights, e.Dislikes)
-        })
-        addReplyButtons()
-    }
-
-    function addReplyButtons() {
-        let elements = $('li.splide__slide:not(:has(a.reply-button)):not(:has(textarea))')
-
-        elements.each((index, element) => {
-            $('<a class="button-primary reply-button"><img src="img/Reply.svg" alt="پاسخ دادن"><p>پاسخ دادن</p></a>').appendTo(element)
-        })
-    }
-
-    function createPost(text, author, attachment, image, id, parentId, likes, loves, funnies, insights, dislikes) {
-        let imageElement = ''
-        let attachElement = ''
-        const reactions = likes + loves + funnies + insights + dislikes
-
-        const parent = $('.post_' + parentId + ':last')
-
-        if (image !== '') {
-            imageElement = '<img class="post-image" src="' + image + '" alt="' + getFileName(image) + '">'
-        }
-
-        if (attachment !== '') {
-            attachElement = '<div class="post-attachment"><div><strong>فایل پیوست‌شده</strong><p class="no-block-margin">' + getFileName(attachment, true) + '</p></div><img src="/img/File.svg" class="post-file footer-links" alt="فایل"></div>'
-        }
-
-        let element = '<div class="shadow-box-nohover post_' + id + '"><input type="hidden" id="' + id + '_id" value="' + id + '"/><input type="hidden" id="' + id + '_likes" value="' + likes + '"/><input type="hidden" id="' + id + '_loves" value="' + loves + '"/><input type="hidden" id="' + id + '_funnies" value="'+funnies+'"/><input type="hidden" id="'+id+'_insights" value="'+insights+'"/><input type="hidden" id="'+id+'_dislikes" value="'+dislikes+'"/><p class="post-text no-block-margin">' + text + '</p>' + imageElement + attachElement + '<div class="topic-info"><p>توسط <a href="/User/' + author + '">@' + author + '</a></p><div class="footer-links button-bubble reactions"><span class="reactions-count">' + toPersianDigits(reactions) + '</span><img src="/img/Like.svg" class="reaction-icon" alt="پسند"> <img src="img/Love.svg" class="reaction-icon" alt="قلب"> <img src="/img/Light.svg" class="reaction-icon" alt="چراغ"></div></div></div>'
-
-        if (parent.length) {
-            parent.parent().append(element)
-        } else {
-            splide.add('<li class="splide__slide">' + element + '</li>')
-        }
-    }
-
-    function getFileName(path, keepExtention = false) {
-        let file = path.split('/')[path.split('/').length - 1]
-        if (keepExtention) {
-            return file
-        } else {
-            return file.split('.')[0]
-        }
+        addPosts(rawPostchains)
     }
 
     let isInputFocused = false
@@ -148,4 +105,54 @@ async function submitPost(obj) {
     obj = $(obj).parent().parent()
     const id = obj.parent().children().eq(-2).find("[id$='_id']").val()
     await topicsDotnetHelper.invokeMethodAsync('OnNewPostSubmit', obj.find('.text-input').val(), id)
+}
+
+function addPosts(rawPostchains) {
+    const jsonPostchains = JSON.parse(rawPostchains)
+
+    $(jsonPostchains.Posts).each(function (index, e) {
+        createPost(e.Body, e.AuthorUsername, e.Attachment, '', e.Id, e.Parent, e.Likes, e.Loves, e.Funnies, e.Insights, e.Dislikes)
+    })
+    
+    addReplyButtons()
+}
+
+function createPost(text, author, attachment, image, id, parentId, likes, loves, funnies, insights, dislikes) {
+    let imageElement = ''
+    let attachElement = ''
+    const reactions = likes + loves + funnies + insights + dislikes
+
+    const parent = $('.post_' + parentId + ':last')
+
+    if (image !== '') {
+        imageElement = '<img class="post-image" src="' + image + '" alt="' + getFileName(image) + '">'
+    }
+
+    if (attachment !== '') {
+        attachElement = '<div class="post-attachment"><div><strong>فایل پیوست‌شده</strong><p class="no-block-margin">' + getFileName(attachment, true) + '</p></div><img src="/img/File.svg" class="post-file footer-links" alt="فایل"></div>'
+    }
+
+    let element = '<div class="shadow-box-nohover post_' + id + '"><input type="hidden" id="' + id + '_id" value="' + id + '"/><input type="hidden" id="' + id + '_likes" value="' + likes + '"/><input type="hidden" id="' + id + '_loves" value="' + loves + '"/><input type="hidden" id="' + id + '_funnies" value="'+funnies+'"/><input type="hidden" id="'+id+'_insights" value="'+insights+'"/><input type="hidden" id="'+id+'_dislikes" value="'+dislikes+'"/><p class="post-text no-block-margin">' + text + '</p>' + imageElement + attachElement + '<div class="topic-info"><p>توسط <a href="/User/' + author + '">@' + author + '</a></p><div class="footer-links button-bubble reactions"><span class="reactions-count">' + toPersianDigits(reactions) + '</span><img src="/img/Like.svg" class="reaction-icon" alt="پسند"> <img src="img/Love.svg" class="reaction-icon" alt="قلب"> <img src="/img/Light.svg" class="reaction-icon" alt="چراغ"></div></div></div>'
+
+    if (parent.length) {
+        parent.parent().append(element)
+    } else {
+        splide.add('<li class="splide__slide">' + element + '</li>')
+    }
+}
+
+function addReplyButtons() {
+    let elements = $('li.splide__slide:not(:has(a.reply-button)):not(:has(textarea))')
+
+    elements.each((index, element) => {
+        $('<a class="button-primary reply-button"><img src="img/Reply.svg" alt="پاسخ دادن"><p>پاسخ دادن</p></a>').appendTo(element)
+    })
+}
+function getFileName(path, keepExtention = false) {
+    let file = path.split('/')[path.split('/').length - 1]
+    if (keepExtention) {
+        return file
+    } else {
+        return file.split('.')[0]
+    }
 }
