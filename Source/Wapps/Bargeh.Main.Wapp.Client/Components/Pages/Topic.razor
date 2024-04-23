@@ -92,8 +92,9 @@ else
 	<Loading/>
 }
 
-@code {
-	
+@code
+{
+
 	// PRODUCTION: Render posts at prerendering even if they are not formatted, then format them with js, it kills SEO
 
 	[Parameter]
@@ -138,7 +139,7 @@ else
 	{
 		await JsRuntime.InvokeVoidAsync("setTopicsDotnetHelper", DotNetObjectReference.Create(this));
 		await JsRuntime.InvokeVoidAsync("initTopics");
-		
+
 		JsonSerializerOptions jsonSerializerOptions = new()
 		{
 			Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
@@ -201,6 +202,7 @@ else
 			AccessToken = LocalStorageService.GetAccessToken(await LocalStorageService.GetItemAsync<string>("login.access_token")),
 			Body = body,
 			Parent = parentId
+
 			// TODO: Code adding parent and media too
 		});
 	}
