@@ -42,7 +42,6 @@ function initTopics() {
     })
 
     async function ajaxCheck() {
-        return
         const lastVisibleSlideIndex = splide.index
 
         if (lastVisibleSlideIndex + 7 <= splide.length) {
@@ -100,6 +99,7 @@ function initTopics() {
     })
 }
 
+// noinspection JSUnusedGlobalSymbols
 async function submitPost(obj) {
     debugger
     obj = $(obj).parent().parent()
@@ -148,9 +148,9 @@ function addReplyButtons() {
         $('<a class="button-primary reply-button"><img src="img/Reply.svg" alt="پاسخ دادن"><p>پاسخ دادن</p></a>').appendTo(element)
     })
 }
-function getFileName(path, keepExtention = false) {
+function getFileName(path, keepExtension = false) {
     let file = path.split('/')[path.split('/').length - 1]
-    if (keepExtention) {
+    if (keepExtension) {
         return file
     } else {
         return file.split('.')[0]

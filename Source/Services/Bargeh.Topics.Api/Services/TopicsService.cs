@@ -309,9 +309,10 @@ public class TopicsService(
 		List<Guid> seenPostchainsGuids = request.SeenPostchains.Select(Guid.Parse).ToList();
 
 		List<Post> newPostChains = await dbContext.Posts
+												  .OrderByDescending(p => p.LastUpdateDate)
 												  .Where(p => !seenPostchainsGuids.Contains(p.Id) &&
 															  p.Parent == topicHeadPost)
-												  .Take(3)
+												  .Take(10)
 												  .ToListAsync();
 
 
