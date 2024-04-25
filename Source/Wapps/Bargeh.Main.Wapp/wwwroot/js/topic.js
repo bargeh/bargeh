@@ -113,7 +113,13 @@ function addPosts(rawPostchains) {
     $(jsonPostchains.Posts).each(function (index, e) {
         createPost(e.Body, e.AuthorUsername, e.Attachment, '', e.Id, e.Parent, e.Likes, e.Loves, e.Funnies, e.Insights, e.Dislikes)
     })
-    
+
+    if (!isUserLoggedIn()) {
+        const element = '<div class="tip"><img src="img/Lamp.svg" alt="چراغ"><p>برای دیدن برگه‌های بیشتر باید وارد حساب برگه‌ت بشی</p></div>'
+        splide.add('<li class="splide__slide">' + element + '</li>')
+        return
+    }
+
     addReplyButtons()
 }
 
@@ -132,7 +138,7 @@ function createPost(text, author, attachment, image, id, parentId, likes, loves,
         attachElement = '<div class="post-attachment"><div><strong>فایل پیوست‌شده</strong><p class="no-block-margin">' + getFileName(attachment, true) + '</p></div><img src="/img/File.svg" class="post-file footer-links" alt="فایل"></div>'
     }
 
-    let element = '<div class="shadow-box-nohover post_' + id + '"><input type="hidden" id="' + id + '_id" value="' + id + '"/><input type="hidden" id="' + id + '_likes" value="' + likes + '"/><input type="hidden" id="' + id + '_loves" value="' + loves + '"/><input type="hidden" id="' + id + '_funnies" value="'+funnies+'"/><input type="hidden" id="'+id+'_insights" value="'+insights+'"/><input type="hidden" id="'+id+'_dislikes" value="'+dislikes+'"/><p class="post-text no-block-margin">' + text + '</p>' + imageElement + attachElement + '<div class="topic-info"><p>توسط <a href="/User/' + author + '">@' + author + '</a></p><div class="footer-links button-bubble reactions"><span class="reactions-count">' + toPersianDigits(reactions) + '</span><img src="/img/Like.svg" class="reaction-icon" alt="پسند"> <img src="img/Love.svg" class="reaction-icon" alt="قلب"> <img src="/img/Light.svg" class="reaction-icon" alt="چراغ"></div></div></div>'
+    let element = '<div class="shadow-box-nohover post_' + id + '"><input type="hidden" id="' + id + '_id" value="' + id + '"/><input type="hidden" id="' + id + '_likes" value="' + likes + '"/><input type="hidden" id="' + id + '_loves" value="' + loves + '"/><input type="hidden" id="' + id + '_funnies" value="' + funnies + '"/><input type="hidden" id="' + id + '_insights" value="' + insights + '"/><input type="hidden" id="' + id + '_dislikes" value="' + dislikes + '"/><p class="post-text no-block-margin">' + text + '</p>' + imageElement + attachElement + '<div class="topic-info"><p>توسط <a href="/User/' + author + '">@' + author + '</a></p><div class="footer-links button-bubble reactions"><span class="reactions-count">' + toPersianDigits(reactions) + '</span><img src="/img/Like.svg" class="reaction-icon" alt="پسند"> <img src="img/Love.svg" class="reaction-icon" alt="قلب"> <img src="/img/Light.svg" class="reaction-icon" alt="چراغ"></div></div></div>'
 
     if (parent.length) {
         parent.parent().append(element)
@@ -148,6 +154,7 @@ function addReplyButtons() {
         $('<a class="button-primary reply-button"><img src="img/Reply.svg" alt="پاسخ دادن"><p>پاسخ دادن</p></a>').appendTo(element)
     })
 }
+
 function getFileName(path, keepExtension = false) {
     let file = path.split('/')[path.split('/').length - 1]
     if (keepExtension) {
@@ -160,7 +167,7 @@ function getFileName(path, keepExtension = false) {
 function getSeenPostchains() {
     let ids = []
 
-    $('.splide__slide').each(function() {
+    $('.splide__slide').each(function () {
         const firstChild = $(this).children().first();
 
         if (firstChild.find('input[id$="_id"]').length) {
@@ -168,6 +175,6 @@ function getSeenPostchains() {
             ids.push(inputValue)
         }
     })
-    
+
     return [...new Set(ids)]
 }

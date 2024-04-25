@@ -13,6 +13,13 @@ function onAfterRender() {
     $(".button-bubble, .button-bubble-static, .button-bubble-static-inline").hover(function () {
         $(this).addClass("bubble-hovered");
     });
+
+    if (innerWidth >= 1024) {
+        $('.container > .tip').hide()
+    }
+    else {
+        $('.container > .tip').show()
+    }
 }
 
 function updateLocalStorage() {
@@ -107,6 +114,10 @@ function toPersianDigits(number) {
     })
 
     return out
+}
+
+function isUserLoggedIn() {
+    return localStorage.getItem('login.access_token') !== null
 }
 
 setInterval(() => {
