@@ -104,4 +104,9 @@ $(document).ready(function () {
 
 async function reactOnPost(type) {
     await topicsDotnetHelper.invokeMethodAsync('ReactOnPost', postToReactId, type)
+    
+    // TODO: Fix adding to element limitless
+    
+    const reactionsElement = $('[id^="' + postToReactId + '"]').parent().find('.reactions-count')
+    reactionsElement.text(parseInt(reactionsElement.text()) + 1)
 }

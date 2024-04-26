@@ -164,6 +164,7 @@ function getFileName(path, keepExtension = false) {
     }
 }
 
+// noinspection JSUnusedGlobalSymbols
 function getSeenPostchains() {
     let ids = []
 
