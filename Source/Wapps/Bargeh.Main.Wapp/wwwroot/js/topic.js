@@ -103,7 +103,7 @@ function initTopics() {
 async function submitPost(obj) {
     debugger
     obj = $(obj).parent().parent()
-    const id = obj.parent().children().eq(-2).find("[id$='_id']").val()
+    const id = obj.parent().children().eq(-2).find("[id$='_id']").val() ?? $('.topic-first-post').find('[id$=_id]').val()
     await topicsDotnetHelper.invokeMethodAsync('OnNewPostSubmit', obj.find('.text-input').val(), id)
 }
 
