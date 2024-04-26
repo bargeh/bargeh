@@ -101,10 +101,12 @@ function initTopics() {
 
 // noinspection JSUnusedGlobalSymbols
 async function submitPost(obj) {
-    debugger
     obj = $(obj).parent().parent()
     const id = obj.parent().children().eq(-2).find("[id$='_id']").val() ?? $('.topic-first-post').find('[id$=_id]').val()
-    await topicsDotnetHelper.invokeMethodAsync('OnNewPostSubmit', obj.find('.text-input').val(), id)
+    const body = obj.find('.text-input').val()
+    await topicsDotnetHelper.invokeMethodAsync('OnNewPostSubmit', body, id)
+    
+    createPost(body, username, '', '', 'hehe', id, 0, 0, 0, 0, 0)
 }
 
 function addPosts(rawPostchains) {
@@ -128,7 +130,7 @@ function createPost(text, author, attachment, image, id, parentId, likes, loves,
     let attachElement = ''
     const reactions = likes + loves + funnies + insights + dislikes
 
-    const parent = $('.post_' + parentId + ':last')
+    const parent = $('.post_' + parentId)
 
     if (image !== '') {
         imageElement = '<img class="post-image" src="' + image + '" alt="' + getFileName(image) + '">'

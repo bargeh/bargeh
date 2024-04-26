@@ -1,4 +1,6 @@
-﻿@using Bargeh.Main.Wapp.Client.Infrastructure
+﻿@using System.IdentityModel.Tokens.Jwt
+@using System.Security.Claims
+@using Bargeh.Main.Wapp.Client.Infrastructure
 @using Bargeh.Main.Wapp.Client.Services
 @using Identity.Api
 @inherits LayoutComponentBase
@@ -65,6 +67,19 @@ else
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		await JsRuntime.InvokeVoidAsync("setMainLayoutDotnetHelper", DotNetObjectReference.Create(this));
+
+		string? accessToken = await LocalStorageService.GetItemAsync<string>("login.access_token");
+
+		if(!string.IsNullOrWhiteSpace(accessToken))
+		{
+			accessToken = accessToken[..accessToken.IndexOf("@", StringComparison.Ordinal)];
+			JwtSecurityTokenHandler tokenHandler = new();
+			IEnumerable<Claim> accessTokenClaims = tokenHandler.ReadJwtToken(accessToken).Claims!;
+
+			string username = accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.UniqueName).Value;
+
+			await JsRuntime.InvokeVoidAsync("setUserDetails", username);
+		}
 	}
 
 	private void SetNotFound()
@@ -82,7 +97,7 @@ else
 		{
 			return;
 		}
-		
+
 		TokenResponse result = await IdentityService.RefreshAsync(new()
 		{
 			OldRefreshToken = rawRefreshToken.Replace("\"", "")

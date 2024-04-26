@@ -8,6 +8,13 @@ $(document).ready(() => {
     onAfterRender()
 })
 
+let username = undefined
+
+// noinspection JSUnusedGlobalSymbols
+function setUserDetails(userName){
+    username = userName
+}
+
 function onAfterRender() {
     formatMentions();
     $(".button-bubble, .button-bubble-static, .button-bubble-static-inline").hover(function () {
