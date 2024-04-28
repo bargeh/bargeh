@@ -43,6 +43,8 @@ else
 		}
 		else
 		{
+			await Task.Delay(1000);
+			
 			try
 			{
 				_user = await UsersService.GetUserByUsernameAsync(new()

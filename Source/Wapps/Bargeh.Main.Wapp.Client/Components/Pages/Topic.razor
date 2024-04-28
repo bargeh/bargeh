@@ -15,6 +15,8 @@
 @inject IJSRuntime JsRuntime
 @inject ILogger<Topic> Logger
 @rendermode InteractiveAuto
+@inject PersistentComponentState ApplicationState
+@implements IDisposable
 
 @if(_topic is not null && _forum is not null)
 {
@@ -106,33 +108,47 @@ else
 
 	private ProtoForum? _forum;
 	private ProtoTopic? _topic;
-
+	private PersistingComponentStateSubscription _subscription;
 
 	protected override async Task OnInitializedAsync()
 	{
-		try
-		{
-			_forum = await ForumsService.GetForumByPermalinkAsync(new()
-			{
-				Permalink = ForumPermalink
-			});
+		_subscription = ApplicationState.RegisterOnPersisting(PersistComponentState);
 
-			_topic = await TopicsService.GetTopicByPermalinkAsync(new()
-			{
-				Forum = _forum.Id,
-				Permalink = TopicPermalink
-			});
+		bool persistentValuesFound = ApplicationState
+			.TryTakeFromJson("forum", out ProtoForum? forum);
+		ApplicationState.TryTakeFromJson("topic", out ProtoTopic? topic);
+
+		if(persistentValuesFound)
+		{
+			_forum = forum;
+			_topic = topic;
 		}
-		catch(RpcException exception)
+		else
 		{
-			// ReSharper disable once InvertIf
-			if(exception.StatusCode == StatusCode.NotFound)
+			try
 			{
-				NotFoundService.NotifyNotFound();
-				return;
-			}
+				_forum = await ForumsService.GetForumByPermalinkAsync(new()
+				{
+					Permalink = ForumPermalink
+				});
 
-			throw;
+				_topic = await TopicsService.GetTopicByPermalinkAsync(new()
+				{
+					Forum = _forum.Id,
+					Permalink = TopicPermalink
+				});
+			}
+			catch(RpcException exception)
+			{
+				// ReSharper disable once InvertIf
+				if(exception.StatusCode == StatusCode.NotFound)
+				{
+					NotFoundService.NotifyNotFound();
+					return;
+				}
+
+				throw;
+			}
 		}
 	}
 
@@ -167,7 +183,7 @@ else
 		{
 			AccessToken = accessToken,
 			Topic = _topic!.Id,
-			SeenPostchains = {ids}
+			SeenPostchains = { ids }
 		});
 
 		JsonSerializerOptions jsonSerializerOptions = new()
@@ -208,5 +224,17 @@ else
 
 			// TODO: Code adding parent and media too
 		});
+	}
+
+	private Task PersistComponentState()
+	{
+		ApplicationState.PersistAsJson("forum", _forum);
+		ApplicationState.PersistAsJson("topic", _topic);
+		return Task.CompletedTask;
+	}
+
+	public void Dispose()
+	{
+		_subscription.Dispose();
 	}
 }
