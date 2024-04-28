@@ -1,8 +1,12 @@
 ﻿@page "/User/{Username}"
 @using Bargeh.Main.Wapp.Client.Infrastructure
+@using Grpc.Core
 @using Users.Api
 @inject NotFoundListener NotFoundService
 @inject UsersProto.UsersProtoClient UsersService
+@inject ILogger<User> Logger
+@inject PersistentComponentState ApplicationState
+@implements IDisposable
 
 @if(_user is null)
 {
@@ -19,20 +23,55 @@ else
 	public string Username { get; set; } = null!;
 
 	private ProtoUser? _user;
-
+	private PersistingComponentStateSubscription _subscription;
+	
 	protected override async Task OnInitializedAsync()
 	{
+		_subscription = ApplicationState.RegisterOnPersisting(PersistComponentState);
+		
 		if(string.IsNullOrWhiteSpace(Username))
 		{
 			NotFoundService.NotifyNotFound();
 		}
+		
+		bool persistentValuesFound = ApplicationState
+			.TryTakeFromJson("user", out ProtoUser? user);
 
-		await Task.Delay(1000);
-
-		_user = await UsersService.GetUserByUsernameAsync(new()
+		if(persistentValuesFound)
 		{
-			Username = Username
-		});
+			_user = user;
+		}
+		else
+		{
+			try
+			{
+				_user = await UsersService.GetUserByUsernameAsync(new()
+				{
+					Username = Username
+				});
+			}
+			catch(RpcException exception)
+			{
+				if(exception.StatusCode != StatusCode.NotFound)
+				{
+					throw;
+				}
+
+				NotFoundService.NotifyNotFound();
+
+			}	
+		}
+	}
+	
+	private Task PersistComponentState()
+	{
+		ApplicationState.PersistAsJson("user", _user);
+		return Task.CompletedTask;
+	}
+
+	public void Dispose()
+	{
+		_subscription.Dispose();
 	}
 
 }
