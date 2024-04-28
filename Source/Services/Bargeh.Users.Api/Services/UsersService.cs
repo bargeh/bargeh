@@ -17,7 +17,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 		'_', '.'
 	];
 
-	public override async Task<GetUserReply> GetUserByUsername(GetUserByUsernameRequest request,
+	public override async Task<ProtoUser> GetUserByUsername(GetUserByUsernameRequest request,
 															   ServerCallContext callContext)
 	{
 		User? user = await dbContext.GetUserByUsernameAsync(request.Username);
@@ -42,7 +42,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 		};
 	}
 
-	public override async Task<GetUserReply> GetUserByPhone(GetUserByPhoneRequest request,
+	public override async Task<ProtoUser> GetUserByPhone(GetUserByPhoneRequest request,
 															ServerCallContext callContext)
 	{
 		User? user = await dbContext.GetUserByPhoneNumberAsync(request.Phone);
@@ -67,7 +67,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 		};
 	}
 
-	public override async Task<GetUserReply> GetUserById(GetUserByIdRequest request,
+	public override async Task<ProtoUser> GetUserById(GetUserByIdRequest request,
 														 ServerCallContext callContext)
 	{
 		User? user = await dbContext.GetUserByIdAsync(request.Id);
@@ -92,7 +92,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 		};
 	}
 
-	public override async Task<GetUserReply> GetUserByPhoneAndPassword(GetUserByPhoneAndPasswordRequest request,
+	public override async Task<ProtoUser> GetUserByPhoneAndPassword(GetUserByPhoneAndPasswordRequest request,
 																	   ServerCallContext callContext)
 	{
 		User? user = await dbContext.GetUserByPhoneAndPasswordAsync(request.Phone, request.Password);
@@ -198,7 +198,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 	public override async Task<VoidOperationReply> DisableUser(DisableUserRequest request,
 															   ServerCallContext callContext)
 	{
-		GetUserReply user = await GetUserById(new()
+		ProtoUser user = await GetUserById(new()
 											  {
 												  Id = request.Id
 											  },

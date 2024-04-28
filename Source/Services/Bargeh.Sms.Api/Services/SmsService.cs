@@ -20,7 +20,7 @@ public class SmsService(SmsDbContext dbContext, UsersProto.UsersProtoClient user
 			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter \"Phone\" is not valid"));
 		}
 
-		GetUserReply? user = usersService.GetUserByPhone(new()
+		ProtoUser? user = usersService.GetUserByPhone(new()
 		{
 			Phone = request.Phone
 		});

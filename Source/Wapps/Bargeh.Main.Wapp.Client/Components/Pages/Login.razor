@@ -336,7 +336,7 @@
 			return;
 		}
 
-		GetUserReply? user = await UsersService.GetUserByPhoneAsync(new()
+		ProtoUser? user = await UsersService.GetUserByPhoneAsync(new()
 		{
 			Phone = _verificationModel.Phone
 		});

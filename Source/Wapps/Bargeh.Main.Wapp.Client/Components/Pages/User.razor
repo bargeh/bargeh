@@ -1,0 +1,38 @@
+﻿@page "/User/{Username}"
+@using Bargeh.Main.Wapp.Client.Infrastructure
+@using Users.Api
+@inject NotFoundListener NotFoundService
+@inject UsersProto.UsersProtoClient UsersService
+
+@if(_user is null)
+{
+	<Loading/>
+}
+else
+{
+	<p>Hi @_user.Username and @_user.DisplayName!</p>
+}
+
+@code {
+
+	[Parameter]
+	public string Username { get; set; } = null!;
+
+	private ProtoUser? _user;
+
+	protected override async Task OnInitializedAsync()
+	{
+		if(string.IsNullOrWhiteSpace(Username))
+		{
+			NotFoundService.NotifyNotFound();
+		}
+
+		await Task.Delay(1000);
+
+		_user = await UsersService.GetUserByUsernameAsync(new()
+		{
+			Username = Username
+		});
+	}
+
+}
