@@ -1,13 +1,15 @@
 ﻿@page "/Forum/{ForumPermalink}"
 @using Forums.Api
-@inject ForumsProto.ForumsProtoClient ForumsService
-@inject TopicsProto.TopicsProtoClient TopicsService
-@inject NotFoundListener NotFoundService
-@inject LocalStorageService LocalStorageService
 @using Grpc.Core
 @using Bargeh.Main.Wapp.Client.Infrastructure
 @using Bargeh.Main.Wapp.Client.Services
 @using Topics.Api
+@inject ForumsProto.ForumsProtoClient ForumsService
+@inject TopicsProto.TopicsProtoClient TopicsService
+@inject NotFoundListener NotFoundService
+@inject LocalStorageService LocalStorageService
+@inject PersistentComponentState ApplicationState
+@implements IDisposable
 
 @if(_forum is not null)
 {
@@ -66,31 +68,46 @@ else
 
 	private ProtoForum? _forum;
 	private List<ProtoTopic> _recentTopics = null!;
+	private PersistingComponentStateSubscription _subscription;
 
 	protected override async Task OnInitializedAsync()
 	{
-		try
-		{
-			_forum = await ForumsService.GetForumByPermalinkAsync(new()
-			{
-				Permalink = ForumPermalink
-			});
+		_subscription = ApplicationState.RegisterOnPersisting(PersistComponentState);
 
-			_recentTopics = (await TopicsService.GetRecentTopicsByForumAsync(new()
-								{
-									Forum = _forum.Id
-								})).Topics.ToList();
+		bool persistentValuesFound = ApplicationState
+			.TryTakeFromJson("forum", out ProtoForum? forum);
+		ApplicationState.TryTakeFromJson("recent_topics", out List<ProtoTopic>? recentTopics);
+
+		if(persistentValuesFound)
+		{
+			_forum = forum;
+			_recentTopics = recentTopics!;
 		}
-		catch(RpcException exception)
+		else
 		{
-			// ReSharper disable once InvertIf
-			if(exception.StatusCode == StatusCode.NotFound)
+			try
 			{
-				NotFoundService.NotifyNotFound();
-				return;
-			}
+				_forum = await ForumsService.GetForumByPermalinkAsync(new()
+				{
+					Permalink = ForumPermalink
+				});
 
-			throw;
+				_recentTopics = (await TopicsService.GetRecentTopicsByForumAsync(new()
+									{
+										Forum = _forum.Id
+									})).Topics.ToList();
+			}
+			catch(RpcException exception)
+			{
+				// ReSharper disable once InvertIf
+				if(exception.StatusCode == StatusCode.NotFound)
+				{
+					NotFoundService.NotifyNotFound();
+					return;
+				}
+
+				throw;
+			}
 		}
 	}
 
@@ -106,4 +123,17 @@ else
 
 		_forum.Members++;
 	}
+
+	private Task PersistComponentState()
+	{
+		ApplicationState.PersistAsJson("forum", _forum);
+		ApplicationState.PersistAsJson("recent_topics", _recentTopics);
+		return Task.CompletedTask;
+	}
+
+	public void Dispose()
+	{
+		_subscription.Dispose();
+	}
+
 }

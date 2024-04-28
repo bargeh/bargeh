@@ -35,6 +35,8 @@ builder.Services.AddGrpcClient<UsersProto.UsersProtoClient>(o => o.Address = new
 
 builder.Services.AddGrpcClient<IdentityProto.IdentityProtoClient>(o => o.Address = new("https://localhost:5201"));
 
+builder.Services.AddGrpcClient<SmsProto.SmsProtoClient>(o => o.Address = new("https://localhost:5244"));
+
 #endregion
 
 WebApplication app = builder.Build();
