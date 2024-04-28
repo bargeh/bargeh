@@ -22,7 +22,7 @@ public class IdentityService(
 
 	public override async Task<TokenResponse> Login(LoginRequest request, ServerCallContext callContext)
 	{
-		GetUserReply user = default!;
+		ProtoUser user = default!;
 
 		try
 		{
@@ -64,7 +64,7 @@ public class IdentityService(
 			throw new RpcException(new(StatusCode.FailedPrecondition, "The token is expired"));
 		}
 
-		GetUserReply? user = usersApiClient.GetUserById(new()
+		ProtoUser? user = usersApiClient.GetUserById(new()
 		{
 			Id = oldRefreshToken.UserId.ToString()
 		});
@@ -112,7 +112,7 @@ public class IdentityService(
 
 	#region Static Methods
 
-	private static string GenerateAccessToken(GetUserReply user)
+	private static string GenerateAccessToken(ProtoUser user)
 	{
 		// PRODUCTION: Make a real key
 		RsaSecurityKey securityKey = new(new X509Certificate2("C:/Source/Bargeh/JwtPrivateKey.pfx", "bargeh.dev")

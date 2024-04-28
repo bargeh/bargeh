@@ -27,15 +27,13 @@ builder.Services.AddScoped<NotFoundListener>();
 
 #region gRPC Providers
 
-builder.Services.AddSingleton(_ => new IdentityProto.IdentityProtoClient(GrpcChannel.ForAddress("http://localhost")));
-
-builder.Services.AddSingleton(_ => new UsersProto.UsersProtoClient(GrpcChannel.ForAddress("http://localhost")));
-
-builder.Services.AddSingleton(_ => new SmsProto.SmsProtoClient(GrpcChannel.ForAddress("http://localhost")));
-
 builder.Services.AddGrpcClient<ForumsProto.ForumsProtoClient>(o => o.Address = new("https://localhost:5301"));
 
-																	   builder.Services.AddGrpcClient<TopicsProto.TopicsProtoClient>(o => o.Address = new("https://localhost:7178"));
+builder.Services.AddGrpcClient<TopicsProto.TopicsProtoClient>(o => o.Address = new("https://localhost:7178"));
+
+builder.Services.AddGrpcClient<UsersProto.UsersProtoClient>(o => o.Address = new("https://localhost:5501"));
+
+builder.Services.AddGrpcClient<IdentityProto.IdentityProtoClient>(o => o.Address = new("https://localhost:5201"));
 
 #endregion
 
