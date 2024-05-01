@@ -1,9 +1,12 @@
 ﻿@page "/Login"
+@using System.IdentityModel.Tokens.Jwt
+@using System.Security.Claims
 @using Bargeh.Main.Wapp.Client.Infrastructure.Dtos.Login
 @using Bargeh.Main.Wapp.Client.Services
 @using Grpc.Core
 @using Identity.Api
 @using Sms.Api
+@using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames
 @using Users.Api
 @inject IJSRuntime JsRuntime
 @inject ILogger<Login> Logger
@@ -170,9 +173,16 @@
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		if(!string.IsNullOrWhiteSpace(await LocalStorageService.GetItemAsync<string>("login.refresh_token")))
+		string? accessToken = await LocalStorageService.GetItemAsync<string>("login.access_token");
+		
+		if(!string.IsNullOrWhiteSpace(accessToken))
 		{
-			NavigationManager.NavigateTo("/", false, true);
+			accessToken = accessToken[..accessToken.IndexOf("@", StringComparison.Ordinal)];
+			JwtSecurityTokenHandler tokenHandler = new();
+			IEnumerable<Claim> accessTokenClaims = tokenHandler.ReadJwtToken(accessToken).Claims!;
+			string username = accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.UniqueName).Value;
+			
+			NavigationManager.NavigateTo($"/User/{username}", replace: true);
 		}
 	}
 
