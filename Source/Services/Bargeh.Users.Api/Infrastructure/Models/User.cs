@@ -9,8 +9,8 @@ public class User
 	public required string PhoneNumber { get; init; }
 	public string? Password { get; set; }
 	public string Bio { get; init; } = string.Empty;
-	public string Avatar { get; init; } = "Default.webp";
-	public string Cover { get; init; } = "Cover.webp";
+	public string Avatar { get; init; } = "Profile";
+	public string Cover { get; init; } = "CoverDefault";
 	public ushort PremiumDaysLeft { get; init; }
 
 	public DateTime OnlineDate { get; init; } = DateTime.UtcNow;

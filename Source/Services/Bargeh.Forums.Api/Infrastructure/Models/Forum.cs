@@ -2,6 +2,7 @@
 
 namespace Bargeh.Forums.Api.Infrastructure.Models;
 
+// TODO: Avatar and Cover could be retrived by the Forum ID so it doesn't need row in DB
 public class Forum
 {
 	public Guid Id { get; init; }
