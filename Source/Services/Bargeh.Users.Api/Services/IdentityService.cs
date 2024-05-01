@@ -1,37 +1,38 @@
-﻿using Bargeh.Identity.Api.Infrastructure;
-using Grpc.Core;
-using Identity.Api;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
-using Bargeh.Identity.Api.Infrastructure.Models;
+using Bargeh.Users.Api.Infrastructure;
+using Bargeh.Users.Api.Infrastructure.Models;
+using Grpc.Core;
+using Microsoft.IdentityModel.Tokens;
 using Users.Api;
-using LoginRequest = Identity.Api.LoginRequest;
-using RefreshRequest = Identity.Api.RefreshRequest;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
-namespace Bargeh.Identity.Api.Services;
+namespace Bargeh.Users.Api.Services;
 
+// ReSharper disable once UnusedType.Global
 public class IdentityService(
-	UsersProto.UsersProtoClient usersApiClient,
-	IdentityDbContext dbContext,
-	TimeProvider timeProvider)
+	UsersDbContext dbContext,
+	TimeProvider timeProvider,
+	ILogger<UsersService> logger)
 	: IdentityProto.IdentityProtoBase
 {
+	private readonly UsersService _usersService = new(dbContext, logger);
+	
 	#region Grpc Endpoints
 
 	public override async Task<TokenResponse> Login(LoginRequest request, ServerCallContext callContext)
 	{
 		ProtoUser user = default!;
-
+		
 		try
 		{
-			user = await usersApiClient.GetUserByPhoneAndPasswordAsync(new()
+			user = await _usersService.GetUserByPhoneAndPassword(new()
 			{
 				Phone = request.Phone,
 				Password = request.Password,
 				Captcha = request.Captcha
-			});
+			}, callContext);
 		}
 		catch(RpcException exception)
 		{
@@ -64,14 +65,14 @@ public class IdentityService(
 			throw new RpcException(new(StatusCode.FailedPrecondition, "The token is expired"));
 		}
 
-		ProtoUser? user = usersApiClient.GetUserById(new()
+		ProtoUser user = await _usersService.GetUserById(new()
 		{
 			Id = oldRefreshToken.UserId.ToString()
-		});
+		}, callContext);
 
 		/*if(oldRefreshToken.ExpireDate >= timeProvider.GetUtcNow().AddMinutes(-4))
 		{
-			await usersApiClient.DisableUserAsync(new()
+			await _usersService.DisableUserAsync(new()
 			{
 				Id = user.Id
 			});

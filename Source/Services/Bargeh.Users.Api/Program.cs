@@ -2,23 +2,23 @@ using Bargeh.Aspire.ServiceDefaults;
 using Bargeh.Users.Api.Infrastructure;
 using Bargeh.Users.Api.Services;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder (args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults ();
+builder.AddServiceDefaults();
 
 //builder.Services.AddDbContext<UsersContext> (options =>
 //	options.UseMySQL (Environment.GetEnvironmentVariable ("FORUM_CONNECTION_STRING")));
 
-builder.AddNpgsqlDbContext<UsersDbContext> ("postgres", settings =>
+builder.AddNpgsqlDbContext<UsersDbContext>("postgres", settings =>
 {
 	settings.MaxRetryCount = 10;
 });
 
-builder.Services.AddGrpc ();
+builder.Services.AddGrpc();
 
-builder.Services.AddCors (options =>
+builder.Services.AddCors(options =>
 {
-	options.AddDefaultPolicy (policyBuilder =>
+	options.AddDefaultPolicy(policyBuilder =>
 	{
 		policyBuilder.AllowAnyOrigin()
 					 .AllowAnyHeader()
@@ -26,11 +26,11 @@ builder.Services.AddCors (options =>
 	});
 });
 
-builder.Services.AddGrpcReflection ();
+builder.Services.AddGrpcReflection();
 
-WebApplication app = builder.Build ();
+WebApplication app = builder.Build();
 
-app.UseCors ();
+app.UseCors();
 
 app.Use((context, next) =>
 {
@@ -39,16 +39,21 @@ app.Use((context, next) =>
 	return next.Invoke();
 });
 
-app.UseGrpcWeb ();
+app.UseGrpcWeb();
 
-app.MapGrpcService<UsersService> ().EnableGrpcWeb ();
+app.MapGrpcService<UsersService>().EnableGrpcWeb();
 
-await UsersDbInitializer.InitializeDbAsync
-	(app.Services.CreateScope ().ServiceProvider.GetRequiredService<UsersDbContext> (), app.Logger);
+UsersDbContext dbContext = app.Services.CreateScope().ServiceProvider.GetRequiredService<UsersDbContext>();
 
-if (app.Environment.IsDevelopment ())
+await UsersDbInitializer
+	.InitializeDbAsync(dbContext, app.Logger);
+
+await IdentityDbInitializer
+	.InitializeDbAsync(dbContext, app.Logger);
+
+if(app.Environment.IsDevelopment())
 {
-	app.MapGrpcReflectionService ();
+	app.MapGrpcReflectionService();
 }
 
-app.Run ();
+app.Run();

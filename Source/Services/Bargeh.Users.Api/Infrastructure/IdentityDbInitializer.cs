@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Bargeh.Identity.Api.Infrastructure;
+namespace Bargeh.Users.Api.Infrastructure;
 
 public static class IdentityDbInitializer
 {
-	public static async Task InitializeDbAsync (IdentityDbContext identityDbContext, ILogger logger)
+	public static async Task InitializeDbAsync (UsersDbContext dbContext, ILogger logger)
 	{
 		TryConnect:
 
 		try
 		{
-			await identityDbContext.Database.MigrateAsync();
+			await dbContext.Database.MigrateAsync();
 		}
 		catch
 		{

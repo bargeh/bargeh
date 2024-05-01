@@ -26,7 +26,7 @@
         <Protobuf Include="../../Services/Bargeh.Users.Api/Protos/user.proto" GrpcServices="Client">
             <Link>Protos/user.proto</Link>
         </Protobuf>
-        <Protobuf Include="../../Services/Bargeh.Identity.Api/Protos/identity.proto" GrpcServices="Client">
+        <Protobuf Include="../../Services/Bargeh.Users.Api/Protos/identity.proto" GrpcServices="Client">
             <Link>Protos/identity.proto</Link>
         </Protobuf>
         <Protobuf Include="../../Services/Bargeh.Topics.Api/Protos/topics.proto" GrpcServices="Client">

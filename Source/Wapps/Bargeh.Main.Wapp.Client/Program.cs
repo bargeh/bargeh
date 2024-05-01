@@ -3,7 +3,6 @@ using Bargeh.Main.Wapp.Client.Services;
 using Forums.Api;
 using Grpc.Net.Client;
 using Grpc.Net.Client.Web;
-using Identity.Api;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Sms.Api;
 using Topics.Api;

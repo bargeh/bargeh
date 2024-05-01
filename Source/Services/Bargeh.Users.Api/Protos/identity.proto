@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "Identity.Api";
+option csharp_namespace = "Users.Api";
 
 package identity;
 
