@@ -1,3 +1,5 @@
+<!-- TODO: Merge into Topics.Api -->
+
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>

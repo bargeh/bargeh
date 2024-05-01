@@ -1,3 +1,5 @@
+<!-- TODO: Merge into Users.Api -->
+
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
