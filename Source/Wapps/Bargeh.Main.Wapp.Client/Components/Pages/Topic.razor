@@ -20,76 +20,78 @@
 
 @if(_topic is not null && _forum is not null)
 {
-	<div class="shadow-box-nohover topic-first-post">
-		<strong class="center">گفت و گو در <a href="/Forum/@_forum.Permalink">@_forum.Name ←</a></strong>
-		<h1 class="center title">@_topic.Title</h1>
-		<div class="topic-content">
-			@_topic.HeadPost.Body
-		</div>
-		<div class="topic-info">
-			<p>توسط <a>@@@_topic.HeadPost.AuthorUsername</a></p>
-			<div class="footer-links button-bubble reactions">
-				<span class="reactions-count">@GetPostReactionsNumber(_topic.HeadPost)</span>
-				<img alt="پسند" class="reaction-icon" src="img/Like.svg">
-				<img alt="قلب" class="reaction-icon" src="img/Love.svg">
-				<img alt="چراغ" class="reaction-icon" src="img/Light.svg">
+	<div class="container">
+		<div class="shadow-box-nohover topic-first-post">
+			<strong class="center">گفت و گو در <a href="/Forum/@_forum.Permalink">@_forum.Name ←</a></strong>
+			<h1 class="center title">@_topic.Title</h1>
+			<div class="topic-content">
+				@_topic.HeadPost.Body
 			</div>
+			<div class="topic-info">
+				<p>توسط <a>@@@_topic.HeadPost.AuthorUsername</a></p>
+				<div class="footer-links button-bubble reactions">
+					<span class="reactions-count">@GetPostReactionsNumber(_topic.HeadPost)</span>
+					<img alt="پسند" class="reaction-icon" src="img/Like.svg">
+					<img alt="قلب" class="reaction-icon" src="img/Love.svg">
+					<img alt="چراغ" class="reaction-icon" src="img/Light.svg">
+				</div>
+			</div>
+
+			<input type="hidden" id="@(_topic.HeadPost.Id)_id" value="@_topic.HeadPost.Id"/>
+			<input type="hidden" id="@(_topic.HeadPost.Id)_likes" value="@_topic.HeadPost.Likes"/>
+			<input type="hidden" id="@(_topic.HeadPost.Id)_loves" value="@_topic.HeadPost.Loves"/>
+			<input type="hidden" id="@(_topic.HeadPost.Id)_funnies" value="@_topic.HeadPost.Funnies"/>
+			<input type="hidden" id="@(_topic.HeadPost.Id)_insights" value="@_topic.HeadPost.Insights"/>
+			<input type="hidden" id="@(_topic.HeadPost.Id)_dislikes" value="@_topic.HeadPost.Dislikes"/>
+		</div>
+		<div class="tip">
+			<img alt="چراغ" src="img/Lamp.svg">
+			<p>برای پیمایش برگه‌ها را به سمت چپ و راست بکشید</p>
 		</div>
 
-		<input type="hidden" id="@(_topic.HeadPost.Id)_id" value="@_topic.HeadPost.Id"/>
-		<input type="hidden" id="@(_topic.HeadPost.Id)_likes" value="@_topic.HeadPost.Likes"/>
-		<input type="hidden" id="@(_topic.HeadPost.Id)_loves" value="@_topic.HeadPost.Loves"/>
-		<input type="hidden" id="@(_topic.HeadPost.Id)_funnies" value="@_topic.HeadPost.Funnies"/>
-		<input type="hidden" id="@(_topic.HeadPost.Id)_insights" value="@_topic.HeadPost.Insights"/>
-		<input type="hidden" id="@(_topic.HeadPost.Id)_dislikes" value="@_topic.HeadPost.Dislikes"/>
-	</div>
-	<div class="tip">
-		<img alt="چراغ" src="img/Lamp.svg">
-		<p>برای پیمایش برگه‌ها را به سمت چپ و راست بکشید</p>
-	</div>
+		@* TODO: Why not render the components using blazor? Why use JS? *@
 
-	@* TODO: Why not render the components using blazor? Why use JS? *@
+		<section class="splide">
+			<div class="splide__arrows">
+				<button class="splide__arrow splide__arrow--prev">
+					<img alt="پیکان جهت‌یابی"
+						 src="img/NavArrow.svg">
+				</button>
+				<button class="splide__arrow splide__arrow--next">
+					<img alt="پیکان جهت‌یابی"
+						 src="img/NavArrow.svg">
+				</button>
+			</div>
 
-	<section class="splide">
-		<div class="splide__arrows">
-			<button class="splide__arrow splide__arrow--prev">
-				<img alt="پیکان جهت‌یابی"
-					 src="img/NavArrow.svg">
-			</button>
-			<button class="splide__arrow splide__arrow--next">
-				<img alt="پیکان جهت‌یابی"
-					 src="img/NavArrow.svg">
-			</button>
-		</div>
+			<div class="splide__track">
+				<ul class="splide__list">
+					<li class="splide__slide">
+						<div FormName="createPost" class="shadow-box new-postchain">
+							<div class="title-box">
+								<img alt="قلم" src="img/Pen.svg"><strong>رشته‌برگ جدید</strong>
+							</div>
 
-		<div class="splide__track">
-			<ul class="splide__list">
-				<li class="splide__slide">
-					<div FormName="createPost" class="shadow-box new-postchain">
-						<div class="title-box">
-							<img alt="قلم" src="img/Pen.svg"><strong>رشته‌برگ جدید</strong>
+							<textarea class="text-input" placeholder="یه چیزی بنویس..."></textarea>
+
+							<div class="send-box">
+								<button class="button-bubble">
+									<img alt="عکس" src="img/Image.svg">
+								</button>
+								<button class="button-bubble">
+									<img alt="عکس" src="img/Attachment.svg">
+								</button>
+
+								<button class="footer-links button-bubble" type="submit" onclick="submitPost(this)">
+									<img alt="ارسال" src="img/Send.svg">
+									<p>ارسال</p>
+								</button>
+							</div>
 						</div>
-
-						<textarea class="text-input" placeholder="یه چیزی بنویس..."></textarea>
-
-						<div class="send-box">
-							<button class="button-bubble">
-								<img alt="عکس" src="img/Image.svg">
-							</button>
-							<button class="button-bubble">
-								<img alt="عکس" src="img/Attachment.svg">
-							</button>
-
-							<button class="footer-links button-bubble" type="submit" onclick="submitPost(this)">
-								<img alt="ارسال" src="img/Send.svg">
-								<p>ارسال</p>
-							</button>
-						</div>
-					</div>
-				</li>
-			</ul>
-		</div>
-	</section>
+					</li>
+				</ul>
+			</div>
+		</section>
+	</div>
 }
 else
 {
@@ -238,3 +240,4 @@ else
 		_subscription.Dispose();
 	}
 }
+

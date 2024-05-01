@@ -14,47 +14,50 @@
 @if(_forum is not null)
 {
 	<div class="cover" style="background-image: url('/img/@(_forum.Cover).webp');"></div>
-	<div class="profile">
-		<img src="img/@(_forum.Avatar).webp" alt="تصویر نمایه @_forum.Name">
-		<h1 class="center">@_forum.Name</h1>
-		<div class="index-buttons">
-			<p>@_forum.Members عضو</p>
-			<p>۱۳ حامی</p>
-		</div>
-		<p>مالک انجمن: <a>@@@_forum.OwnerUsername</a></p>
-		<p>ناظران انجمن: <a>@@user10</a>، <a>@@user02</a>، <a>@@user03</a></p>
-		<p class="center-justify">@_forum.Description</p>
-		<div class="index-buttons">
-			<button @onclick="OnFollowButtonClicked" type="button" class="button-filled">
-				<img src="img/UserPlus.svg" alt="دنبال کردن">
-				<p>عضویت در انجمن</p>
-			</button>
-			<button type="button" class="button-gold" onclick="alert('هه هه، از طرف مالک انجمن ازت تشکر می‌کنم، ولی فعلا باید صبر کنی تا برنامه‌نویسی برگه تکمیل شه 😅')">
-				<img src="img/Support.svg" alt="حمایت">
-				<p>حمایت از انجمن</p>
-			</button>
-		</div>
-	</div>
 
-	<div class="footer-info">
-		<h2> گفت و گو‌های @_forum.Name</h2>
-		<div class="shadow-box secondary-search-bar footer-links">
-			<img src="img/Search.svg" alt="علامت ذره‌بین" class="search-icon">
-			<input type="text" class="search-input" placeholder="جست و جو در گفت و گوهای @_forum.Name...">
+	<div class="container">
+		<div class="profile">
+			<img src="img/@(_forum.Avatar).webp" alt="تصویر نمایه @_forum.Name">
+			<h1 class="center">@_forum.Name</h1>
+			<div class="index-buttons">
+				<p>@_forum.Members عضو</p>
+				<p>۱۳ حامی</p>
+			</div>
+			<p>مالک انجمن: <a>@@@_forum.OwnerUsername</a></p>
+			<p>ناظران انجمن: <a>@@user10</a>، <a>@@user02</a>، <a>@@user03</a></p>
+			<p class="center-justify">@_forum.Description</p>
+			<div class="index-buttons">
+				<button @onclick="OnFollowButtonClicked" type="button" class="button-filled">
+					<img src="img/UserPlus.svg" alt="دنبال کردن">
+					<p>عضویت در انجمن</p>
+				</button>
+				<button type="button" class="button-gold" onclick="alert('هه هه، از طرف مالک انجمن ازت تشکر می‌کنم، ولی فعلا باید صبر کنی تا برنامه‌نویسی برگه تکمیل شه 😅')">
+					<img src="img/Support.svg" alt="حمایت">
+					<p>حمایت از انجمن</p>
+				</button>
+			</div>
 		</div>
-	</div>
 
-	<div class="forums-list">
-		@foreach(ProtoTopic topic in _recentTopics)
-		{
-			<TopicSingle Forum="_forum" Topic="topic"/>
-		}
-	</div>
+		<div class="footer-info">
+			<h2> گفت و گو‌های @_forum.Name</h2>
+			<div class="shadow-box secondary-search-bar footer-links">
+				<img src="img/Search.svg" alt="علامت ذره‌بین" class="search-icon">
+				<input type="text" class="search-input" placeholder="جست و جو در گفت و گوهای @_forum.Name...">
+			</div>
+		</div>
 
-	<a class="button-primary">
-		<img src="img/More.svg" alt="بیشتر">
-		<p>نمایش بیشتر</p>
-	</a>
+		<div class="forums-list">
+			@foreach(ProtoTopic topic in _recentTopics)
+			{
+				<TopicSingle Forum="_forum" Topic="topic"/>
+			}
+		</div>
+
+		<a class="button-primary">
+			<img src="img/More.svg" alt="بیشتر">
+			<p>نمایش بیشتر</p>
+		</a>
+	</div>
 }
 else
 {
