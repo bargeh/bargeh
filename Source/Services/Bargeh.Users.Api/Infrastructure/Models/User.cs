@@ -10,7 +10,7 @@ public class User
 	public string? Password { get; set; }
 	public string Bio { get; init; } = string.Empty;
 	public string ProfileImage { get; init; } = "Default.webp";
-	public string CoverImage { get; init; } = "Cover.webp";
+	public string Cover { get; init; } = "Cover.webp";
 	public ushort PremiumDaysLeft { get; init; }
 
 	public DateTime OnlineDate { get; init; } = DateTime.UtcNow;

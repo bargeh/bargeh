@@ -21,7 +21,7 @@ namespace Bargeh.Users.Api.Infrastructure.Migrations;
 					Password = table.Column<string> (type: "text", nullable: true),
 					Bio = table.Column<string> (type: "text", nullable: false),
 					ProfileImage = table.Column<string> (type: "text", nullable: false),
-					CoverImage = table.Column<string> (type: "text", nullable: false),
+					Cover = table.Column<string> (type: "text", nullable: false),
 					PremiumDaysLeft = table.Column<int> (type: "integer", nullable: false),
 					OnlineDate = table.Column<DateTime> (type: "timestamp with time zone", nullable: false),
 					RegisterDate = table.Column<DateTime> (type: "timestamp with time zone", nullable: false),

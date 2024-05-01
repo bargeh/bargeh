@@ -38,7 +38,7 @@ partial class UsersContextModelSnapshot : ModelSnapshot
                 b.Property<bool>("CanCreateForums")
                     .HasColumnType("boolean");
 
-                b.Property<string>("CoverImage")
+                b.Property<string>("Cover")
                     .IsRequired()
                     .HasColumnType("text");
 
