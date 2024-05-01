@@ -13,21 +13,18 @@
 	<div class="cover" style="background-image: url('/img/@(_user.Cover).webp')"></div>
 
 	<div class="container">
-	<div class="profile">
-		<img alt="تصویر نمایه" src="img/@(_user.Avatar).webp">
-		<h1 class="center"><a href="/User/matin">@@@_user.Username</a> متین محمدی</h1>
-		<p>@@_user.Followers دنبال‌کننده</p>
-		<p class="center-justify">
-			اگه شما فهمیدین من چرا تو این سایت ثبت نام کردم، یه لطفی کنید به خودمم بگید. خیلی
-			وقته دنبال جوابش هستم
-		</p>
-		<button class="button-filled" type="button">
-			<img alt="دنبال‌کردن" src="img/UserPlus.svg">
-			<p>دنبال کردن</p>
-		</button>
-	</div>
+		<div class="profile">
+			<img alt="تصویر نمایه" src="img/@(_user.Avatar).webp">
+			<h1 class="center"><a href="#">@@@_user.Username</a> @_user.DisplayName</h1>
+			<p>@_user.Followers دنبال‌کننده</p>
+			<p class="center-justify">@_user.Bio</p>
+			<button class="button-filled" type="button">
+				<img alt="دنبال‌کردن" src="img/UserPlus.svg">
+				<p>دنبال کردن</p>
+			</button>
+		</div>
 
-	<h2>انجمن‌های متین محمدی</h2>
+		@*<h2>انجمن‌های @_user.DisplayName</h2>
 
 	<div class="forums-list">
 		<div class="forum">
@@ -424,7 +421,7 @@
 	<a class="button-primary">
 		<img alt="بیشتر" src="img/More.svg">
 		<p>نمایش بیشتر</p>
-	</a>
+	</a>*@
 	</div>
 }
 else
@@ -458,8 +455,6 @@ else
 		}
 		else
 		{
-			await Task.Delay(1000);
-
 			try
 			{
 				_user = await UsersService.GetUserByUsernameAsync(new()
@@ -491,4 +486,3 @@ else
 	}
 
 }
-
