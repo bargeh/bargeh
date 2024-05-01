@@ -11,6 +11,7 @@ public class User
 	public string Bio { get; init; } = string.Empty;
 	public string Avatar { get; init; } = "Profile";
 	public string Cover { get; init; } = "CoverDefault";
+	public uint Followers { get; set; }
 	public ushort PremiumDaysLeft { get; init; }
 
 	public DateTime OnlineDate { get; init; } = DateTime.UtcNow;

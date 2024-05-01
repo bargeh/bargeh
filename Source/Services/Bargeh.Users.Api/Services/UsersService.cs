@@ -38,7 +38,8 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 			Email = user.Email,
 			Enabled = user.Enabled,
 			PremiumDaysLeft = user.PremiumDaysLeft,
-			Avatar = user.Avatar
+			Avatar = user.Avatar,
+			Followers = user.Followers
 		};
 	}
 
@@ -63,7 +64,8 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 			Email = user.Email ?? string.Empty,
 			Enabled = user.Enabled,
 			PremiumDaysLeft = user.PremiumDaysLeft,
-			Avatar = user.Avatar
+			Avatar = user.Avatar,
+			Followers = user.Followers
 		};
 	}
 
@@ -88,7 +90,8 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 			Email = user.Email,
 			Enabled = user.Enabled,
 			PremiumDaysLeft = user.PremiumDaysLeft,
-			Avatar = user.Avatar
+			Avatar = user.Avatar,
+			Followers = user.Followers
 		};
 	}
 
@@ -121,7 +124,9 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 			Email = user.Email ?? string.Empty,
 			Enabled = user.Enabled,
 			PremiumDaysLeft = user.PremiumDaysLeft,
-			Avatar = user.Avatar
+			Avatar = user.Avatar,
+			Followers = user.Followers
+
 		};
 	}
 

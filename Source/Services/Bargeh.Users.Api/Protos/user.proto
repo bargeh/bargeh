@@ -61,10 +61,11 @@ message ProtoUser {
   string display_name = 3;
   string email = 4;
   string bio = 5;
-  string profile_image = 6;
-  string cover_image = 7;
+  string avatar = 6;
+  string cover = 7;
   uint32 premium_days_left = 8;
   bool enabled = 9;
   bool can_create_forums = 10;
   string phone = 11;
+  uint32 followers = 12;
 }
