@@ -38,7 +38,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 			Email = user.Email,
 			Enabled = user.Enabled,
 			PremiumDaysLeft = user.PremiumDaysLeft,
-			ProfileImage = user.ProfileImage
+			Avatar = user.Avatar
 		};
 	}
 
@@ -63,7 +63,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 			Email = user.Email ?? string.Empty,
 			Enabled = user.Enabled,
 			PremiumDaysLeft = user.PremiumDaysLeft,
-			ProfileImage = user.ProfileImage
+			Avatar = user.Avatar
 		};
 	}
 
@@ -88,7 +88,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 			Email = user.Email,
 			Enabled = user.Enabled,
 			PremiumDaysLeft = user.PremiumDaysLeft,
-			ProfileImage = user.ProfileImage
+			Avatar = user.Avatar
 		};
 	}
 
@@ -121,7 +121,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 			Email = user.Email ?? string.Empty,
 			Enabled = user.Enabled,
 			PremiumDaysLeft = user.PremiumDaysLeft,
-			ProfileImage = user.ProfileImage
+			Avatar = user.Avatar
 		};
 	}
 

@@ -9,7 +9,7 @@ public class User
 	public required string PhoneNumber { get; init; }
 	public string? Password { get; set; }
 	public string Bio { get; init; } = string.Empty;
-	public string ProfileImage { get; init; } = "Default.webp";
+	public string Avatar { get; init; } = "Default.webp";
 	public string Cover { get; init; } = "Cover.webp";
 	public ushort PremiumDaysLeft { get; init; }
 

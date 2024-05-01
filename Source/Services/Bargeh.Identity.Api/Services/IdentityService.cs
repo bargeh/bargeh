@@ -128,7 +128,7 @@ public class IdentityService(
 			new(JwtRegisteredClaimNames.GivenName, user.DisplayName),
 			new(JwtRegisteredClaimNames.UniqueName, user.Username),
 			new("premiumDaysLeft", user.PremiumDaysLeft.ToString()),
-			new("avatar", user.ProfileImage)
+			new("avatar", user.Avatar)
 		];
 
 		JwtSecurityToken accessToken = new(

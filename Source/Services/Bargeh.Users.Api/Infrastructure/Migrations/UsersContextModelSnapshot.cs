@@ -68,7 +68,7 @@ partial class UsersContextModelSnapshot : ModelSnapshot
                 b.Property<int>("PremiumDaysLeft")
                     .HasColumnType("integer");
 
-                b.Property<string>("ProfileImage")
+                b.Property<string>("Avatar")
                     .IsRequired()
                     .HasColumnType("text");
 
