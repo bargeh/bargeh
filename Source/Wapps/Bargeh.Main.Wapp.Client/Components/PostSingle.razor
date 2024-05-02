@@ -1,6 +1,5 @@
-﻿@using Topics.Api
-@using Bargeh.Main.Wapp.Client.Components.Pages
-
+﻿@using Bargeh.Main.Wapp.Client.Components.Pages
+@using Forums.Api
 @* TODO: Should display image and attachments here too *@
 <div class="shadow-box-nohover post_@Post.Id">
 	<input type="hidden" id="@(Post.Id)_id" value="@(Post.Id)"/><input type="hidden" id="@(Post.Id)_likes" value="@Post.Likes"/><input type="hidden" id="@(Post.Id)_loves" value="@Post.Loves"/><input type="hidden" id="@(Post.Id)_funnies" value="@Post.Funnies"/><input type="hidden" id="@(Post.Id)_insights" value="@Post.Insights"/><input type="hidden" id="'@(Post.Id)_dislikes" value="@Post.Dislikes"/>

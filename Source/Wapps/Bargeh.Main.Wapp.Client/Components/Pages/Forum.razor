@@ -1,14 +1,13 @@
 ﻿@page "/Forum/{ForumPermalink}"
-@using Forums.Api
-@using Grpc.Core
-@using Bargeh.Main.Wapp.Client.Infrastructure
-@using Bargeh.Main.Wapp.Client.Services
-@using Topics.Api
 @inject ForumsProto.ForumsProtoClient ForumsService
 @inject TopicsProto.TopicsProtoClient TopicsService
 @inject NotFoundListener NotFoundService
 @inject LocalStorageService LocalStorageService
 @inject PersistentComponentState ApplicationState
+@using Bargeh.Main.Wapp.Client.Infrastructure
+@using Bargeh.Main.Wapp.Client.Services
+@using Forums.Api
+@using Grpc.Core
 @implements IDisposable
 
 @if(_forum is not null)

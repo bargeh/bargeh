@@ -4,12 +4,14 @@ option csharp_namespace = "Forums.Api";
 
 package forums;
 
+import "google/protobuf/empty.proto";
+
 service ForumsProto {
   rpc AddForum (AddForumRequest) returns (AddForumReply);
   rpc GetForumByPermalink (GetForumByPermalinkRequest) returns (ProtoForum);
   rpc GetForumById (GetForumByIdRequest) returns (ProtoForum);
-  rpc JoinForum (JoinLeaveForumRequest) returns (Empty);
-  rpc LeaveForum (JoinLeaveForumRequest) returns (Empty);
+  rpc JoinForum (JoinLeaveForumRequest) returns (google.protobuf.Empty);
+  rpc LeaveForum (JoinLeaveForumRequest) returns (google.protobuf.Empty);
 }
 
 message AddForumRequest {
@@ -46,5 +48,3 @@ message ProtoForum {
 message AddForumReply {
   string id = 1;
 }
-
-message Empty {}

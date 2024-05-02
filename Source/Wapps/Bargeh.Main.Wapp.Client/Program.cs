@@ -4,7 +4,6 @@ using Forums.Api;
 using Grpc.Net.Client;
 using Grpc.Net.Client.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Topics.Api;
 using Users.Api;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -16,7 +15,7 @@ builder.Services.AddSingleton(_ =>
 {
 	HttpClient httpClient = new(new GrpcWebHandler(GrpcWebMode.GrpcWeb, new HttpClientHandler()))
 	{
-		BaseAddress = new("https://localhost:5201")
+		BaseAddress = new("https://localhost:5501")
 	};
 
 	GrpcChannel channel = GrpcChannel.ForAddress(httpClient.BaseAddress, new() { HttpClient = httpClient });
@@ -28,7 +27,7 @@ builder.Services.AddSingleton(_ =>
 {
 	HttpClient httpClient = new(new GrpcWebHandler(GrpcWebMode.GrpcWeb, new HttpClientHandler()))
 	{
-		BaseAddress = new("https://localhost:5244")
+		BaseAddress = new("https://localhost:5501")
 	};
 
 	GrpcChannel channel = GrpcChannel.ForAddress(httpClient.BaseAddress, new() { HttpClient = httpClient });
@@ -52,7 +51,7 @@ builder.Services.AddSingleton(_ =>
 {
 	HttpClient httpClient = new(new GrpcWebHandler(GrpcWebMode.GrpcWeb, new HttpClientHandler()))
 	{
-		BaseAddress = new("https://localhost:7178")
+		BaseAddress = new("https://localhost:5301")
 	};
 
 	GrpcChannel channel = GrpcChannel.ForAddress(httpClient.BaseAddress, new() { HttpClient = httpClient });

@@ -1,14 +1,16 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "Topics.Api";
+option csharp_namespace = "Forums.Api";
 
 package topics;
+
+import "google/protobuf/empty.proto";
 
 service TopicsProto {
   rpc GetTopicByPermalink (GetTopicByPermalinkRequest) returns (ProtoTopic);
   rpc CreateTopic (CreateTopicRequest) returns (CreateTopicReply);
-  rpc CreatePost (CreatePostRequest) returns (Empty);
-  rpc ReactOnPost (ReactOnPostRequest) returns (Empty);
+  rpc CreatePost (CreatePostRequest) returns (google.protobuf.Empty);
+  rpc ReactOnPost (ReactOnPostRequest) returns (google.protobuf.Empty);
   rpc GetMorePostChains (GetMorePostChainsRequest) returns (GetMorePostChainsReply);
   rpc GetRecentTopicsByForum (GetRecentTopicsByForumRequest) returns (GetRecentTopicsByForumReply);
   rpc GetHeadpostByTopic (GetHeadpostByTopicRequest) returns (ProtoPost);
@@ -61,8 +63,6 @@ message GetMorePostChainsRequest {
 message GetMorePostChainsReply {
   repeated ProtoPost posts = 1;
 }
-
-message Empty {}
 
 message ProtoPost {
   string id = 1;

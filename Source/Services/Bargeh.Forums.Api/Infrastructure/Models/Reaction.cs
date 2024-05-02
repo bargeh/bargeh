@@ -1,4 +1,4 @@
-﻿namespace Bargeh.Topics.Api.Infrastructure.Models;
+﻿namespace Bargeh.Forums.Api.Infrastructure.Models;
 
 public class Reaction
 {

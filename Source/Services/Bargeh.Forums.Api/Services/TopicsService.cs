@@ -1,23 +1,23 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Bargeh.Topics.Api.Infrastructure;
-using Bargeh.Topics.Api.Infrastructure.Models;
+using Bargeh.Forums.Api.Infrastructure;
+using Bargeh.Forums.Api.Infrastructure.Models;
 using Forums.Api;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Topics.Api;
 using Users.Api;
-using Empty = Topics.Api.Empty;
 
-namespace Bargeh.Topics.Api.Services;
+namespace Bargeh.Forums.Api.Services;
 
 public class TopicsService(
-	TopicsDbContext dbContext,
-	ForumsProto.ForumsProtoClient forumsService,
+	ForumsDbContext dbContext,
 	UsersProto.UsersProtoClient usersService)
 	: TopicsProto.TopicsProtoBase
 {
+	private ForumsService _forumsService = new(dbContext, usersService);
+
 	public override async Task<ProtoTopic> GetTopicByPermalink(GetTopicByPermalinkRequest request,
 															   ServerCallContext callContext)
 	{
@@ -44,7 +44,7 @@ public class TopicsService(
 		postsToReturn.AddRange(await MapPostsListToProtoPostsList(newPostChains));
 		foreach(Post postchainHeadPost in newPostChains)
 		{
-			await AddPostHierarchyAsync(postchainHeadPost.Id, postsToReturn/*, 5*/);
+			await AddPostHierarchyAsync(postchainHeadPost.Id, postsToReturn /*, 5*/);
 		}
 
 		ProtoTopic protoTopic = new()
@@ -108,10 +108,10 @@ public class TopicsService(
 
 		try
 		{
-			await forumsService.GetForumByIdAsync(new()
+			await _forumsService.GetForumById(new()
 			{
 				Id = request.Forum
-			});
+			}, callContext);
 		}
 		catch(RpcException exception)
 		{
@@ -169,9 +169,9 @@ public class TopicsService(
 									 .FirstOrDefaultAsync(p => p.Id == Guid.Parse(request.Parent))
 					  ?? throw new RpcException(new(StatusCode.NotFound, "No parent post was found with this ID"));
 
-		
+
 		// TODO: This should check if the post is the last child, to prevent having 2 posts having the same parent
-		
+
 		Post post = new()
 		{
 			Topic = parent.Topic,
@@ -189,7 +189,7 @@ public class TopicsService(
 	}
 
 	public override async Task<Empty> ReactOnPost(ReactOnPostRequest request,
-															   ServerCallContext callContext)
+												  ServerCallContext callContext)
 	{
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
 		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
@@ -206,14 +206,14 @@ public class TopicsService(
 		{
 			return new();
 		}
-		
+
 		if(request.State is ReactionUpdateState.None && reaction is not null)
 		{
 			dbContext.Remove(reaction);
 			await dbContext.SaveChangesAsync();
 			return new();
 		}
-		
+
 		if(reaction is not null)
 		{
 			switch(reaction.ReactionType)
@@ -237,7 +237,7 @@ public class TopicsService(
 					throw new NotImplementedException();
 			}
 		}
-		
+
 		// ReSharper disable once ConvertIfStatementToNullCoalescingAssignment
 		if(reaction is null)
 		{
@@ -257,7 +257,7 @@ public class TopicsService(
 			ReactionUpdateState.Dislike => ReactionType.Dislike,
 			_ => reaction.ReactionType
 		};
-		
+
 		switch(reaction.ReactionType)
 		{
 			case ReactionType.Like:
@@ -320,7 +320,7 @@ public class TopicsService(
 		postsToReturn.AddRange(await MapPostsListToProtoPostsList(newPostChains));
 		foreach(Post postchainHeadPost in newPostChains)
 		{
-			await AddPostHierarchyAsync(postchainHeadPost.Id, postsToReturn/*, 5*/);
+			await AddPostHierarchyAsync(postchainHeadPost.Id, postsToReturn /*, 5*/);
 		}
 
 		GetMorePostChainsReply reply = new();
@@ -357,7 +357,7 @@ public class TopicsService(
 		return accessTokenClaims;
 	}
 
-	private async Task AddPostHierarchyAsync(Guid parentId, ICollection<ProtoPost> posts/*, int depth*/)
+	private async Task AddPostHierarchyAsync(Guid parentId, ICollection<ProtoPost> posts /*, int depth*/)
 	{
 		/*if(depth <= 0)
 		{
@@ -372,7 +372,7 @@ public class TopicsService(
 
 			posts.Add(postToAdd);
 
-			await AddPostHierarchyAsync(child.Id, posts/*, depth - 1*/);
+			await AddPostHierarchyAsync(child.Id, posts /*, depth - 1*/);
 		}
 	}
 

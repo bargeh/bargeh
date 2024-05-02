@@ -1,13 +1,4 @@
 ﻿@page "/Topic/{ForumPermalink}/{TopicPermalink}"
-@using Forums.Api
-@using Grpc.Core
-@using Bargeh.Main.Wapp.Client.Infrastructure
-@using Bargeh.Main.Wapp.Client.Services
-@using Topics.Api
-@using System.Text.Json
-@using System.Text.Encodings.Web
-@using Google.Protobuf.Collections
-@using System.Text.Unicode
 @inject NotFoundListener NotFoundService
 @inject ForumsProto.ForumsProtoClient ForumsService
 @inject TopicsProto.TopicsProtoClient TopicsService
@@ -16,6 +7,13 @@
 @inject ILogger<Topic> Logger
 @rendermode InteractiveAuto
 @inject PersistentComponentState ApplicationState
+@using System.Text.Encodings.Web
+@using System.Text.Json
+@using System.Text.Unicode
+@using Bargeh.Main.Wapp.Client.Infrastructure
+@using Bargeh.Main.Wapp.Client.Services
+@using Forums.Api
+@using Grpc.Core
 @implements IDisposable
 
 @if(_topic is not null && _forum is not null)

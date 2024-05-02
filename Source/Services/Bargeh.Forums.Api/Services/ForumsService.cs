@@ -3,17 +3,49 @@ using System.Security.Claims;
 using Bargeh.Forums.Api.Infrastructure;
 using Bargeh.Forums.Api.Infrastructure.Models;
 using Forums.Api;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Users.Api;
-using Empty = Forums.Api.Empty;
 
 namespace Bargeh.Forums.Api.Services;
 
 public class ForumsService(ForumsDbContext dbContext, UsersProto.UsersProtoClient usersService)
 	: ForumsProto.ForumsProtoBase
 {
+	#region Static Methods
+
+	private static async Task<IEnumerable<Claim>> ValidateAndGetUserClaims(string accessToken)
+	{
+		AddForumRequest request;
+		JwtSecurityTokenHandler tokenHandler = new();
+		SecurityKey key = new X509SecurityKey(new("C:/Source/Bargeh/JwtPublicKey.cer"));
+
+		TokenValidationResult tokenValidationResult =
+			await tokenHandler.ValidateTokenAsync(accessToken, new()
+			{
+				ValidateIssuerSigningKey = true,
+				IssuerSigningKey = key,
+				ValidateIssuer = true,
+				ValidateAudience = true,
+				ValidateLifetime = true,
+				ValidIssuer = "https://bargeh.net",
+				ValidAudience = "https://bargeh.net",
+				ClockSkew = TimeSpan.Zero
+			});
+
+		if(!tokenValidationResult.IsValid)
+		{
+			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter \"AccessToken\" is not valid"));
+		}
+
+		IEnumerable<Claim> accessTokenClaims = tokenHandler.ReadJwtToken(accessToken).Claims!;
+		return accessTokenClaims;
+	}
+
+	#endregion
+
 	#region gRPC Endpoints
 
 	public override async Task<AddForumReply> AddForum(AddForumRequest request, ServerCallContext context)
@@ -69,7 +101,7 @@ public class ForumsService(ForumsDbContext dbContext, UsersProto.UsersProtoClien
 								   {
 									   Id = forum.OwnerId.ToString()
 								   })).Username;
-		
+
 		return new()
 		{
 			Id = forum.Id.ToString(),
@@ -107,7 +139,7 @@ public class ForumsService(ForumsDbContext dbContext, UsersProto.UsersProtoClien
 			Cover = forum.Cover
 		};
 	}
-	
+
 	public override async Task<Empty> JoinForum(JoinLeaveForumRequest request, ServerCallContext context)
 	{
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
@@ -164,38 +196,6 @@ public class ForumsService(ForumsDbContext dbContext, UsersProto.UsersProtoClien
 		await dbContext.SaveChangesAsync();
 
 		return new();
-	}
-
-	#endregion
-
-	#region Static Methods
-
-	private static async Task<IEnumerable<Claim>> ValidateAndGetUserClaims(string accessToken)
-	{
-		AddForumRequest request;
-		JwtSecurityTokenHandler tokenHandler = new();
-		SecurityKey key = new X509SecurityKey(new("C:/Source/Bargeh/JwtPublicKey.cer"));
-
-		TokenValidationResult tokenValidationResult =
-			await tokenHandler.ValidateTokenAsync(accessToken, new()
-			{
-				ValidateIssuerSigningKey = true,
-				IssuerSigningKey = key,
-				ValidateIssuer = true,
-				ValidateAudience = true,
-				ValidateLifetime = true,
-				ValidIssuer = "https://bargeh.net",
-				ValidAudience = "https://bargeh.net",
-				ClockSkew = TimeSpan.Zero
-			});
-
-		if(!tokenValidationResult.IsValid)
-		{
-			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter \"AccessToken\" is not valid"));
-		}
-
-		IEnumerable<Claim> accessTokenClaims = tokenHandler.ReadJwtToken(accessToken).Claims!;
-		return accessTokenClaims;
 	}
 
 	#endregion

@@ -3,7 +3,6 @@ using Bargeh.Main.Wapp.Client.Infrastructure;
 using Bargeh.Main.Wapp.Client.Services;
 using Bargeh.Main.Wapp.Components;
 using Forums.Api;
-using Topics.Api;
 using Users.Api;
 using _Imports = Bargeh.Main.Wapp.Client._Imports;
 
@@ -26,13 +25,13 @@ builder.Services.AddScoped<NotFoundListener>();
 
 builder.Services.AddGrpcClient<ForumsProto.ForumsProtoClient>(o => o.Address = new("https://localhost:5301"));
 
-builder.Services.AddGrpcClient<TopicsProto.TopicsProtoClient>(o => o.Address = new("https://localhost:7178"));
+builder.Services.AddGrpcClient<TopicsProto.TopicsProtoClient>(o => o.Address = new("https://localhost:5301"));
 
 builder.Services.AddGrpcClient<UsersProto.UsersProtoClient>(o => o.Address = new("https://localhost:5501"));
 
-builder.Services.AddGrpcClient<IdentityProto.IdentityProtoClient>(o => o.Address = new("https://localhost:5201"));
+builder.Services.AddGrpcClient<IdentityProto.IdentityProtoClient>(o => o.Address = new("https://localhost:5501"));
 
-builder.Services.AddGrpcClient<SmsProto.SmsProtoClient>(o => o.Address = new("https://localhost:5244"));
+builder.Services.AddGrpcClient<SmsProto.SmsProtoClient>(o => o.Address = new("https://localhost:5501"));
 
 #endregion
 

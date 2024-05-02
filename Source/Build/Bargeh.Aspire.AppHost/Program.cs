@@ -2,9 +2,6 @@ using Projects;
 
 IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(args);
 
-/*IResourceBuilder<ParameterResource> username = builder.AddParameter("dbUsername");
-IResourceBuilder<ParameterResource> password = builder.AddParameter("dbPassword");*/
-
 IResourceBuilder<PostgresServerResource> postgres =
 	builder.AddPostgres("postgres", port: 5432);
 
@@ -19,19 +16,9 @@ IResourceBuilder<ProjectResource> forumsApi =
 		   .WithReference(usersApi)
 		   .AsHttp2Service();
 
-IResourceBuilder<ProjectResource> topicsApi =
-	builder.AddProject<Bargeh_Topics_Api>("topics", launchProfileName: "https")
-		   .WithReference(postgres)
-		   .WithReference(forumsApi)
-		   .WithReference(usersApi)
-		   .AsHttp2Service();
-
 
 builder.AddProject<Bargeh_Main_Wapp>("wapp", launchProfileName: "https")
-
-	   //.WithReference (sqlServer)
 	   .WithReference(usersApi)
-	   .WithReference(forumsApi)
-	   .WithReference(topicsApi);
+	   .WithReference(forumsApi);
 
 builder.Build().Run();
