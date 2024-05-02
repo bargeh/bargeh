@@ -42,6 +42,8 @@ app.Use((context, next) =>
 app.UseGrpcWeb();
 
 app.MapGrpcService<UsersService>().EnableGrpcWeb();
+app.MapGrpcService<IdentityService>().EnableGrpcWeb();
+app.MapGrpcService<SmsService>().EnableGrpcWeb();
 
 UsersDbContext dbContext = app.Services.CreateScope().ServiceProvider.GetRequiredService<UsersDbContext>();
 

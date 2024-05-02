@@ -31,9 +31,9 @@ builder.Services.AddCors(options =>
 });
 
 
-WebApplication app = builder.Build ();
+WebApplication app = builder.Build();
 
-app.UseCors ();
+app.UseCors();
 
 app.MapDefaultEndpoints();
 
@@ -46,6 +46,7 @@ app.Use((context, next) =>
 
 app.UseGrpcWeb();
 app.MapGrpcService<ForumsService>().EnableGrpcWeb();
+app.MapGrpcService<TopicsService>().EnableGrpcWeb();
 app.MapGrpcReflectionService();
 
 await ForumsDbInitializer
