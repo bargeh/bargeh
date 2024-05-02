@@ -1,17 +1,18 @@
-﻿using Bargeh.Sms.Api.Infrastructure;
-using Bargeh.Sms.Api.Infrastructure.Models;
+﻿using Bargeh.Users.Api.Infrastructure;
+using Bargeh.Users.Api.Infrastructure.Models;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MatinDevs.PersianPhoneNumbers;
-using Sms.Api;
 using Users.Api;
-using VoidOperationReply = Sms.Api.VoidOperationReply;
 
-namespace Bargeh.Sms.Api.Services;
+namespace Bargeh.Users.Api.Services;
 
-public class SmsService(SmsDbContext dbContext, UsersProto.UsersProtoClient usersService) : SmsProto.SmsProtoBase
+public class SmsService(UsersDbContext dbContext, ILogger<UsersService> logger) : SmsProto.SmsProtoBase
 {
-	public override async Task<VoidOperationReply> SendVerification(SendVerificationRequest request,
-																 ServerCallContext context)
+	private readonly UsersService _usersService = new(dbContext, logger);
+	
+	public override async Task<Empty> SendVerification(SendVerificationRequest request,
+																 ServerCallContext callContext)
 	{
 		bool phoneValid = request.Phone.IsPersianPhoneValid();
 
@@ -20,10 +21,10 @@ public class SmsService(SmsDbContext dbContext, UsersProto.UsersProtoClient user
 			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter \"Phone\" is not valid"));
 		}
 
-		ProtoUser? user = usersService.GetUserByPhone(new()
+		ProtoUser? user = await _usersService.GetUserByPhone(new()
 		{
 			Phone = request.Phone
-		});
+		}, callContext);
 
 		if(user is null)
 		{
@@ -46,7 +47,7 @@ public class SmsService(SmsDbContext dbContext, UsersProto.UsersProtoClient user
 		return new();
 	}
 
-	public override async Task<VoidOperationReply> ValidateVerificationCode(ValidateVerificationCodeRequest request,
+	public override async Task<Empty> ValidateVerificationCode(ValidateVerificationCodeRequest request,
 																			ServerCallContext context)
 	{
 		bool codeValid = ushort.TryParse(request.Code, out ushort code);

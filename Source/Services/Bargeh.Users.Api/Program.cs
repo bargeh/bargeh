@@ -48,9 +48,6 @@ UsersDbContext dbContext = app.Services.CreateScope().ServiceProvider.GetRequire
 await UsersDbInitializer
 	.InitializeDbAsync(dbContext, app.Logger);
 
-await IdentityDbInitializer
-	.InitializeDbAsync(dbContext, app.Logger);
-
 if(app.Environment.IsDevelopment())
 {
 	app.MapGrpcReflectionService();

@@ -1,5 +1,6 @@
 using Bargeh.Users.Api.Infrastructure;
 using Bargeh.Users.Api.Infrastructure.Models;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MatinDevs.PersianPhoneNumbers;
 using Microsoft.EntityFrameworkCore;
@@ -130,7 +131,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 		};
 	}
 
-	public override async Task<VoidOperationReply> SetUserPassword(SetUserPasswordRequest request,
+	public override async Task<Empty> SetUserPassword(SetUserPasswordRequest request,
 																   ServerCallContext callContext)
 	{
 		// PRODUCTION: Rebuild this method
@@ -145,7 +146,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 		return new();
 	}
 
-	public override async Task<VoidOperationReply> AddUser(AddUserRequest request, ServerCallContext callContext)
+	public override async Task<Empty> AddUser(AddUserRequest request, ServerCallContext callContext)
 	{
 		// PRODUCTION: Validate Captcha
 
@@ -200,7 +201,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 		return new();
 	}
 
-	public override async Task<VoidOperationReply> DisableUser(DisableUserRequest request,
+	public override async Task<Empty> DisableUser(DisableUserRequest request,
 															   ServerCallContext callContext)
 	{
 		ProtoUser user = await GetUserById(new()

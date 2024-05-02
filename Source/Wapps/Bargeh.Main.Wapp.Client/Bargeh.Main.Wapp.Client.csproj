@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="../../Services/Bargeh.Sms.Api/Protos/sms.proto" GrpcServices="Client">
+        <Protobuf Include="../../Services/Bargeh.Users.Api/Protos/sms.proto" GrpcServices="Client">
             <Link>Protos/sms.proto</Link>
         </Protobuf>
         <Protobuf Include="../../Services/Bargeh.Users.Api/Protos/user.proto" GrpcServices="Client">

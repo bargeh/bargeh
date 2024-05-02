@@ -7,8 +7,8 @@ package topics;
 service TopicsProto {
   rpc GetTopicByPermalink (GetTopicByPermalinkRequest) returns (ProtoTopic);
   rpc CreateTopic (CreateTopicRequest) returns (CreateTopicReply);
-  rpc CreatePost (CreatePostRequest) returns (VoidOperationReply);
-  rpc ReactOnPost (ReactOnPostRequest) returns (VoidOperationReply);
+  rpc CreatePost (CreatePostRequest) returns (Empty);
+  rpc ReactOnPost (ReactOnPostRequest) returns (Empty);
   rpc GetMorePostChains (GetMorePostChainsRequest) returns (GetMorePostChainsReply);
   rpc GetRecentTopicsByForum (GetRecentTopicsByForumRequest) returns (GetRecentTopicsByForumReply);
   rpc GetHeadpostByTopic (GetHeadpostByTopicRequest) returns (ProtoPost);
@@ -62,7 +62,7 @@ message GetMorePostChainsReply {
   repeated ProtoPost posts = 1;
 }
 
-message VoidOperationReply {}
+message Empty {}
 
 message ProtoPost {
   string id = 1;

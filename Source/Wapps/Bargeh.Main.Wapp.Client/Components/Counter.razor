@@ -4,7 +4,7 @@
 
 <h2>Holodeck Configuration</h2>
 
-<EditForm EditContext="editContext" OnValidSubmit="@Submit" FormName="Starship8">
+<EditForm EditContext="_editContext" OnValidSubmit="@Submit" FormName="Starship8">
 	<div>
 		<label>
 			<InputCheckbox @bind-Value="Model!.Subsystem1"/> Safety Subsystem
@@ -24,29 +24,29 @@
 </EditForm>
 
 @code {
-	private EditContext? editContext;
+	private EditContext? _editContext;
 
 	[SupplyParameterFromForm]
 	public Holodeck? Model { get; set; }
 
-	private ValidationMessageStore? messageStore;
+	private ValidationMessageStore? _messageStore;
 
 	protected override void OnInitialized()
 	{
 		Model ??= new();
-		editContext = new(Model);
-		editContext.OnValidationRequested += HandleValidationRequested;
-		messageStore = new(editContext);
+		_editContext = new(Model);
+		_editContext.OnValidationRequested += HandleValidationRequested;
+		_messageStore = new(_editContext);
 	}
 
 	private void HandleValidationRequested(object? sender, ValidationRequestedEventArgs args)
 	{
-		messageStore?.Clear();
+		_messageStore?.Clear();
 
 		// Custom validation logic
 		if(!Model!.Options)
 		{
-			messageStore?.Add(() => Model.Options, "Select at least one.");
+			_messageStore?.Add(() => Model.Options, "Select at least one.");
 		}
 	}
 
@@ -63,9 +63,9 @@
 
 	public void Dispose()
 	{
-		if(editContext is not null)
+		if(_editContext is not null)
 		{
-			editContext.OnValidationRequested -= HandleValidationRequested;
+			_editContext.OnValidationRequested -= HandleValidationRequested;
 		}
 	}
 

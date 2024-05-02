@@ -4,14 +4,16 @@ option csharp_namespace = "Users.Api";
 
 package user;
 
+import "google/protobuf/empty.proto";
+
 service UsersProto {
   rpc GetUserByUsername (GetUserByUsernameRequest) returns (ProtoUser);
   rpc GetUserByPhone (GetUserByPhoneRequest) returns (ProtoUser);
   rpc GetUserById (GetUserByIdRequest) returns (ProtoUser);
   rpc GetUserByPhoneAndPassword (GetUserByPhoneAndPasswordRequest) returns (ProtoUser);
-  rpc SetUserPassword (SetUserPasswordRequest) returns (VoidOperationReply);
-  rpc AddUser (AddUserRequest) returns (VoidOperationReply);
-  rpc DisableUser (DisableUserRequest) returns (VoidOperationReply);
+  rpc SetUserPassword (SetUserPasswordRequest) returns (google.protobuf.Empty);
+  rpc AddUser (AddUserRequest) returns (google.protobuf.Empty);
+  rpc DisableUser (DisableUserRequest) returns (google.protobuf.Empty);
 }
 
 message GetUserByUsernameRequest {
@@ -48,8 +50,6 @@ message AddUserRequest {
 message DisableUserRequest {
   string id = 1;
 }
-
-message VoidOperationReply {}
 
 message OperationReply {
   uint32 result = 1;

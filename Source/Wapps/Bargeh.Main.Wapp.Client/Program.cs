@@ -4,7 +4,6 @@ using Forums.Api;
 using Grpc.Net.Client;
 using Grpc.Net.Client.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Sms.Api;
 using Topics.Api;
 using Users.Api;
 

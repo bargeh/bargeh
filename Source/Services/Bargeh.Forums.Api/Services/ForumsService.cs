@@ -7,7 +7,7 @@ using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Users.Api;
-using VoidOperationReply = Forums.Api.VoidOperationReply;
+using Empty = Forums.Api.Empty;
 
 namespace Bargeh.Forums.Api.Services;
 
@@ -108,7 +108,7 @@ public class ForumsService(ForumsDbContext dbContext, UsersProto.UsersProtoClien
 		};
 	}
 	
-	public override async Task<VoidOperationReply> JoinForum(JoinLeaveForumRequest request, ServerCallContext context)
+	public override async Task<Empty> JoinForum(JoinLeaveForumRequest request, ServerCallContext context)
 	{
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
 		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
@@ -135,7 +135,7 @@ public class ForumsService(ForumsDbContext dbContext, UsersProto.UsersProtoClien
 		return new();
 	}
 
-	public override async Task<VoidOperationReply> LeaveForum(JoinLeaveForumRequest request, ServerCallContext context)
+	public override async Task<Empty> LeaveForum(JoinLeaveForumRequest request, ServerCallContext context)
 	{
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
 		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);

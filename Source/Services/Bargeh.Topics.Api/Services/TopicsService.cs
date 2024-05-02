@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Topics.Api;
 using Users.Api;
-using VoidOperationReply = Topics.Api.VoidOperationReply;
+using Empty = Topics.Api.Empty;
 
 namespace Bargeh.Topics.Api.Services;
 
@@ -151,7 +151,7 @@ public class TopicsService(
 		};
 	}
 
-	public override async Task<VoidOperationReply> CreatePost(CreatePostRequest request, ServerCallContext callContext)
+	public override async Task<Empty> CreatePost(CreatePostRequest request, ServerCallContext callContext)
 	{
 		// PRODUCTION: Validate image size and store it
 		// PRODUCTION: It doesn't need topic id since it can get it from the parent post field
@@ -188,7 +188,7 @@ public class TopicsService(
 		return new();
 	}
 
-	public override async Task<VoidOperationReply> ReactOnPost(ReactOnPostRequest request,
+	public override async Task<Empty> ReactOnPost(ReactOnPostRequest request,
 															   ServerCallContext callContext)
 	{
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);

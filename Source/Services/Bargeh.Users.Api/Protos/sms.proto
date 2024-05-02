@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "Users.Api";
+
+package sms;
+
+import "google/protobuf/empty.proto";
+
+service SmsProto {
+  rpc SendVerification (SendVerificationRequest) returns (google.protobuf.Empty);
+  rpc ValidateVerificationCode (ValidateVerificationCodeRequest) returns (google.protobuf.Empty);
+}
+
+message SendVerificationRequest {
+  string phone = 1;
+}
+
+message ValidateVerificationCodeRequest {
+  string phone = 1;
+  string code = 2;
+}
