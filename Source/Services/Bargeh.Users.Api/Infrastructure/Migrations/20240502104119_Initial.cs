@@ -31,7 +31,7 @@ public partial class Initial : Migration
                                      {
                                          Id = table.Column<Guid>(type: "uuid", nullable: false),
                                          Code = table.Column<int>(type: "integer", nullable: false),
-                                         Phone = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                                         Phone = table.Column<string>(type: "character varying(11)", maxLength: 10, nullable: false),
                                          ExpireDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                                      },
                                      constraints: table =>

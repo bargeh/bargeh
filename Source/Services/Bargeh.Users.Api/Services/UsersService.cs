@@ -19,9 +19,11 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 	];
 
 	public override async Task<ProtoUser> GetUserByUsername(GetUserByUsernameRequest request,
-															   ServerCallContext callContext)
+															ServerCallContext callContext)
 	{
-		User? user = await dbContext.GetUserByUsernameAsync(request.Username);
+		#pragma warning disable CA1862
+		User? user = await dbContext.Users.FirstOrDefaultAsync(u => u.Username.ToLower() == request.Username);
+		#pragma warning restore CA1862
 
 		if(user == null)
 		{
@@ -36,7 +38,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 			CanCreateForums = user.CanCreateForums,
 			Cover = user.Cover,
 			DisplayName = user.DisplayName,
-			Email = user.Email,
+			Email = user.Email ?? string.Empty,
 			Enabled = user.Enabled,
 			PremiumDaysLeft = user.PremiumDaysLeft,
 			Avatar = user.Avatar,
@@ -45,7 +47,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 	}
 
 	public override async Task<ProtoUser> GetUserByPhone(GetUserByPhoneRequest request,
-															ServerCallContext callContext)
+														 ServerCallContext callContext)
 	{
 		User? user = await dbContext.GetUserByPhoneNumberAsync(request.Phone);
 
@@ -71,7 +73,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 	}
 
 	public override async Task<ProtoUser> GetUserById(GetUserByIdRequest request,
-														 ServerCallContext callContext)
+													  ServerCallContext callContext)
 	{
 		User? user = await dbContext.GetUserByIdAsync(request.Id);
 
@@ -97,7 +99,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 	}
 
 	public override async Task<ProtoUser> GetUserByPhoneAndPassword(GetUserByPhoneAndPasswordRequest request,
-																	   ServerCallContext callContext)
+																	ServerCallContext callContext)
 	{
 		User? user = await dbContext.GetUserByPhoneAndPasswordAsync(request.Phone, request.Password);
 
@@ -127,19 +129,18 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 			PremiumDaysLeft = user.PremiumDaysLeft,
 			Avatar = user.Avatar,
 			Followers = user.Followers
-
 		};
 	}
 
 	public override async Task<Empty> SetUserPassword(SetUserPasswordRequest request,
-																   ServerCallContext callContext)
+													  ServerCallContext callContext)
 	{
 		// PRODUCTION: Rebuild this method
-		
-		User user = await dbContext.GetUserByIdAsync(request.Id) ??
+
+		User user = await dbContext.GetUserByPhoneNumberAsync(request.Phone) ??
 					throw new RpcException(new(StatusCode.NotFound, "Not Found"));
 
-		user.Password = request.Password;
+		user.Password = request.Password.Hash(HashType.SHA256);
 
 		await dbContext.SaveChangesAsync();
 
@@ -185,8 +186,8 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 
 		int discriminator = Random.Shared.Next(1000, 9999);
 
-		string username = $"user{discriminator}";
-		string displayName = "کاربر " + discriminator;
+		string username = request.Username + discriminator;
+		string displayName = request.DisplayName;
 
 		User user = new()
 		{
@@ -202,13 +203,13 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 	}
 
 	public override async Task<Empty> DisableUser(DisableUserRequest request,
-															   ServerCallContext callContext)
+												  ServerCallContext callContext)
 	{
 		ProtoUser user = await GetUserById(new()
-											  {
-												  Id = request.Id
-											  },
-											  callContext);
+										   {
+											   Id = request.Id
+										   },
+										   callContext);
 
 		if(user is null)
 		{
