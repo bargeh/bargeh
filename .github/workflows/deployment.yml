@@ -20,6 +20,14 @@ jobs:
         username: test
         password: test
 
+    - name: Set up Kubernetes context
+      uses: azure/k8s-set-context@v4
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.KUBECONFIG_FILE }}
+        context: ir-thr-ba1
+
+
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v4.0.0
       with:
@@ -34,4 +42,4 @@ jobs:
 
     - name: Deploy to production
       run: |
-         aspirate apply --non-interactive --secret-password test
+         aspirate apply --non-interactive --secret-password test --kube-context ir-thr-ba1
