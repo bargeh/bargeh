@@ -10,9 +10,9 @@ namespace Bargeh.Users.Api.Services;
 public class SmsService(UsersDbContext dbContext, ILogger<UsersService> logger) : SmsProto.SmsProtoBase
 {
 	private readonly UsersService _usersService = new(dbContext, logger);
-	
+
 	public override async Task<Empty> SendVerification(SendVerificationRequest request,
-																 ServerCallContext callContext)
+													   ServerCallContext callContext)
 	{
 		bool phoneValid = request.Phone.IsPersianPhoneValid();
 
@@ -39,7 +39,7 @@ public class SmsService(UsersDbContext dbContext, ILogger<UsersService> logger) 
 		{
 			Phone = request.Phone,
 			Code = code,
-			ExpireDate = DateTime.UtcNow.AddMinutes(5)
+			ExpireDate = DateTime.UtcNow.AddMinutes(20)
 		});
 
 		await dbContext.SaveChangesAsync();
@@ -48,7 +48,7 @@ public class SmsService(UsersDbContext dbContext, ILogger<UsersService> logger) 
 	}
 
 	public override async Task<Empty> ValidateVerificationCode(ValidateVerificationCodeRequest request,
-																			ServerCallContext context)
+															   ServerCallContext context)
 	{
 		bool codeValid = ushort.TryParse(request.Code, out ushort code);
 		bool phoneValid = request.Phone.IsPersianPhoneValid();
@@ -67,7 +67,7 @@ public class SmsService(UsersDbContext dbContext, ILogger<UsersService> logger) 
 									   throw new RpcException(new(StatusCode.NotFound,
 																  "Parameter \"Code\" was not found"));
 
-		if(verification.ExpireDate >= DateTime.UtcNow)
+		if(verification.ExpireDate <= DateTime.UtcNow)
 		{
 			dbContext.Remove(verification);
 			await dbContext.SaveChangesAsync();
@@ -77,5 +77,4 @@ public class SmsService(UsersDbContext dbContext, ILogger<UsersService> logger) 
 
 		return new();
 	}
-	
 }

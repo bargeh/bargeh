@@ -4,8 +4,8 @@
 @using Bargeh.Main.Wapp.Client.Infrastructure.Dtos.Login
 @using Bargeh.Main.Wapp.Client.Services
 @using Grpc.Core
-@using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames
 @using Users.Api
+@using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames
 @inject IJSRuntime JsRuntime
 @inject ILogger<Login> Logger
 @inject NavigationManager NavigationManager
@@ -172,14 +172,14 @@
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		string? accessToken = await LocalStorageService.GetItemAsync<string>("login.access_token");
-		
+
 		if(!string.IsNullOrWhiteSpace(accessToken))
 		{
 			accessToken = accessToken[..accessToken.IndexOf("@", StringComparison.Ordinal)];
 			JwtSecurityTokenHandler tokenHandler = new();
 			IEnumerable<Claim> accessTokenClaims = tokenHandler.ReadJwtToken(accessToken).Claims!;
 			string username = accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.UniqueName).Value;
-			
+
 			NavigationManager.NavigateTo($"/User/{username}", replace: true);
 		}
 	}
@@ -206,7 +206,7 @@
 			_loginMessageStore.Add(() => _loginModel.Phone!, "شماره همراهی که وارد کردی درست نیست");
 			return;
 		}
-		
+
 		try
 		{
 			TokenResponse loginResult = await IdentityService.LoginAsync(new()
@@ -290,7 +290,7 @@
 			{
 				_registerMessageStore.Add(() => _registerModel, "قبلا یک کاربر با این شماره تلفن ثبت نام کرده. اگه تو بودی از بخش ورود وارد حسابت شو");
 				_resisterEditContext.NotifyValidationStateChanged();
-				
+
 				return;
 			}
 
@@ -409,12 +409,18 @@
 	private EditContext _setPasswordEditContext = null!;
 	private ValidationMessageStore _setPasswordValidationMessageStore = null!;
 
-	private void OnSetPasswordSubmit()
+	private async Task OnSetPasswordSubmit()
 	{
 		if(!_setPasswordEditContext.Validate())
 		{
 			return;
 		}
+
+		await UsersService.SetUserPasswordAsync(new()
+		{
+			Password = _setPasswordModel.Password,
+			Phone = _loginModel.Phone ?? _registerModel.Phone
+		});
 
 		NavigationManager.NavigateTo("/", true, true);
 	}

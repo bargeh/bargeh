@@ -58,8 +58,8 @@ partial class UsersDbContextModelSnapshot : ModelSnapshot
 
             b.Property<string>("Phone")
              .IsRequired()
-             .HasMaxLength(10)
-             .HasColumnType("character varying(10)");
+             .HasMaxLength(11)
+             .HasColumnType("character varying(11)");
 
             b.HasKey("Id");
 
