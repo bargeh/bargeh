@@ -29,4 +29,4 @@ jobs:
       run: |
         tree Source/Build/Bargeh.Aspire.AppHost/
         dotnet tool install --global aspirate --prerelease
-        aspirate generate --non-interactive --project Source/Build/Bargeh.Aspire.AppHost/ -sf --container-builder docker --image-pull-policy Always --private-registry --private-registry-url https://reg-e62ef000bf-bargeh.apps.ir-thr-ba1.arvancaas.ir --private-registry-username test --private-registry-password test --with-dashboard
+                aspirate generate --non-interactive -p "Source/Build/Bargeh.Aspire.AppHost/" -sf --container-builder docker --image-pull-policy Always --private-registry --private-registry-url https://reg-e62ef000bf-bargeh.apps.ir-thr-ba1.arvancaas.ir --private-registry-username test --private-registry-password test --with-dashboard
