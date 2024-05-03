@@ -1,0 +1,34 @@
+name: Deploy to bargeh.net
+
+on:
+  push:
+    branches:
+      - master  # Set a branch to trigger the workflow
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Login to Custom Docker Registry
+      uses: docker/login-action@v1 
+      with:
+        registry: https://reg-e62ef000bf-bargeh.apps.ir-thr-ba1.arvancaas.ir  # Your registry URL
+        username: test
+        password: test
+
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v4.0.0
+      with:
+          dotnet-version: 8.0
+
+    - name: Run CLI command
+      run: |
+        echo "Running some CLI command"
+        # Replace with your command
+        tree
+        dotnet tool install --global aspirate --prerelease
+        aspirate generate -p Source/Build/Bargeh.Aspire.AppHost/ -sf --container-builder docker --image-pull-policy Always --private-registry --private-registry-url https://reg-e62ef000bf-bargeh.apps.ir-thr-ba1.arvancaas.ir --private-registry-username test --private-registry-password --include-dashboard
