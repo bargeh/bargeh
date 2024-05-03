@@ -42,4 +42,5 @@ jobs:
 
     - name: Deploy to production
       run: |
+         cd Source/Build/Bargeh.Aspire.AppHost
          aspirate apply --non-interactive --secret-password test --kube-context ir-thr-ba1
