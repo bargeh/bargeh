@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <PublishSingleFile>false</PublishSingleFile>
+        <UseAppHost>true</UseAppHost>
     </PropertyGroup>
     
     <ItemGroup>

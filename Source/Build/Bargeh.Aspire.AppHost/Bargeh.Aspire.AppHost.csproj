@@ -7,6 +7,8 @@
         <Nullable>enable</Nullable>
         <IsAspireHost>true</IsAspireHost>
         <UserSecretsId>720E4015-544A-4362-B754-15A00083C864</UserSecretsId>
+        <UseAppHost>true</UseAppHost>
+        <PublishSingleFile>false</PublishSingleFile>
     </PropertyGroup>
 
     <ItemGroup>
