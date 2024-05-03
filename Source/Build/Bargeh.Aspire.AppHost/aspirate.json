@@ -1,6 +1,7 @@
 {
   "TemplatePath": null,
   "ContainerSettings": {
+	"Registry": "reg-e62ef000bf-bargeh.apps.ir-thr-ba1.arvancaas.ir",
 	"RepositoryPrefix": "bargeh",
 	"Tag": null,
 	"Builder": "docker"
