@@ -27,7 +27,5 @@ jobs:
 
     - name: Run CLI command
       run: |
-        echo "Running some CLI command"
-        # Replace with your command
         dotnet tool install --global aspirate --prerelease
-        aspirate generate -p Source/Build/Bargeh.Aspire.AppHost/ -sf --container-builder docker --image-pull-policy Always --private-registry --private-registry-url https://reg-e62ef000bf-bargeh.apps.ir-thr-ba1.arvancaas.ir --private-registry-username test --private-registry-password --include-dashboard
+        aspirate generate --non-interactive -sf --container-builder docker --image-pull-policy Always --private-registry --private-registry-url https://reg-e62ef000bf-bargeh.apps.ir-thr-ba1.arvancaas.ir --private-registry-username test --private-registry-password test --with-dashboard
