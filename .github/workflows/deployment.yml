@@ -25,9 +25,13 @@ jobs:
       with:
           dotnet-version: 8.0
 
-    - name: Run CLI command
+    - name: Generate Manifest
       run: |
         dotnet tool install --global aspirate --prerelease
         dotnet workload restore
         cd Source/Build/Bargeh.Aspire.AppHost
         aspirate generate --non-interactive --container-builder docker --image-pull-policy Always --private-registry --private-registry-url https://reg-e62ef000bf-bargeh.apps.ir-thr-ba1.arvancaas.ir --private-registry-username test --private-registry-password test --with-dashboard --secret-password test
+
+    - name: Deploy to production
+      run: |
+         aspirate apply --non-interactive --secret-password test
