@@ -23,7 +23,7 @@
 				<span class="title-header">برگه</span>
 			</a>
 			<div class="header-navlinks">
-				<a class="header-navlink">انجمن‌ها</a>
+				<a class="header-navlink" @onclick='() => NavigationManager.NavigateTo("/Forum/New")'>انجمن جدید</a>
 				<a class="header-navlink">گفت و گوها</a>
 			</div>
 		</div>
@@ -82,7 +82,7 @@ else
 
 @code{
 	private bool _notFound;
-	
+
 	protected override void OnInitialized()
 	{
 		NotFoundService.OnNotFound += SetNotFound;
@@ -130,4 +130,5 @@ else
 		await LocalStorageService.SetItemAsync("login.access_token", $"{result.AccessToken}@{DateTime.UtcNow.AddMinutes(5)}");
 		await LocalStorageService.SetItemAsync("login.refresh_token", result.RefreshToken);
 	}
+
 }

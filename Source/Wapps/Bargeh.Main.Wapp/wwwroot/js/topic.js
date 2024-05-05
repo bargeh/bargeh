@@ -110,6 +110,7 @@ async function submitPost(obj) {
 }
 
 function addPosts(rawPostchains) {
+    debugger
     const jsonPostchains = JSON.parse(rawPostchains)
 
     $(jsonPostchains.Posts).each(function (index, e) {

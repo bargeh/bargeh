@@ -56,7 +56,7 @@
 	<p>به برگه خوش اومدی! برای شروع کار، لطفا اول ثبت نام کن</p>
 	</div> *@
 
-			<EditForm EditContext="_resisterEditContext" FormName="register" OnValidSubmit="OnRegisterSubmit">
+			<EditForm EditContext="_registerEditContext" FormName="register" OnValidSubmit="OnRegisterSubmit">
 				<DataAnnotationsValidator/>
 
 				<div class="input-group">
@@ -149,8 +149,8 @@
 
 		#region Register Initialization
 
-		_resisterEditContext = new(_registerModel);
-		_registerMessageStore = new(_resisterEditContext);
+		_registerEditContext = new(_registerModel);
+		_registerMessageStore = new(_registerEditContext);
 
 		#endregion
 
@@ -243,12 +243,12 @@
 	#region Register
 
 	private RegisterDto _registerModel = new();
-	private EditContext _resisterEditContext = null!;
+	private EditContext _registerEditContext = null!;
 	private ValidationMessageStore _registerMessageStore = null!;
 
 	private async Task OnRegisterSubmit()
 	{
-		if(!_resisterEditContext.Validate())
+		if(!_registerEditContext.Validate())
 		{
 			return;
 		}
@@ -289,7 +289,7 @@
 			if(exception.StatusCode == StatusCode.AlreadyExists)
 			{
 				_registerMessageStore.Add(() => _registerModel, "قبلا یک کاربر با این شماره تلفن ثبت نام کرده. اگه تو بودی از بخش ورود وارد حسابت شو");
-				_resisterEditContext.NotifyValidationStateChanged();
+				_registerEditContext.NotifyValidationStateChanged();
 
 				return;
 			}

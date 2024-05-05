@@ -1,0 +1,104 @@
+﻿@page "/Forum/New"
+@using System.ComponentModel.DataAnnotations
+@using Bargeh.Main.Wapp.Client.Services
+@using Forums.Api
+
+@inject ForumsProto.ForumsProtoClient ForumsService
+@inject LocalStorageService LocalStorageService
+@inject NavigationManager NavigationManager
+
+<div class="popup">
+	<span class="no-block-margin pad-bottom horizontal-align center-flex">انجمن جدید</span>
+
+	<EditForm EditContext="_addForumEditContext" FormName="AddForum" OnValidSubmit="OnAddForumSubmit">
+		<div class="input-group">
+			<label>نام انجمن</label>
+			<InputText aria-required="true" class="button-bubble-static" @bind-Value="@_addForumModel.Name"/>
+		</div>
+
+		<div class="input-group">
+			<label>توضیحات انجمن</label>
+			<InputText aria-required="true" class="button-bubble-static" @bind-Value="@_addForumModel.Description"/>
+		</div>
+
+		<div class="input-group">
+			<label>یوزرنیم انجمن</label>
+			<InputText aria-required="true" dir="ltr" class="button-bubble-static"
+					   @bind-Value="@_addForumModel.Permalink"/>
+		</div>
+
+		<button class="button-bubble-static-inline" type="submit">ایجاد</button>
+	</EditForm>
+</div>
+
+@code
+{
+	@* ReSharper disable once FieldCanBeMadeReadOnly.Local *@
+	private AddForumDto _addForumModel = new();
+	private EditContext _addForumEditContext = null!;
+	private ValidationMessageStore _addForumMessageStore = null!;
+
+	private string? _accessToken;
+
+	protected override Task OnInitializedAsync()
+	{
+		_addForumEditContext = new(_addForumModel);
+		_addForumMessageStore = new(_addForumEditContext);
+
+		return Task.CompletedTask;
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if(firstRender)
+		{
+			_accessToken = LocalStorageService.GetAccessToken(await LocalStorageService.GetItemAsync<string>("login.access_token"));
+
+
+			if(string.IsNullOrWhiteSpace(_accessToken))
+			{
+				NavigationManager.NavigateTo("/Login", replace: true);
+			}
+		}
+	}
+
+	private async Task OnAddForumSubmit()
+	{
+		HashSet<char> allowedCharsForUsername =
+		[
+			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+			'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+			'_', '.'
+		];
+
+		if(_addForumModel.Permalink.ToLower().All(c => allowedCharsForUsername.Contains(c)))
+		{
+			_addForumMessageStore.Add(() => _addForumModel, "یوزرنیمی که برای انجمنت وارد کردی درست نیست");
+		}
+
+		string permalink = (await ForumsService.AddForumAsync(new()
+							   {
+								   Name = _addForumModel.Name,
+								   Permalink = _addForumModel.Permalink,
+								   Description = _addForumModel.Description,
+								   AccessToken = _accessToken
+							   })).Permalink;
+
+		NavigationManager.NavigateTo($"/Forum/{permalink}");
+	}
+
+	#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+	private class AddForumDto
+	{
+		[Required(ErrorMessage = "لطفا یه اسم برای انجمنت وارد کن")]
+		public string Name { get; set; }
+
+		[Required(ErrorMessage = "لطفا یه یوزرنیم برای انجمنت وارد کن")]
+		public string Permalink { get; set; }
+
+		public string Description { get; set; } = string.Empty;
+	}
+	#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+}

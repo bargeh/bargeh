@@ -46,5 +46,5 @@ message ProtoForum {
 }
 
 message AddForumReply {
-  string id = 1;
+  string permalink = 1;
 }

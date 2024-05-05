@@ -8,12 +8,6 @@ using _Imports = Bargeh.Main.Wapp.Client._Imports;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureKestrel(options =>
-{
-	options.ListenAnyIP(8080);
-});
-
-
 builder.AddServiceDefaults();
 
 #region Builder

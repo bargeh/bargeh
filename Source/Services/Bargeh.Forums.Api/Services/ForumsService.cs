@@ -85,7 +85,7 @@ public class ForumsService(ForumsDbContext dbContext, UsersProto.UsersProtoClien
 
 		return new()
 		{
-			Id = forum.Id.ToString()
+			Permalink = forum.Permalink
 		};
 
 		// TODO: Add the owner as a member of the forum too

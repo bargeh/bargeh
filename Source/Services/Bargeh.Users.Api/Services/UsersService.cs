@@ -5,6 +5,7 @@ using Grpc.Core;
 using MatinDevs.PersianPhoneNumbers;
 using Microsoft.EntityFrameworkCore;
 using Users.Api;
+using static System.String;
 
 namespace Bargeh.Users.Api.Services;
 
@@ -90,7 +91,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 			CanCreateForums = user.CanCreateForums,
 			Cover = user.Cover,
 			DisplayName = user.DisplayName,
-			Email = user.Email,
+			Email = user.Email ?? string.Empty,
 			Enabled = user.Enabled,
 			PremiumDaysLeft = user.PremiumDaysLeft,
 			Avatar = user.Avatar,
@@ -159,13 +160,13 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 		}
 
 
-		if(string.IsNullOrWhiteSpace(request.DisplayName))
+		if(IsNullOrWhiteSpace(request.DisplayName))
 		{
 			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter \"Display Name\" is not valid"));
 		}
 
 
-		if(string.IsNullOrWhiteSpace(request.Username) || request.Username.Length <= 4 ||
+		if(IsNullOrWhiteSpace(request.Username) || request.Username.Length <= 4 ||
 		   !request.Username.ToLower().All(c => _allowedCharsForUsername.Contains(c)))
 		{
 			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter \"Username\" is not valid"));

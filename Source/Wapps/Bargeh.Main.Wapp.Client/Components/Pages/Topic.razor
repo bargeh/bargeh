@@ -162,6 +162,8 @@ else
 			Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
 		};
 
+		// TODO: Fix child posts being added 2 times
+
 		string json = JsonSerializer.Serialize(_topic!, jsonSerializerOptions);
 
 		await JsRuntime.InvokeVoidAsync("addPosts", json);
