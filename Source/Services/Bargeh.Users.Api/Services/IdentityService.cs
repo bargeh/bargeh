@@ -10,6 +10,8 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 namespace Bargeh.Users.Api.Services;
 
+// TODO: Fix forums and users urls are sensitive to caps
+
 // ReSharper disable once UnusedType.Global
 public class IdentityService(
 	UsersDbContext dbContext,
@@ -18,13 +20,13 @@ public class IdentityService(
 	: IdentityProto.IdentityProtoBase
 {
 	private readonly UsersService _usersService = new(dbContext, logger);
-	
+
 	#region Grpc Endpoints
 
 	public override async Task<TokenResponse> Login(LoginRequest request, ServerCallContext callContext)
 	{
 		ProtoUser user = default!;
-		
+
 		try
 		{
 			user = await _usersService.GetUserByPhoneAndPassword(new()

@@ -106,11 +106,13 @@ public class TopicsService(
 		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
 		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
 
+		ProtoForum forum = null!;
+
 		try
 		{
-			await _forumsService.GetForumById(new()
+			forum = await _forumsService.GetForumByPermalink(new()
 			{
-				Id = request.Forum
+				Permalink = request.Forum
 			}, callContext);
 		}
 		catch(RpcException exception)
@@ -129,7 +131,7 @@ public class TopicsService(
 		Topic topic = new()
 		{
 			Title = request.Title,
-			Forum = Guid.Parse(request.Forum)
+			Forum = Guid.Parse(forum.Id)
 		};
 
 		await dbContext.AddAsync(topic);

@@ -1,0 +1,86 @@
+﻿@page "/Topic/New/{ForumPermalink}"
+@using System.ComponentModel.DataAnnotations
+@using Bargeh.Main.Wapp.Client.Services
+@using Forums.Api
+
+@inject TopicsProto.TopicsProtoClient TopicsService
+@inject LocalStorageService LocalStorageService
+@inject NavigationManager NavigationManager
+
+<div class="popup">
+	<span class="no-block-margin pad-bottom horizontal-align center-flex">انجمن جدید</span>
+
+	<EditForm EditContext="_addTopicEditContext" FormName="AddTopic" OnValidSubmit="OnAddTopicSubmit">
+		<div class="input-group">
+			<label>عنوان گفت و گو</label>
+			<InputText aria-required="true" class="button-bubble-static" @bind-Value="@_addTopicModel.Title"/>
+		</div>
+
+		<div class="input-group">
+			<label>متن گفت و گو</label>
+			<InputTextArea aria-required="true" class="button-bubble-static" @bind-Value="@_addTopicModel.Body"/>
+		</div>
+
+		<button class="button-bubble-static-inline" type="submit">ایجاد</button>
+	</EditForm>
+</div>
+
+@code
+{
+	[Parameter]
+	public string ForumPermalink { get; set; } = null!;
+
+	@* ReSharper disable once FieldCanBeMadeReadOnly.Local *@
+	private AddTopicDto _addTopicModel = new();
+	private EditContext _addTopicEditContext = null!;
+	private ValidationMessageStore _addTopicMessageStore = null!;
+
+	private string? _accessToken;
+
+	protected override Task OnInitializedAsync()
+	{
+		_addTopicEditContext = new(_addTopicModel);
+		_addTopicMessageStore = new(_addTopicEditContext);
+
+		return Task.CompletedTask;
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if(firstRender)
+		{
+			_accessToken = LocalStorageService.GetAccessToken(await LocalStorageService.GetItemAsync<string>("login.access_token"));
+
+
+			if(string.IsNullOrWhiteSpace(_accessToken))
+			{
+				NavigationManager.NavigateTo("/Login", replace: true);
+			}
+		}
+	}
+
+	private async Task OnAddTopicSubmit()
+	{
+		string permalink = (await TopicsService.CreateTopicAsync(new()
+							   {
+								   AccessToken = _accessToken,
+								   Forum = ForumPermalink,
+								   Title = _addTopicModel.Title,
+								   Body = _addTopicModel.Body
+							   })).Permalink;
+
+		NavigationManager.NavigateTo($"/Topic/{ForumPermalink}/{permalink}");
+	}
+
+	#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+	private class AddTopicDto
+	{
+		[Required(ErrorMessage = "لطفا یه اسم برای گفت و گو وارد کن")]
+		public string Title { get; set; }
+
+		[Required(ErrorMessage = "لطفا یه متن هم برای گفت و گو وارد کن")]
+		public string Body { get; set; }
+	}
+	#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+}
