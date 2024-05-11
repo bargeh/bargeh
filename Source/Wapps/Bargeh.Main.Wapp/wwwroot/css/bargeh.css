@@ -553,3 +553,7 @@ input.button-bubble-static:focus {
     text-align: center;
     padding-inline-start: 0;
 }
+
+.small-text {
+    font-size: small;
+}

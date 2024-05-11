@@ -105,12 +105,11 @@ async function submitPost(obj) {
     const id = obj.parent().children().eq(-2).find("[id$='_id']").val() ?? $('.topic-first-post').find('[id$=_id]').val()
     const body = obj.find('.text-input').val()
     await topicsDotnetHelper.invokeMethodAsync('OnNewPostSubmit', body, id)
-    
+
     createPost(body, username, '', '', 'hehe', id, 0, 0, 0, 0, 0)
 }
 
 function addPosts(rawPostchains) {
-    debugger
     const jsonPostchains = JSON.parse(rawPostchains)
 
     $(jsonPostchains.Posts).each(function (index, e) {
@@ -141,7 +140,7 @@ function createPost(text, author, attachment, image, id, parentId, likes, loves,
         attachElement = '<div class="post-attachment"><div><strong>فایل پیوست‌شده</strong><p class="no-block-margin">' + getFileName(attachment, true) + '</p></div><img src="/img/File.svg" class="post-file footer-links" alt="فایل"></div>'
     }
 
-    let element = '<div class="shadow-box-nohover post_' + id + '"><input type="hidden" id="' + id + '_id" value="' + id + '"/><input type="hidden" id="' + id + '_likes" value="' + likes + '"/><input type="hidden" id="' + id + '_loves" value="' + loves + '"/><input type="hidden" id="' + id + '_funnies" value="' + funnies + '"/><input type="hidden" id="' + id + '_insights" value="' + insights + '"/><input type="hidden" id="' + id + '_dislikes" value="' + dislikes + '"/><p class="post-text no-block-margin">' + text + '</p>' + imageElement + attachElement + '<div class="topic-info"><p>توسط <a href="/User/' + author + '">@' + author + '</a></p><div class="footer-links button-bubble reactions"><span class="reactions-count">' + toPersianDigits(reactions) + '</span><img src="/img/Like.svg" class="reaction-icon" alt="پسند"> <img src="img/Love.svg" class="reaction-icon" alt="قلب"> <img src="/img/Light.svg" class="reaction-icon" alt="چراغ"></div></div></div>'
+    let element = '<div class="shadow-box-nohover post_' + id + '"><input type="hidden" id="' + id + '_id" value="' + id + '"/><input type="hidden" id="' + id + '_likes" value="' + likes + '"/><input type="hidden" id="' + id + '_loves" value="' + loves + '"/><input type="hidden" id="' + id + '_funnies" value="' + funnies + '"/><input type="hidden" id="' + id + '_insights" value="' + insights + '"/><input type="hidden" id="' + id + '_dislikes" value="' + dislikes + '"/><p class="post-text no-block-margin">' + text + '</p>' + imageElement + attachElement + '<div class="topic-info"><p>توسط <a href="/User/' + author + '">@' + author + '</a></p><div class="footer-links button-bubble reactions"><span class="reactions-count">' + toPersianDigits(reactions) + '</span><img src="/img/Like.svg" class="reaction-icon" alt="پسند"> <img src="img/Love.svg" class="reaction-icon" alt="قلب"> <img src="/img/Light.svg" class="reaction-icon" alt="چراغ"></div></div><a onclick="onReportButtonClick(this)" class="small-text">گزارش</a></div>'
 
     if (parent.length) {
         parent.parent().append(element)
@@ -181,4 +180,18 @@ function getSeenPostchains() {
     })
 
     return [...new Set(ids)]
+}
+
+async function onReportButtonClick(caller) {
+    const confirm = prompt('آیا از گزارش این نوشته مطمئن هستید؟')
+
+    if (!confirm) {
+        return
+    }
+
+    caller = $(caller)
+
+    const id = caller.parent().find('input[id$="_id"]').val()
+
+    await topicsDotnetHelper.invokeMethodAsync('ReportPost', id)
 }
