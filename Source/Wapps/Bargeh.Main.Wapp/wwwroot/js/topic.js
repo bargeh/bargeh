@@ -183,15 +183,17 @@ function getSeenPostchains() {
 }
 
 async function onReportButtonClick(caller) {
-    const confirm = prompt('آیا از گزارش این نوشته مطمئن هستید؟')
+    //const confirm = prompt('آیا از گزارش این نوشته مطمئن هستید؟')
 
-    if (!confirm) {
-        return
-    }
+    //if (!confirm) {
+    //return
+    //}
 
     caller = $(caller)
 
     const id = caller.parent().find('input[id$="_id"]').val()
 
     await topicsDotnetHelper.invokeMethodAsync('ReportPost', id)
+
+    alert('ممنون. گزارشت رو دریافت کردیم و خیلی سریع بررسی‌ش خواهیم کرد')
 }
