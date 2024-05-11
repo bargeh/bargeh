@@ -14,6 +14,7 @@ service TopicsProto {
   rpc GetMorePostChains (GetMorePostChainsRequest) returns (GetMorePostChainsReply);
   rpc GetRecentTopicsByForum (GetRecentTopicsByForumRequest) returns (GetRecentTopicsByForumReply);
   rpc GetHeadpostByTopic (GetHeadpostByTopicRequest) returns (ProtoPost);
+  rpc ReportPost (ReportPostRequest) returns (google.protobuf.Empty);
 }
 
 message GetTopicByPermalinkRequest {
@@ -87,6 +88,11 @@ message GetRecentTopicsByForumReply {
 
 message GetHeadpostByTopicRequest {
   string topic = 1;
+}
+
+message ReportPostRequest {
+  string access_token = 1;
+  string id = 2;
 }
 
 enum ReactionUpdateState {

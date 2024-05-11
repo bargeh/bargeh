@@ -12,8 +12,9 @@ public class ForumsDbContext(DbContextOptions<ForumsDbContext> options) : DbCont
 	public DbSet<Forum> Forums { get; init; }
 	public DbSet<ForumMembership> ForumMemberships { get; init; }
 	public DbSet<Topic> Topics { get; init; }
-	public DbSet<Post> Posts { get; init; }
+	public DbSet<Post?> Posts { get; init; }
 	public DbSet<Reaction> Reactions { get; init; }
+	public DbSet<Report> Reports { get; init; }
 
 	#endregion
 

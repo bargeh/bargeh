@@ -231,6 +231,11 @@ else
 	[JSInvokable]
 	public async Task ReportPost(string id)
 	{
+		await TopicsService.ReportPostAsync(new()
+		{
+			AccessToken = LocalStorageService.GetAccessToken(await LocalStorageService.GetItemAsync<string>("login.access_token")),
+			Id = id
+		});
 	}
 
 	private Task PersistComponentState()

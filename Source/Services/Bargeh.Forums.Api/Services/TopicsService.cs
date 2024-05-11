@@ -16,7 +16,7 @@ public class TopicsService(
 	UsersProto.UsersProtoClient usersService)
 	: TopicsProto.TopicsProtoBase
 {
-	private ForumsService _forumsService = new(dbContext, usersService);
+	private readonly ForumsService _forumsService = new(dbContext, usersService);
 
 	public override async Task<ProtoTopic> GetTopicByPermalink(GetTopicByPermalinkRequest request,
 															   ServerCallContext callContext)
@@ -330,6 +330,34 @@ public class TopicsService(
 		return reply;
 	}
 
+	public override async Task<Empty> ReportPost(ReportPostRequest request, ServerCallContext callContext)
+	{
+		// TODO: Make some limitation to prevent mass reports
+
+		IEnumerable<Claim> accessTokenClaims = await ValidateAndGetUserClaims(request.AccessToken);
+		Guid userId = Guid.Parse(accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
+
+		if(!Guid.TryParse(request.Id, out Guid postId))
+			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter Id is not valid"));
+
+		Post post = await GetPostById(postId)
+					?? throw new RpcException(new(StatusCode.NotFound, "No post was found with this Id"));
+
+		if(await dbContext.Reports.AnyAsync(p => p.Post == post && p.UserId == userId))
+			throw new RpcException(new(StatusCode.FailedPrecondition, "The user can't report one post more than once"));
+
+		Report report = new()
+		{
+			UserId = userId,
+			Post = post
+		};
+
+		await dbContext.AddAsync(report);
+		await dbContext.SaveChangesAsync();
+
+		return new();
+	}
+
 	#region Private Methods
 
 	private static async Task<IEnumerable<Claim>> ValidateAndGetUserClaims(string accessToken)
@@ -450,6 +478,11 @@ public class TopicsService(
 		}
 
 		return protoTopics;
+	}
+
+	private async Task<Post?> GetPostById(Guid id)
+	{
+		return await dbContext.Posts.FirstOrDefaultAsync(p => p.Id == id);
 	}
 
 	#endregion
