@@ -5,7 +5,6 @@ using Bargeh.Users.Api.Infrastructure;
 using Bargeh.Users.Api.Infrastructure.Models;
 using Grpc.Core;
 using Microsoft.IdentityModel.Tokens;
-using Users.Api;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace Bargeh.Users.Api.Services;

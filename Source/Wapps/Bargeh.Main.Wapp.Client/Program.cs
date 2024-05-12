@@ -1,10 +1,10 @@
+using Bargeh.Forums.Api;
 using Bargeh.Main.Wapp.Client.Infrastructure;
 using Bargeh.Main.Wapp.Client.Services;
-using Forums.Api;
+using Bargeh.Users.Api;
 using Grpc.Net.Client;
 using Grpc.Net.Client.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Users.Api;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 

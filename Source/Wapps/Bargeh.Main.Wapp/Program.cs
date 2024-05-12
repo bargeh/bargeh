@@ -1,9 +1,9 @@
 ﻿using Bargeh.Aspire.ServiceDefaults;
+using Bargeh.Forums.Api;
 using Bargeh.Main.Wapp.Client.Infrastructure;
 using Bargeh.Main.Wapp.Client.Services;
 using Bargeh.Main.Wapp.Components;
-using Forums.Api;
-using Users.Api;
+using Bargeh.Users.Api;
 using _Imports = Bargeh.Main.Wapp.Client._Imports;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);

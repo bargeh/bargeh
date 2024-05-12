@@ -1,7 +1,9 @@
 using Bargeh.Aspire.ServiceDefaults;
 using Bargeh.Forums.Api.Infrastructure;
 using Bargeh.Forums.Api.Services;
-using Users.Api;
+using Bargeh.Users.Api;
+
+// FROMHERE: Fix the errors, code the service
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,11 @@ builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 
 builder.AddNpgsqlDbContext<ForumsDbContext>("postgres", settings =>
+{
+	settings.MaxRetryCount = 10;
+});
+
+builder.AddNpgsqlDbContext<UsersDbContext>("postgres", settings =>
 {
 	settings.MaxRetryCount = 10;
 });

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "Users.Api";
+option csharp_namespace = "Bargeh.Users.Api";
 
 package user;
 

@@ -1,9 +1,9 @@
-﻿// ReSharper disable EntityFramework.ModelValidation.UnlimitedStringLength
-namespace Bargeh.Users.Api.Infrastructure.Models;
+﻿namespace Bargeh.Users.Api.Infrastructure.Models;
 
+// PRODUCTION: Apply length limits for strings
 public class User
 {
-	public Guid Id { get; init; } = Guid.NewGuid ();
+	public Guid Id { get; init; }
 	public required string Username { get; init; }
 	public required string DisplayName { get; init; }
 	public required string PhoneNumber { get; init; }

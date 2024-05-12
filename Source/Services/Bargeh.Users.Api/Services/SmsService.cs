@@ -3,7 +3,6 @@ using Bargeh.Users.Api.Infrastructure.Models;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MatinDevs.PersianPhoneNumbers;
-using Users.Api;
 
 namespace Bargeh.Users.Api.Services;
 

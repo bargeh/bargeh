@@ -21,4 +21,10 @@ builder.AddProject<Bargeh_Main_Wapp>("wapp", launchProfileName: "https")
 	   .WithReference(usersApi)
 	   .WithReference(forumsApi);
 
+builder.AddProject<Bargeh_Admin_Api>("admin")
+	   .WithReference(usersApi)
+	   .WithReference(forumsApi)
+	   .WithReference(postgres)
+	   .AsHttp2Service();
+
 builder.Build().Run();

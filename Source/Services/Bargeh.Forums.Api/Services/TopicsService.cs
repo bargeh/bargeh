@@ -2,12 +2,11 @@
 using System.Security.Claims;
 using Bargeh.Forums.Api.Infrastructure;
 using Bargeh.Forums.Api.Infrastructure.Models;
-using Forums.Api;
+using Bargeh.Users.Api;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Users.Api;
 
 namespace Bargeh.Forums.Api.Services;
 
