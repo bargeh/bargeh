@@ -36,7 +36,7 @@ public class AdminService(UsersProto.UsersProtoClient usersService)
 	public override async Task<Empty> DisableUser(DisableUserRequest request, ServerCallContext context)
 	{
 		await ValidateAndGetUserClaims(request.AccessToken);
-		
+
 		try
 		{
 			await usersService.DisableUserAsync(new()
@@ -48,6 +48,13 @@ public class AdminService(UsersProto.UsersProtoClient usersService)
 		{
 			throw new RpcException(new(StatusCode.Internal, JsonSerializer.Serialize(exception)));
 		}
+
+		return new();
+	}
+
+	public override async Task<Empty> DeleteForum(DeleteForumRequest request, ServerCallContext context)
+	{
+		await ValidateAndGetUserClaims(request.AccessToken);
 
 		return new();
 	}
