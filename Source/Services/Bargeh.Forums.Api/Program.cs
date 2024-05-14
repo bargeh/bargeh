@@ -17,11 +17,6 @@ builder.AddNpgsqlDbContext<ForumsDbContext>("postgres", settings =>
 	settings.MaxRetryCount = 10;
 });
 
-builder.AddNpgsqlDbContext<UsersDbContext>("postgres", settings =>
-{
-	settings.MaxRetryCount = 10;
-});
-
 builder.Services.AddGrpcClient<UsersProto.UsersProtoClient>(options =>
 {
 	options.Address = new("https://localhost:5501");

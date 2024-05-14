@@ -17,7 +17,6 @@ public class ForumsService(ForumsDbContext dbContext, UsersProto.UsersProtoClien
 
 	private static async Task<IEnumerable<Claim>> ValidateAndGetUserClaims(string accessToken)
 	{
-		AddForumRequest request;
 		JwtSecurityTokenHandler tokenHandler = new();
 		SecurityKey key = new X509SecurityKey(new("C:/Source/Bargeh/JwtPublicKey.cer"));
 

@@ -148,7 +148,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 
 	public override async Task<Empty> AddUser(AddUserRequest request, ServerCallContext callContext)
 	{
-		// PRODUCTION: Validate Captcha
+		// PRODUCTION: Remove captcha
 
 		if(!request.AcceptedTos)
 		{

@@ -21,6 +21,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Protobuf Include="../Bargeh.Users.Api/Protos/user.proto" GrpcServices="Client">
+            <Link>Protos/user.proto</Link>
+        </Protobuf>
         <Protobuf Include="Protos/admin.proto" GrpcServices="Server"/>
     </ItemGroup>
 
