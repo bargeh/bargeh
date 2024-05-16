@@ -15,9 +15,11 @@ builder.AddNpgsqlDbContext<ForumsDbContext>("postgres", settings =>
 	settings.MaxRetryCount = 10;
 });
 
+Uri usersApi = new(Environment.GetEnvironmentVariable("services__users__https__0")!);
+
 builder.Services.AddGrpcClient<UsersProto.UsersProtoClient>(options =>
 {
-	options.Address = new("https://localhost:5501");
+	options.Address = usersApi;
 });
 
 builder.Services.AddCors(options =>
