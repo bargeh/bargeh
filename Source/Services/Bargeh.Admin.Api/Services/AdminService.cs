@@ -1,14 +1,18 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json;
+using Bargeh.Forums.Api.Infrastructure;
+using Bargeh.Forums.Api.Infrastructure.Models;
 using Bargeh.Users.Api;
+using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Bargeh.Admin.Api.Services;
 
-public class AdminService(UsersProto.UsersProtoClient usersService)
+public class AdminService(UsersProto.UsersProtoClient usersService, ForumsDbContext forumsDbContext)
 	: AdminProto.AdminProtoBase
 {
 	public override async Task<Empty> AddUser(AddUserRequest request, ServerCallContext context)
@@ -59,6 +63,17 @@ public class AdminService(UsersProto.UsersProtoClient usersService)
 		return new();
 	}
 
+	public override async Task<ProtoReportsList> GetReports(Empty request, ServerCallContext context)
+	{
+		// TODO: Should get access token
+		List<Report> reports = await forumsDbContext.Reports.Include(r => r.Post).ToListAsync();
+
+		ProtoReportsList protoReportsList = new();
+		protoReportsList.Reports.Add(MapReportToProtoReport(reports));
+
+		return protoReportsList;
+	}
+
 	private static async Task ValidateAndGetUserClaims(string accessToken)
 	{
 		JwtSecurityTokenHandler tokenHandler = new();
@@ -90,5 +105,19 @@ public class AdminService(UsersProto.UsersProtoClient usersService)
 		{
 			throw new RpcException(new(StatusCode.Unauthenticated, "Why should you be able to access this API?"));
 		}
+	}
+
+	private static RepeatedField<ProtoReport> MapReportToProtoReport(List<Report> reports)
+	{
+		RepeatedField<ProtoReport> protoReports = new();
+
+		foreach(ProtoReport protoReport in reports.Select(report => new ProtoReport
+				{
+					Id = report.Id.ToString(),
+					PostBody = report.Post.Body
+				}))
+			protoReports.Add(protoReport);
+
+		return protoReports;
 	}
 }
