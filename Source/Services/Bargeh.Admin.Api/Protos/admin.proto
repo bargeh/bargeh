@@ -38,7 +38,6 @@ message DeleteForumRequest {
 message ProtoReport {
   string id = 1;
   string post_body = 2;
-  string author_username = 3;
 }
 
 message ProtoReportsList {
