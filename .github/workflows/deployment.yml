@@ -45,7 +45,7 @@ jobs:
         dotnet tool install --global aspirate --prerelease
         dotnet workload restore
         cd Source/Build/Bargeh.Aspire.AppHost
-        aspirate generate --non-interactive --container-builder docke --output-format helm --image-pull-policy Always --private-registry --private-registry-url https://reg-e62ef000bf-bargeh.apps.ir-thr-ba1.arvancaas.ir --private-registry-username test --private-registry-password test --include-dashboard --secret-password test
+        aspirate generate --non-interactive --container-builder docker --output-format helm --image-pull-policy Always --private-registry --private-registry-url https://reg-e62ef000bf-bargeh.apps.ir-thr-ba1.arvancaas.ir --private-registry-username test --private-registry-password test --include-dashboard --secret-password test
 
     - name: Deploy to production
       run: |
