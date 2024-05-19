@@ -74,6 +74,40 @@ public class AdminService(UsersProto.UsersProtoClient usersService, ForumsDbCont
 		return protoReportsList;
 	}
 
+
+	public override async Task<Empty> AcceptReport(ReportReviewRequest request, ServerCallContext context)
+	{
+		await ValidateAndGetUserClaims(request.AccessToken);
+
+		if(!Guid.TryParse(request.ReportId, out Guid reportId))
+			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter ID is not valid"));
+
+		Report report = await forumsDbContext.Reports.Include(r => r.Post).FirstOrDefaultAsync(r => r.Id == reportId)
+						?? throw new RpcException(new(StatusCode.NotFound, "No report was found with this ID"));
+
+		forumsDbContext.Remove(report.Post);
+		forumsDbContext.Remove(report);
+		await forumsDbContext.SaveChangesAsync();
+
+		return new();
+	}
+
+	public override async Task<Empty> DeclineReport(ReportReviewRequest request, ServerCallContext context)
+	{
+		await ValidateAndGetUserClaims(request.AccessToken);
+
+		if(!Guid.TryParse(request.ReportId, out Guid reportId))
+			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter ID is not valid"));
+
+		Report report = await forumsDbContext.Reports.Include(r => r.Post).FirstOrDefaultAsync(r => r.Id == reportId)
+						?? throw new RpcException(new(StatusCode.NotFound, "No report was found with this ID"));
+
+		forumsDbContext.Remove(report);
+		await forumsDbContext.SaveChangesAsync();
+
+		return new();
+	}
+
 	private static async Task ValidateAndGetUserClaims(string accessToken)
 	{
 		JwtSecurityTokenHandler tokenHandler = new();
