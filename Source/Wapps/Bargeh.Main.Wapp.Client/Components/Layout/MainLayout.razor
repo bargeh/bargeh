@@ -2,7 +2,7 @@
 @using System.Security.Claims
 @using Bargeh.Main.Wapp.Client.Infrastructure
 @using Bargeh.Main.Wapp.Client.Services
-@using Users.Api
+@using Bargeh.Users.Api
 @inherits LayoutComponentBase
 @inject NotFoundListener NotFoundService
 @inject IJSRuntime JsRuntime
@@ -23,8 +23,8 @@
 				<span class="title-header">برگه</span>
 			</a>
 			<div class="header-navlinks">
+				<a class="header-navlink">نسخه‌ی آزمایشی</a>
 				<a class="header-navlink" @onclick='() => NavigationManager.NavigateTo("/Forum/New")'>انجمن جدید</a>
-				<a class="header-navlink">گفت و گوها</a>
 			</div>
 		</div>
 		<div class="shadow-box search-bar">
