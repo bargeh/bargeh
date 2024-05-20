@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "Forums.Api";
+option csharp_namespace = "Bargeh.Forums.Api";
 
 package forums;
 

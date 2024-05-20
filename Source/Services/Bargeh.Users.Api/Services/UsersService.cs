@@ -4,8 +4,6 @@ using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MatinDevs.PersianPhoneNumbers;
 using Microsoft.EntityFrameworkCore;
-using Users.Api;
-using static System.String;
 
 namespace Bargeh.Users.Api.Services;
 
@@ -150,8 +148,7 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 
 	public override async Task<Empty> AddUser(AddUserRequest request, ServerCallContext callContext)
 	{
-		// PRODUCTION: Validate Captcha
-
+		// PRODUCTION: Remove captcha
 
 		if(!request.AcceptedTos)
 		{
@@ -159,14 +156,13 @@ public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger
 									   "You have to accept Bargeh's Terms of Service in order to create a new account"));
 		}
 
-
-		if(IsNullOrWhiteSpace(request.DisplayName))
+		if(string.IsNullOrWhiteSpace(request.DisplayName))
 		{
 			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter \"Display Name\" is not valid"));
 		}
 
 
-		if(IsNullOrWhiteSpace(request.Username) || request.Username.Length <= 4 ||
+		if(string.IsNullOrWhiteSpace(request.Username) || request.Username.Length <= 4 ||
 		   !request.Username.ToLower().All(c => _allowedCharsForUsername.Contains(c)))
 		{
 			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter \"Username\" is not valid"));

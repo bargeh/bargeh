@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+option csharp_namespace = "Bargeh.Admin.Api";
+
+package admin;
+
+import "google/protobuf/empty.proto";
+
+service AdminProto {
+  rpc AddUser (AddUserRequest) returns (google.protobuf.Empty);
+  rpc DisableUser (DisableUserRequest) returns (google.protobuf.Empty);
+  // PRODUCTION: Add adding gift codes for free premium memberships
+
+  rpc DeleteForum (DeleteForumRequest) returns (google.protobuf.Empty);
+
+  rpc GetReports (google.protobuf.Empty) returns (ProtoReportsList);
+  rpc AcceptReport (ReportReviewRequest) returns (google.protobuf.Empty);
+  rpc DeclineReport (ReportReviewRequest) returns (google.protobuf.Empty);
+}
+
+message AddUserRequest {
+  string access_token = 1;
+  string username = 2;
+  string display_name = 3;
+  string phone_number = 4;
+}
+
+message DisableUserRequest {
+  string access_token = 1;
+  string user_id = 2;
+}
+
+message DeleteForumRequest {
+  string access_token = 1;
+  string forum_id = 2;
+}
+
+message ProtoReport {
+  string id = 1;
+  string post_body = 2;
+}
+
+message ProtoReportsList {
+  repeated ProtoReport reports = 1;
+}
+
+message ReportReviewRequest {
+  string access_token = 1;
+  string report_id = 2;
+}

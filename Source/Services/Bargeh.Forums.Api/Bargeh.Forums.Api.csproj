@@ -22,8 +22,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Build\Bargeh.Aspire.ServiceDefaults\Bargeh.Aspire.ServiceDefaults.csproj" />
-        <ProjectReference Include="..\..\Wapps\Bargeh.Main.Wapp.Client\Bargeh.Main.Wapp.Client.csproj"/>
+        <ProjectReference Include="../../Build/Bargeh.Aspire.ServiceDefaults/Bargeh.Aspire.ServiceDefaults.csproj"/>
+        <ProjectReference Include="../../Wapps/Bargeh.Main.Wapp.Client/Bargeh.Main.Wapp.Client.csproj"/>
     </ItemGroup>
 
 <!--    <ItemGroup>
@@ -36,12 +36,12 @@
         <Protobuf Include="../Bargeh.Users.Api/Protos/user.proto" GrpcServices="Client">
             <Link>Protos/user.proto</Link>
         </Protobuf>
-        <Protobuf Include="Protos\topics.proto">
+        <Protobuf Include="Protos/topics.proto">
             <GrpcServices>Server</GrpcServices>
             <Access>Public</Access>
             <ProtoCompile>True</ProtoCompile>
             <CompileOutputs>True</CompileOutputs>
-            <OutputDir>obj\Debug\net8.0\</OutputDir>
+            <OutputDir>obj/Debug/net8.0/</OutputDir>
             <Generator>MSBuild:Compile</Generator>
         </Protobuf>
     </ItemGroup>

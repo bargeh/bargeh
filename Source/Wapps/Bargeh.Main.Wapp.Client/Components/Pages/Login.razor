@@ -3,8 +3,8 @@
 @using System.Security.Claims
 @using Bargeh.Main.Wapp.Client.Infrastructure.Dtos.Login
 @using Bargeh.Main.Wapp.Client.Services
+@using Bargeh.Users.Api
 @using Grpc.Core
-@using Users.Api
 @using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames
 @inject IJSRuntime JsRuntime
 @inject ILogger<Login> Logger
@@ -98,6 +98,7 @@
 					<label>کد تایید</label>
 					<InputText aria-required="true" dir="ltr" class="button-bubble-static" @bind-Value="@_verificationModel.VerificationCode"/>
 				</div>
+				<p>کد تایید رو هر عدد ۴ رقمی که دوست داری وارد کن 😂</p>
 
 				<button class="button-bubble-static-inline" type="submit">@_verificationButtonText</button>
 
@@ -284,17 +285,11 @@
 				Captcha = "5"
 			});
 		}
-		catch(RpcException exception)
+		catch(RpcException exception) when(exception.StatusCode == StatusCode.AlreadyExists)
 		{
-			if(exception.StatusCode == StatusCode.AlreadyExists)
-			{
-				_registerMessageStore.Add(() => _registerModel, "قبلا یک کاربر با این شماره تلفن ثبت نام کرده. اگه تو بودی از بخش ورود وارد حسابت شو");
-				_registerEditContext.NotifyValidationStateChanged();
-
-				return;
-			}
-
-			throw;
+			_registerMessageStore.Add(() => _registerModel, "قبلا یک کاربر با این شماره تلفن ثبت نام کرده. اگه تو بودی از بخش ورود وارد حسابت شو");
+			_registerEditContext.NotifyValidationStateChanged();
+			return;
 		}
 
 		await SmsService.SendVerificationAsync(new()

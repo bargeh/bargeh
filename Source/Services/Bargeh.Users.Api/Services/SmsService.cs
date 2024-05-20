@@ -1,9 +1,7 @@
 ﻿using Bargeh.Users.Api.Infrastructure;
-using Bargeh.Users.Api.Infrastructure.Models;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MatinDevs.PersianPhoneNumbers;
-using Users.Api;
 
 namespace Bargeh.Users.Api.Services;
 
@@ -14,7 +12,7 @@ public class SmsService(UsersDbContext dbContext, ILogger<UsersService> logger) 
 	public override async Task<Empty> SendVerification(SendVerificationRequest request,
 													   ServerCallContext callContext)
 	{
-		bool phoneValid = request.Phone.IsPersianPhoneValid();
+		/*bool phoneValid = request.Phone.IsPersianPhoneValid();
 
 		if(!phoneValid)
 		{
@@ -43,6 +41,7 @@ public class SmsService(UsersDbContext dbContext, ILogger<UsersService> logger) 
 		});
 
 		await dbContext.SaveChangesAsync();
+		*/
 
 		return new();
 	}
@@ -63,7 +62,7 @@ public class SmsService(UsersDbContext dbContext, ILogger<UsersService> logger) 
 			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter \"Phone\" is not valid"));
 		}
 
-		SmsVerification verification = await dbContext.GetVerificationByCode(code, request.Phone) ??
+		/*SmsVerification verification = await dbContext.GetVerificationByCode(code, request.Phone) ??
 									   throw new RpcException(new(StatusCode.NotFound,
 																  "Parameter \"Code\" was not found"));
 
@@ -73,7 +72,7 @@ public class SmsService(UsersDbContext dbContext, ILogger<UsersService> logger) 
 			await dbContext.SaveChangesAsync();
 
 			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter \"Verification Code\" is expired"));
-		}
+		}*/
 
 		return new();
 	}

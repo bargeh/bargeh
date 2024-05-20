@@ -94,7 +94,7 @@ public static class Extensions
 		return builder;
 	}
 
-	public static WebApplication MapDefaultEndpoints(this WebApplication app)
+	public static Object MapDefaultEndpoints(this WebApplication app)
 	{
 		// Uncomment the following line to enable the Prometheus endpoint (requires the OpenTelemetry.Exporter.Prometheus.AspNetCore package)
 		// app.MapPrometheusScrapingEndpoint();
