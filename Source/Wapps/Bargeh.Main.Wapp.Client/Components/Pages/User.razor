@@ -4,8 +4,8 @@
 @inject ILogger<User> Logger
 @inject PersistentComponentState ApplicationState
 @using Bargeh.Main.Wapp.Client.Infrastructure
+@using Bargeh.Users.Api
 @using Grpc.Core
-@using Users.Api
 @implements IDisposable
 
 @if(_user is not null)
@@ -478,15 +478,9 @@ else
 					Username = Username
 				});
 			}
-			catch(RpcException exception)
+			catch(RpcException exception) when(exception.StatusCode == StatusCode.NotFound)
 			{
-				if(exception.StatusCode != StatusCode.NotFound)
-				{
-					throw;
-				}
-
 				NotFoundService.NotifyNotFound();
-
 				return;
 			}
 		}
