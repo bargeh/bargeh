@@ -449,9 +449,9 @@ else
 	private ProtoUser? _user;
 	private PersistingComponentStateSubscription _subscription;
 
-	private EditProfileDto _editProfileDto;
-	private EditContext _profileEditContext;
-	private ValidationMessageStore _profileMessageStore;
+	private EditProfileDto _editProfileDto = null!;
+	private EditContext _profileEditContext = null!;
+	private ValidationMessageStore _profileMessageStore = null!;
 
 	protected override async Task OnInitializedAsync()
 	{

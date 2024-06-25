@@ -9,8 +9,8 @@ public class SmsService(UsersDbContext dbContext, ILogger<UsersService> logger) 
 {
 	private readonly UsersService _usersService = new(dbContext, logger);
 
-	public override async Task<Empty> SendVerification(SendVerificationRequest request,
-													   ServerCallContext callContext)
+	public override Task<Empty> SendVerification(SendVerificationRequest request,
+												 ServerCallContext callContext)
 	{
 		/*bool phoneValid = request.Phone.IsPersianPhoneValid();
 
@@ -43,11 +43,11 @@ public class SmsService(UsersDbContext dbContext, ILogger<UsersService> logger) 
 		await dbContext.SaveChangesAsync();
 		*/
 
-		return new();
+		return Task.FromResult<Empty>(new());
 	}
 
-	public override async Task<Empty> ValidateVerificationCode(ValidateVerificationCodeRequest request,
-															   ServerCallContext context)
+	public override Task<Empty> ValidateVerificationCode(ValidateVerificationCodeRequest request,
+														 ServerCallContext context)
 	{
 		bool codeValid = ushort.TryParse(request.Code, out ushort code);
 		bool phoneValid = request.Phone.IsPersianPhoneValid();
@@ -74,6 +74,6 @@ public class SmsService(UsersDbContext dbContext, ILogger<UsersService> logger) 
 			throw new RpcException(new(StatusCode.InvalidArgument, "Parameter \"Verification Code\" is expired"));
 		}*/
 
-		return new();
+		return Task.FromResult<Empty>(new());
 	}
 }

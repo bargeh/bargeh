@@ -3,8 +3,6 @@ using Bargeh.Forums.Api.Infrastructure;
 using Bargeh.Forums.Api.Services;
 using Bargeh.Users.Api;
 
-// FROMHERE: Fix the errors, code the service
-
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
@@ -12,10 +10,7 @@ builder.AddServiceDefaults();
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 
-builder.AddNpgsqlDbContext<ForumsDbContext>("postgres", settings =>
-{
-	settings.MaxRetryCount = 10;
-});
+builder.AddNpgsqlDbContext<ForumsDbContext>("postgres");
 
 Uri usersApi = new(Environment.GetEnvironmentVariable("services__users__https__0")!);
 

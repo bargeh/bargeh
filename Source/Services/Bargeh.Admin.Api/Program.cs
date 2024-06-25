@@ -12,12 +12,10 @@ builder.Services.AddGrpcReflection();
 
 builder.Services.AddGrpcClient<UsersProto.UsersProtoClient>(o => o.Address = new("https://localhost:5501"));
 
-builder.AddNpgsqlDbContext<ForumsDbContext>("postgres", settings =>
-{
-	settings.MaxRetryCount = 10;
-});
+builder.AddNpgsqlDbContext<ForumsDbContext>("postgres");
 
 WebApplication app = builder.Build();
+
 
 app.MapDefaultEndpoints();
 
