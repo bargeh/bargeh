@@ -9,7 +9,6 @@
 @inject IdentityProto.IdentityProtoClient IdentityService
 @inject NavigationManager NavigationManager
 @inject LocalStorageService LocalStorageService
-@inject ILogger<MainLayout> Logger
 
 @{ /* PRODUCTION: Configure CSP */ }
 
@@ -35,8 +34,11 @@
 			<button class="shadow-box mobile-search" type="button">
 				<img src="/img/Search.svg" alt="ذره‌بین" class="header-icon">
 			</button>
-			<button class="shadow-box-nohover" type="button" @onclick='() => NavigationManager.NavigateTo("/Login")'>
-				<img src="/img/User.svg" alt="کاربر" class="header-icon">
+			@*<button class="shadow-box-nohover" type="button" @onclick='() => NavigationManager.NavigateTo("/Login")'>
+				<img src="/img/best.jpg" alt="کاربر" class="header-icon">
+			</button>*@
+			<button class="header-user-button" @onclick='() => NavigationManager.NavigateTo("/Login")'>
+				<img class="header-user-icon" src="/img/best.jpg" alt="تصویر کاربر">
 			</button>
 		</div>
 	</div>
@@ -80,7 +82,8 @@ else
 	</div>
 </footer>
 
-@code{
+@code
+{
 	private bool _notFound;
 
 	protected override void OnInitialized()
@@ -130,5 +133,4 @@ else
 		await LocalStorageService.SetItemAsync("login.access_token", $"{result.AccessToken}@{DateTime.UtcNow.AddMinutes(5)}");
 		await LocalStorageService.SetItemAsync("login.refresh_token", result.RefreshToken);
 	}
-
 }

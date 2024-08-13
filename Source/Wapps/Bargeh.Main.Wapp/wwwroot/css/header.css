@@ -140,3 +140,23 @@ button.shadow-box {
     border-radius: 100px;
     border: #707070 solid;
 }
+
+.header-user-icon {
+    box-shadow: 4pt 4pt 0 rgba(112, 112, 112, 0.5);
+    width: 30pt;
+    height: 30pt;
+    border-radius: 100pt;
+    border: 2px #002642 solid;
+    transition: all 150ms ease-out;
+}
+
+.header-user-icon:active {
+    transform: translate(5px, 5px);
+    box-shadow: 0 0 0 rgb(0, 38, 66);
+    transition: all 150ms ease-out;
+}
+
+.header-user-button {
+    background: none;
+    border: none;
+}
