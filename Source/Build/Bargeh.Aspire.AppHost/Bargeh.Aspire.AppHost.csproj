@@ -12,9 +12,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.Hosting.AppHost" Version="8.0.1"/>
-        <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="8.0.1"/>
-        <PackageReference Include="Grpc.AspNetCore.Web" Version="2.63.0"/>
+        <PackageReference Include="Aspire.Hosting.AppHost" Version="8.1.0" />
+        <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="8.1.0" />
+        <PackageReference Include="Grpc.AspNetCore.Web" Version="2.65.0" />
     </ItemGroup>
 
     <ItemGroup>
