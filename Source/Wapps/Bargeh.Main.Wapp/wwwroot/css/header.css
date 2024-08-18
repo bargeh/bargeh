@@ -151,7 +151,7 @@ button.shadow-box {
 }
 
 .header-user-icon:active {
-    transform: translate(5px, 5px);
+    transform: translate(6px, 6px);
     box-shadow: 0 0 0 rgb(0, 38, 66);
     transition: all 150ms ease-out;
 }

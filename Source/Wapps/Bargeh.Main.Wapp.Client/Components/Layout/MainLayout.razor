@@ -38,7 +38,15 @@
 				<img src="/img/best.jpg" alt="کاربر" class="header-icon">
 			</button>*@
 			<button class="header-user-button" @onclick='() => NavigationManager.NavigateTo("/Login")'>
-				<img class="header-user-icon" src="/img/best.jpg" alt="تصویر کاربر">
+				@if(!string.IsNullOrWhiteSpace(_username))
+				{
+					@* TODO: Fetch user profile image *@
+					<img class="header-user-icon" src="/img/best.jpg" alt="تصویر کاربر">
+				}
+				else
+				{
+					<img class="header-user-icon" src="/img/User.jpg" alt="تصویر کاربر">
+				}
 			</button>
 		</div>
 	</div>
@@ -85,6 +93,7 @@ else
 @code
 {
 	private bool _notFound;
+	private string _username = string.Empty;
 
 	protected override void OnInitialized()
 	{
@@ -93,6 +102,11 @@ else
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
+		if(!firstRender)
+		{
+			return;
+		}
+		
 		await JsRuntime.InvokeVoidAsync("setMainLayoutDotnetHelper", DotNetObjectReference.Create(this));
 
 		string? accessToken = await LocalStorageService.GetItemAsync<string>("login.access_token");
@@ -105,8 +119,12 @@ else
 
 			string username = accessTokenClaims.First(c => c.Type == JwtRegisteredClaimNames.UniqueName).Value;
 
+			_username = username;
+
 			await JsRuntime.InvokeVoidAsync("setUserDetails", username);
 		}
+		
+		StateHasChanged();
 	}
 
 	private void SetNotFound()

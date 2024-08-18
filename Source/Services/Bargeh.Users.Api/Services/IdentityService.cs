@@ -116,8 +116,9 @@ public class IdentityService(
 
 	private static string GenerateAccessToken(ProtoUser user)
 	{
-		// PRODUCTION: Make a real key
-		RsaSecurityKey securityKey = new(new X509Certificate2("C:/Source/Bargeh/JwtPrivateKey.pfx", "bargeh.dev")
+		const string keyPath = "/Users/matin/sources/Bagreh/JwtPrivateKey.pfx";
+
+		RsaSecurityKey securityKey = new(new X509Certificate2(keyPath, "bargeh.dev")
 											 .GetRSAPrivateKey());
 
 		SigningCredentials credentials = new(securityKey, SecurityAlgorithms.RsaSha256);

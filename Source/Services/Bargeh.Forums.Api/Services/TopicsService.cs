@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using Bargeh.Forums.Api.Infrastructure;
 using Bargeh.Forums.Api.Infrastructure.Models;
 using Bargeh.Users.Api;
@@ -362,13 +363,17 @@ public class TopicsService(
 	private static async Task<IEnumerable<Claim>> ValidateAndGetUserClaims(string accessToken)
 	{
 		JwtSecurityTokenHandler tokenHandler = new();
-		SecurityKey key = new X509SecurityKey(new("C:/Source/Bargeh/JwtPublicKey.cer"));
+		const string keyPath = "/Users/matin/sources/Bagreh/JwtPrivateKey.pfx";
+
+		RsaSecurityKey securityKey = new(new X509Certificate2(keyPath, "bargeh.dev")
+											 .GetRSAPrivateKey());
+
 
 		TokenValidationResult tokenValidationResult =
 			await tokenHandler.ValidateTokenAsync(accessToken, new()
 			{
 				ValidateIssuerSigningKey = true,
-				IssuerSigningKey = key,
+				IssuerSigningKey = securityKey,
 				ValidateIssuer = true,
 				ValidateAudience = true,
 				ValidateLifetime = true,
