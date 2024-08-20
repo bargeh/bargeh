@@ -2,7 +2,6 @@ let topicsDotnetHelper
 
 window.setTopicsDotnetHelper = (dotnetHelper) => {
     topicsDotnetHelper = dotnetHelper
-    initTopics()
 }
 
 let splide
@@ -110,7 +109,6 @@ async function submitPost(obj) {
 }
 
 function addPosts(rawPostchains) {
-    // TODO: Fix addPosts is being called 2 times
     const jsonPostchains = JSON.parse(rawPostchains)
 
     $(jsonPostchains.Posts).each(function (index, e) {
