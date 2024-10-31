@@ -6,16 +6,15 @@ using Bargeh.Users.Api.Infrastructure.Models;
 using Grpc.Core;
 using Microsoft.IdentityModel.Tokens;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
+using MediatR;
 
 namespace Bargeh.Users.Api.Services;
 
-// TODO: Fix forums and users urls are sensitive to caps
-
-// ReSharper disable once UnusedType.Global
 public class IdentityService(
 	UsersDbContext dbContext,
 	TimeProvider timeProvider,
-	ILogger<UsersService> logger)
+	ILogger<UsersService> logger,
+	IMediator mediator)
 	: IdentityProto.IdentityProtoBase
 {
 	private readonly UsersService _usersService = new(dbContext, logger);
@@ -70,18 +69,6 @@ public class IdentityService(
 		{
 			Id = oldRefreshToken.UserId.ToString()
 		}, callContext);
-
-		/*if(oldRefreshToken.ExpireDate >= timeProvider.GetUtcNow().AddMinutes(-4))
-		{
-			await _usersService.DisableUserAsync(new()
-			{
-				Id = user.Id
-			});
-
-			dbContext.Remove(oldRefreshToken);
-			await dbContext.SaveChangesAsync();
-			throw new RpcException(new(StatusCode.Internal, "Internal Error"));
-		}*/
 
 		Guid userId = Guid.Parse(user.Id);
 
@@ -144,21 +131,13 @@ public class IdentityService(
 		string token = new JwtSecurityTokenHandler().WriteToken(accessToken);
 
 		return token;
-
-		// ReSharper disable CommentTypo
-		// The never expiring token:
-		// eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ODQ0ZmQ0Ny0zMjM2LTQ2Y2ItODk4ZC02MDdiNWM1NTYzYzEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiIiwiZW1haWwiOiJ0ZXN0QGdtYWlsLmJhcmdlaCIsImdpdmVuX25hbWUiOiJ0ZXN0IGRpc3BsYXkgbmFtZSIsInVuaXF1ZV9uYW1lIjoidGVzdCIsInByZW1pdW1EYXlzTGVmdCI6IjAiLCJhdmF0YXIiOiJEZWZhdWx0LndlYnAiLCJleHAiOjI1MzQwMjI4ODIwMCwiaXNzIjoiaHR0cHM6Ly9iYXJnZWgubmV0IiwiYXVkIjoiaHR0cHM6Ly9iYXJnZWgubmV0In0.udWSZliBPWnoS0TL7P-XTW6x4QN_WLaXn3gaiZZfvIeU6gdufDDmkLlajes10C-UDKNQ2YBu2mCRj97f5acax1vL5qBFzmARnSaFIo8UzgLHPBH99TiPGh40HUY4qfnjtGcjpKKikHdV42svJHJiVzyZZE8bTu4Y6RtWqgIciKwWaAAyh6TnrW8iCgTe7Fdl29PGKq3mZQNFym66RqInabMZcDZ-pj1L9qNEnEvAwZFYBvlhXFOq27OSBGtiF9TM1dSSO8kRzYxXi9aKRSujvH1zmaFwIHegRXwAUP5dFH2HmGKPEsAbWpxTlGFHoSjEbCo5QH1Y0u_0RnayeFrFtQ
-		// ReSharper restore CommentTypo
 	}
 
 	private async Task<string> GenerateRefreshToken(Guid userId)
 	{
 		const short length = 128;
 
-		// ReSharper disable StringLiteralTypo
 		const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-		// ReSharper restore StringLiteralTypo
 
 		string token = new(Enumerable.Repeat(chars, length)
 									 .Select(s => s[Random.Shared.Next(s.Length)]).ToArray());

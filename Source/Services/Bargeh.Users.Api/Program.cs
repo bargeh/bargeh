@@ -1,6 +1,7 @@
 using Bargeh.Aspire.ServiceDefaults;
 using Bargeh.Users.Api.Infrastructure;
 using Bargeh.Users.Api.Services;
+using MassTransit;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,19 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddGrpcReflection();
+
+// Add MassTransit services
+builder.Services.AddMassTransit(x =>
+{
+	x.UsingRabbitMq((context, cfg) =>
+	{
+		cfg.Host("rabbitmq", "/", h =>
+		{
+			h.Username("guest");
+			h.Password("guest");
+		});
+	});
+});
 
 WebApplication app = builder.Build();
 
