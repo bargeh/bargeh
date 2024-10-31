@@ -25,7 +25,7 @@ partial class Initial
 
         NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-        modelBuilder.Entity("Bargeh.Users.Api.Infrastructure.Models.RefreshToken", b =>
+        modelBuilder.Entity("Bargeh.Users.Api.Domain.RefreshToken", b =>
         {
             b.Property<Guid>("Id")
              .ValueGeneratedOnAdd()
@@ -47,7 +47,7 @@ partial class Initial
             b.ToTable("RefreshTokens");
         });
 
-        modelBuilder.Entity("Bargeh.Users.Api.Infrastructure.Models.SmsVerification", b =>
+        modelBuilder.Entity("Bargeh.Users.Api.Domain.SmsVerification", b =>
         {
             b.Property<Guid>("Id")
              .ValueGeneratedOnAdd()
@@ -69,7 +69,7 @@ partial class Initial
             b.ToTable("SmsVerifications");
         });
 
-        modelBuilder.Entity("Bargeh.Users.Api.Infrastructure.Models.User", b =>
+        modelBuilder.Entity("Bargeh.Users.Api.Domain.User", b =>
         {
             b.Property<Guid>("Id")
              .ValueGeneratedOnAdd()

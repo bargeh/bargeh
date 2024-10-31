@@ -1,16 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
-namespace Bargeh.Users.Api.Infrastructure.Models;
+namespace Bargeh.Users.Api.Domain;
 
-public class SmsVerification
+public sealed class RefreshToken
 {
 	public Guid Id { get; init; }
-	public required ushort Code { get; init; }
 
-	[MaxLength(11)]
-	public required string Phone { get; init; }
+	[MaxLength(128)]
+	public required string Token { get; init; }
 
-	public required DateTime ExpireDate { get; init; }
+	public required Guid UserId { get; init; }
+	public DateTime ExpireDate { get; init; } = DateTime.UtcNow.AddDays(30);
 
 	// DDD: Add domain events
 	private readonly List<IDomainEvent> _domainEvents = new();

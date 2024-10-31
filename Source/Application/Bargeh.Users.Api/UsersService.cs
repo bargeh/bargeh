@@ -4,10 +4,11 @@ using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MatinDevs.PersianPhoneNumbers;
 using Microsoft.EntityFrameworkCore;
+using MediatR;
 
 namespace Bargeh.Users.Api.Services;
 
-public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger) : UsersProto.UsersProtoBase
+public class UsersService(UsersDbContext dbContext, ILogger<UsersService> logger, IMediator mediator) : UsersProto.UsersProtoBase
 {
 	private readonly HashSet<char> _allowedCharsForUsername =
 	[

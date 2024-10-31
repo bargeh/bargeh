@@ -1,4 +1,4 @@
-﻿using Bargeh.Users.Api.Infrastructure.Models;
+using Bargeh.Users.Api.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bargeh.Users.Api.Infrastructure;
@@ -93,6 +93,41 @@ public class UsersDbContext(DbContextOptions<UsersDbContext> options) : DbContex
 	public async Task<bool> UserExistsByPhoneAsync(string phone)
 	{
 		return await UserExistsByPhone(this, phone);
+	}
+
+	#endregion
+
+	#region DDD and CQRS Implementation
+
+	// Add domain events
+	private readonly List<IDomainEvent> _domainEvents = new();
+	public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+
+	public void AddDomainEvent(IDomainEvent domainEvent)
+	{
+		_domainEvents.Add(domainEvent);
+	}
+
+	public void RemoveDomainEvent(IDomainEvent domainEvent)
+	{
+		_domainEvents.Remove(domainEvent);
+	}
+
+	public void ClearDomainEvents()
+	{
+		_domainEvents.Clear();
+	}
+
+	// Add CQRS pattern implementation
+	public async Task DispatchDomainEventsAsync()
+	{
+		var domainEvents = _domainEvents.ToList();
+		_domainEvents.Clear();
+
+		foreach (var domainEvent in domainEvents)
+		{
+			await Mediator.Publish(domainEvent);
+		}
 	}
 
 	#endregion

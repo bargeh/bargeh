@@ -3,7 +3,6 @@ using System;
 using Bargeh.Users.Api.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,11 +11,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bargeh.Users.Api.Infrastructure.Migrations;
 
 [DbContext(typeof(UsersDbContext))]
-[Migration("20240502104119_Initial")]
-partial class Initial
+partial class UsersDbContextModelSnapshot : ModelSnapshot
 {
-    /// <inheritdoc />
-    protected override void BuildTargetModel(ModelBuilder modelBuilder)
+    protected override void BuildModel(ModelBuilder modelBuilder)
     {
         #pragma warning disable 612, 618
         modelBuilder
@@ -25,7 +22,7 @@ partial class Initial
 
         NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-        modelBuilder.Entity("Bargeh.Users.Api.Infrastructure.Models.RefreshToken", b =>
+        modelBuilder.Entity("Bargeh.Users.Api.Domain.RefreshToken", b =>
         {
             b.Property<Guid>("Id")
              .ValueGeneratedOnAdd()
@@ -47,7 +44,7 @@ partial class Initial
             b.ToTable("RefreshTokens");
         });
 
-        modelBuilder.Entity("Bargeh.Users.Api.Infrastructure.Models.SmsVerification", b =>
+        modelBuilder.Entity("Bargeh.Users.Api.Domain.SmsVerification", b =>
         {
             b.Property<Guid>("Id")
              .ValueGeneratedOnAdd()
@@ -69,7 +66,7 @@ partial class Initial
             b.ToTable("SmsVerifications");
         });
 
-        modelBuilder.Entity("Bargeh.Users.Api.Infrastructure.Models.User", b =>
+        modelBuilder.Entity("Bargeh.Users.Api.Domain.User", b =>
         {
             b.Property<Guid>("Id")
              .ValueGeneratedOnAdd()

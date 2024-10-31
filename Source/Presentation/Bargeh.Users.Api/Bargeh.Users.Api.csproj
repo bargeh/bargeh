@@ -37,7 +37,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="../../Build/Bargeh.Aspire.ServiceDefaults/Bargeh.Aspire.ServiceDefaults.csproj"/>
+        <ProjectReference Include="../../Application/Bargeh.Users.Api/Bargeh.Users.Api.Application.csproj"/>
+        <ProjectReference Include="../../Domain/Bargeh.Users.Api/Bargeh.Users.Api.Domain.csproj"/>
+        <ProjectReference Include="../../Infrastructure/Bargeh.Users.Api/Bargeh.Users.Api.Infrastructure.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

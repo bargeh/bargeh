@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Bargeh.Users.Api.Infrastructure.Models;
+namespace Bargeh.Users.Api.Domain;
 
 public class SmsVerification
 {

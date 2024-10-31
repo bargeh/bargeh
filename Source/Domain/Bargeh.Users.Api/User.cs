@@ -1,4 +1,4 @@
-﻿namespace Bargeh.Users.Api.Infrastructure.Models;
+﻿namespace Bargeh.Users.Api.Domain;
 
 // PRODUCTION: Apply length limits for strings
 public class User
